@@ -1,4 +1,4 @@
-# NLP-project
+# NLPtrio
 Maria, Pietari, Sofia.
 Sofia is here. Smile:)
 Pietari is here.
