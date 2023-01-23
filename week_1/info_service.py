@@ -68,9 +68,6 @@ def main():
     print()
     print("*** Weather and news update service ***")
     
-    
-    
-    
     task = "*"
 
     while task != "":
