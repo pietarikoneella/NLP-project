@@ -4,32 +4,29 @@ import re
 import requests
 def main():
     
-    url = "https://weather.com/weather/today/l/6e297205c5199a0a119875bde5cb0f506e57e4ab869091b945e1f6f94b494bf1"
+    url = "https://weather.com/fi-FI/weather/today/l/60.18,24.93"
     html = request.urlopen(url).read().decode('utf8')
     soup = BeautifulSoup(html, 'html.parser')
     print("Weather in Helsinki, Finland")
     print()
-    
-    now_list = re.findall(r"<a class=\"Column--innerWrapper--3ocxD  Button--default--2gfm1\" href=\"/weather/hourbyhour/l/6e297205c5199a0a119875bde5cb0f506e57e4ab869091b945e1f6f94b494bf1\" target=\"_self\"><h3 class=\"Column--label--2s30x Column--default--2-Kpw\"><span class=\"Ellipsis--ellipsis--3ADai\" style=\"-webkit-line-clamp:2\">Now</span></h3><div data-testid=\"SegmentHighTemp\" class=\"Column--temp--1sO_J\"><span data-testid=\"TemperatureValue\">-?\d*°",html)
-    now = " ".join(now_list)
-    now_t = re.findall(r"-?\d*°", now)
 
-    morning_list =  re.findall(r"<a class=\"Column--innerWrapper--3ocxD  Button--default--2gfm1\" href=\"/weather/hourbyhour/l/6e297205c5199a0a119875bde5cb0f506e57e4ab869091b945e1f6f94b494bf1\" target=\"_self\"><h3 class=\"Column--label--2s30x Column--default--2-Kpw\"><span class=\"Ellipsis--ellipsis--3ADai\" style=\"-webkit-line-clamp:2\">Morning</span></h3><div data-testid=\"SegmentHighTemp\" class=\"Column--temp--1sO_J\"><span data-testid=\"TemperatureValue\">-?\d*°",html)
-    morning = " ".join(morning_list)
-    morning_t = re.findall(r"-?\d*°", morning)
+    now_list = re.findall(r"CurrentConditions--tempValue--MHmYY\">(-?\+?\d+°)</span>", html)
+    now_t = now_list[0]
+
+    morning_list =  re.findall(r"Aamuna</span></h3><div data-testid=\"SegmentHighTemp\" class=\"Column--temp--1sO_J\"><span data-testid=\"TemperatureValue\">(-?\d+°)", html)
+    morning_t = morning_list[0]
     
-    afternoon_list = re.findall(r"<a class=\"Column--innerWrapper--3ocxD  Button--default--2gfm1\" href=\"/weather/hourbyhour/l/6e297205c5199a0a119875bde5cb0f506e57e4ab869091b945e1f6f94b494bf1\" target=\"_self\"><h3 class=\"Column--label--2s30x Column--default--2-Kpw\"><span class=\"Ellipsis--ellipsis--3ADai\" style=\"-webkit-line-clamp:2\">Afternoon</span></h3><div data-testid=\"SegmentHighTemp\" class=\"Column--temp--1sO_J\"><span data-testid=\"TemperatureValue\">?\d*°", html)
-    afternoon = " ".join(afternoon_list)
-    afternoon_t = re.findall(r"-?\d*°", afternoon)
+    afternoon_list = re.findall(r"Iltapäivä</span></h3><div data-testid=\"SegmentHighTemp\" class=\"Column--temp--1sO_J\"><span data-testid=\"TemperatureValue\">(-?\d+°)", html)
+    afternoon_t = afternoon_list[0]
     
-    evening_list = re.findall(r"<a class=\"Column--innerWrapper--3ocxD  Button--default--2gfm1\" href=\"/weather/hourbyhour/l/6e297205c5199a0a119875bde5cb0f506e57e4ab869091b945e1f6f94b494bf1\" target=\"_self\"><h3 class=\"Column--label--2s30x Column--default--2-Kpw\"><span class=\"Ellipsis--ellipsis--3ADai\" style=\"-webkit-line-clamp:2\">Evening</span></h3><div data-testid=\"SegmentHighTemp\" class=\"Column--temp--1sO_J\"><span data-testid=\"TemperatureValue\">-?\d*°",html)
-    evening = " ".join(evening_list)
-    evening_t = re.findall(r"-?\d*°", evening)
+    evening_list = re.findall(r"Ilta</span></h3><div data-testid=\"SegmentHighTemp\" class=\"Column--temp--1sO_J\"><span data-testid=\"TemperatureValue\">(-?\d+°)", html)
+    evening_t = evening_list[0]
     
-    overnigt_list =  re.findall(r"<a class=\"Column--innerWrapper--3ocxD  Button--default--2gfm1\" href=\"/weather/hourbyhour/l/6e297205c5199a0a119875bde5cb0f506e57e4ab869091b945e1f6f94b494bf1\" target=\"_self\"><h3 class=\"Column--label--2s30x Column--default--2-Kpw\"><span class=\"Ellipsis--ellipsis--3ADai\" style=\"-webkit-line-clamp:2\">Overnight</span></h3><div data-testid=\"SegmentHighTemp\" class=\"Column--temp--1sO_J\"><span data-testid=\"TemperatureValue\">-?\d*°",html)
-    overnigt = " ".join(overnigt_list)
-    overnigt_t = re.findall(r"-?\d*°", overnigt)
+    overnight_list =  re.findall(r"Yö</span></h3><div data-testid=\"SegmentHighTemp\" class=\"Column--temp--1sO_J\"><span data-testid=\"TemperatureValue\">(-?\d+°)", html)
+    overnight_t = overnight_list[0]
     
+
+    print()
     print("1. Weather now")
     print("2. Weather for today")
     
@@ -40,16 +37,16 @@ def main():
 
         if task == "1":
             print()
-            print("Temperature now: "+ " ".join(now_t))
-
+            print("Temperature now:",  now_t)
+    
         elif task == "2":
             print()
             print("Temperature for today.")
             print("----------------------")
-            print("Morning: "+ " ".join(morning_t))
-            print("Afternoon: "+ " ".join(afternoon_t))
-            print("Evening: "+ " ".join(evening_t))
-            print("Overnigt: "+ " ".join(overnigt_t))
+            print("Morning:", morning_t)
+            print("Afternoon:", afternoon_t)
+            print("Evening:", evening_t)
+            print("Overnigt:", overnight_t)
 
         elif task == "":
             print("Bye!")
@@ -59,7 +56,6 @@ def main():
             print ()
             print("Please, write 1 or 2.")
             
-
         
 main()
 
