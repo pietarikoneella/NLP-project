@@ -202,6 +202,7 @@ def main():
 
     query ="*"
     while query != "":
+            
         query = input("Type a query: ")
         hits_matrix = eval(rewrite_query(query))
         print("Matching documents as vector (it is actually a matrix with one single row):", hits_matrix)
@@ -221,6 +222,7 @@ def main():
         if query == "":
             print("Goodbye!")
             break
+    
         
     
         
