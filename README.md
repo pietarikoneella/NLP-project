@@ -1,4 +1,4 @@
-# NLPtrio
+# Team NLPtrio | Search engine project for KIK-LG211
 Maria, Pietari, Sofia.
 Sofia is here. Smile:)
 Pietari is here.
