@@ -4,6 +4,10 @@ Sofia is here. Smile:)
 Pietari is here.
 Maria also made it here!
 
+## Working hours log
+
+[Link to NLPTrio's log](https://github.com/pietarikoneella/NLPtrio/wiki/Working-hours-log)
+
 
 ## Week 1
 
@@ -19,3 +23,7 @@ This is our [Task 2](https://github.com/pietarikoneella/NLPtrio/blob/main/week_1
 ## Week 2
 
 ### Task
+
+## Week 3
+
+## Week 4
