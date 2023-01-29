@@ -18,7 +18,14 @@ def main():
     sparse_matrix = cv.fit_transform(documents)
     dense_matrix = sparse_matrix.todense()
     td_matrix = dense_matrix.T
-    terms = cv.get_feature_names_out()
+
+    # There seems to be variation in these commands between scikit-learn versions - 
+    # this block of code helps with that 
+    try:
+        terms = cv.get_feature_names_out()
+    except AttributeError:
+        terms = cv.get_feature_names()
+
     t2i = cv.vocabulary_
 
     d = {"AND": "&", "OR": "|",
@@ -41,17 +48,18 @@ def main():
         else:
             try:
                 hits_matrix = eval(rewrite_query(query))
-                print("Matching documents as vector (it is actually a matrix with one single row):", hits_matrix)
-                print("The coordinates of the non-zero elements:", hits_matrix.nonzero())    
+                #print("Matching documents as vector (it is actually a matrix with one single row):", hits_matrix)
+                #print("The coordinates of the non-zero elements:", hits_matrix.nonzero())    
                 hits_list = list(hits_matrix.nonzero()[1])
-                print(hits_list)
+                #print(hits_list)
                 
                 for doc_idx in hits_list:
                     docs_list = re.findall(r".{7,10}\b", documents[doc_idx])
                     docs_part = docs_list[0]
                     docs = "".join(docs_part)
-                    print("Matching doc:", docs)
+                    #print("Matching doc:", docs)
 
+                print("Matches for '" + query + "' were found in following document(s):")
                 for i, doc_idx in enumerate(hits_list):
                     print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx]))
         
