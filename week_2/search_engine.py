@@ -35,24 +35,28 @@ def main():
     while query != "":
             
         query = input("Type a query: ")
-        hits_matrix = eval(rewrite_query(query))
-        print("Matching documents as vector (it is actually a matrix with one single row):", hits_matrix)
-        print("The coordinates of the non-zero elements:", hits_matrix.nonzero())    
-        hits_list = list(hits_matrix.nonzero()[1])
-        print(hits_list)
-        
-        for doc_idx in hits_list:
-            docs_list = re.findall(r".{7,10}\b", documents[doc_idx])
-            docs_part = docs_list[0]
-            docs = "".join(docs_part)
-            print("Matching doc:", docs)
-
-        for i, doc_idx in enumerate(hits_list):
-            print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx]))
-        
         if query == "":
             print("Goodbye!")
             break
+        else:
+            try:
+                hits_matrix = eval(rewrite_query(query))
+                print("Matching documents as vector (it is actually a matrix with one single row):", hits_matrix)
+                print("The coordinates of the non-zero elements:", hits_matrix.nonzero())    
+                hits_list = list(hits_matrix.nonzero()[1])
+                print(hits_list)
+                
+                for doc_idx in hits_list:
+                    docs_list = re.findall(r".{7,10}\b", documents[doc_idx])
+                    docs_part = docs_list[0]
+                    docs = "".join(docs_part)
+                    print("Matching doc:", docs)
+
+                for i, doc_idx in enumerate(hits_list):
+                    print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx]))
+        
+            except KeyError:
+                print("No matches")
     
     
 main()
