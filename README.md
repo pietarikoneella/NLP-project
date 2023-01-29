@@ -22,7 +22,9 @@ This is our [Task 2](https://github.com/pietarikoneella/NLPtrio/blob/main/week_1
 
 ## Week 2
 
-### Task
+### Week 2 task
+
+This is our [week 2 task](https://github.com/pietarikoneella/NLPtrio/blob/main/week_2/search_engine.py), search_engine.py.
 
 ## Week 3
 
