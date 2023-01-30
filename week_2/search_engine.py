@@ -86,18 +86,25 @@ def main():
             break
         else:
             try:
-                hits_matrix = eval(rewrite_query(query))
-                #print("Matching documents as vector (it is actually a matrix with one single row):", hits_matrix)
-                #print("The coordinates of the non-zero elements:", hits_matrix.nonzero())    
+                hits_matrix = eval(rewrite_query(query))  
                 hits_list = list(hits_matrix.nonzero()[1])
                 
-
-                print("Matches for '" + query + "' were found in following document(s):")
-                for i, doc_idx in enumerate(hits_list):
+                print("Matches for '" + query + "' were found in following " + str(len(hits_list)) + " document(s):")
+                print()
+                
+                # Maria's code for task 5 (covering also task 2)- Maria commented this away because task 2 was issued to Sofia
+                # This is a slightly different solution utilizing the stars that were used to separate the article title
+                # from the article text
+                """
+                    for i, doc_idx in enumerate(hits_list):
                     # Using the three stars to find the end of the article title
                     index = documents[doc_idx].find("***")
                     print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx][:index]))
-
+                    print(documents[doc_idx][index+3:].strip())
+                    print()
+                """
+                    
+                # Sofia's code for task 2
                 for doc_idx in hits_list:
                     docs_list = re.findall(r"^.{200,500}\.", documents[doc_idx])
                     docs = "".join(docs_list)
