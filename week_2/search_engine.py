@@ -10,11 +10,11 @@ def index_documents_from_text_file():
     
     # Opening the file, storing the contents of the article into one string, closing the file
     try:
-        with open("articles.txt") as input_file:
-            
-            for line in input_file:
-                line = line.strip()
-                document_string += line + " "
+        #with open("articles.txt") as input_file:
+        input_file = open("articles.txt", "r", encoding = 'utf8')    
+        for line in input_file:
+            line = line.strip()
+            document_string += line + " "
         input_file.close()
 
     except FileNotFoundError:
@@ -31,13 +31,13 @@ def index_documents_from_text_file():
     # Splitting the contents into a new list with the help of the still remaining endtags 
     content_list = article_content_string.strip().split("</article>")
     # Removint the last, empty list item
-    content_list.remove("")
+    #content_list.remove("")
 
     # Combining the article titles and contents into a list 
     # The three stars are added in between to aid in separating the article title from the body text
     article_and_title_list = []
     for i in range(len(title_list)):
-        article_and_title_list.append(title_list[i] + "***" + content_list[i])
+        article_and_title_list.append(title_list[i] + " *** " + content_list[i])
     
     return article_and_title_list
 
@@ -91,18 +91,18 @@ def main():
                 #print("The coordinates of the non-zero elements:", hits_matrix.nonzero())    
                 hits_list = list(hits_matrix.nonzero()[1])
                 
-                for doc_idx in hits_list:
-                    docs_list = re.findall(r".{7,10}\b", documents[doc_idx])
-                    docs_part = docs_list[0]
-                    docs = "".join(docs_part)
-                    #print("Matching doc:", docs)
 
                 print("Matches for '" + query + "' were found in following document(s):")
                 for i, doc_idx in enumerate(hits_list):
                     # Using the three stars to find the end of the article title
                     index = documents[doc_idx].find("***")
                     print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx][:index]))
-        
+
+                for doc_idx in hits_list:
+                    docs_list = re.findall(r"^.{200,500}\.", documents[doc_idx])
+                    docs = "".join(docs_list)
+                    print("Matching doc:", docs)
+                    
             except KeyError:
                 print("No matches")
     
