@@ -1,4 +1,5 @@
 import re
+import numpy
 from sklearn.feature_extraction.text import CountVectorizer
 
 def index_documents_from_text_file():
@@ -72,6 +73,7 @@ def main():
         "(": "(", ")": ")"}          # operator replacements
 
     def rewrite_token(t):
+        print(d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))) # N.B. This print statement shows the rewritten query!
         return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t)) 
 
     def rewrite_query(query): # rewrite every token in the query
@@ -81,19 +83,39 @@ def main():
     while query != "":
             
         query = input("Type a query: ")
+
         if query == "":
             print("Goodbye!")
             break
         else:
             try:
-                hits_matrix = eval(rewrite_query(query))  
+                
+                # This if statement code checks if there is a NOT operator in the query. If the negated word does not 
+                # exist in any of the documents, it means that every document matches the query. E.g. NOT kiisseli --> all documents match
+                if "NOT" in query:
+                    not_statements = re.findall("NOT\s(\w+)\s?", query)
+                    print(not_statements)
+                    for word in not_statements:
+                        if str(documents).find(word) != -1:
+                            hits_matrix = eval(rewrite_query(query))
+                        else: # This is the case where the negated word isn't in any of the documents, which means a 100% match. 
+                            hits_matrix = numpy.matrix([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                                                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                                                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                                                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                                                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])      
+                else:
+                    hits_matrix = eval(rewrite_query(query))
+                
+                
+                
                 hits_list = list(hits_matrix.nonzero()[1])
                 
                 print("Matches for '" + query + "' were found in following " + str(len(hits_list)) + " document(s):")
                 print()
                 
-                # Maria's code for task 5 (covering also task 2)- Maria commented this away because task 2 was issued to Sofia
-                # This is a slightly different solution utilizing the stars that were used to separate the article title
+                # Maria's code for task 5 (covering also task 2)- Maria commented this away since task 2 was issued to Sofia
+                # This is a slightly different solution utilizing the stars that were used in my function to separate the article title
                 # from the article text
                 """
                     for i, doc_idx in enumerate(hits_list):
