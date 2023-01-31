@@ -94,7 +94,7 @@ def main():
                 # exist in any of the documents, it means that every document matches the query. E.g. NOT kiisseli --> all documents match
                 if "NOT" in query:
                     not_statements = re.findall("NOT\s(\w+)\s?", query)
-                    print(not_statements)
+                    
                     for word in not_statements:
                         if str(documents).find(word) != -1:
                             hits_matrix = eval(rewrite_query(query))
