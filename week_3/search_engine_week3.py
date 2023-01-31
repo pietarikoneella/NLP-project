@@ -1,6 +1,7 @@
 import re
 import numpy
 from sklearn.feature_extraction.text import CountVectorizer
+import math
 
 def index_documents_from_text_file():
     """ This function first opens a file, reads its contents
