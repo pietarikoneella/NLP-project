@@ -116,7 +116,7 @@ def boolean_search(docs, query):
     except KeyError:
         print("No matches")
     
-def tfidf_search(documents, query): # !
+def tfidf_search(documents, query):
     tfv = TfidfVectorizer(lowercase=True, sublinear_tf=True, use_idf=True, norm="l2")
     sparse_matrix = tfv.fit_transform(documents).T.tocsr() # CSR: compressed sparse row format => order by terms
 
