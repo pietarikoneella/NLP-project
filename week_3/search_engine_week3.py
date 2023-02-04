@@ -191,8 +191,8 @@ def main():
             print(query)
             documents_text = "".join(documents)
             documents_words = word_tokenize(documents_text)
+            documents = []
             for w in documents_words:
-                documents = []
                 documents.append(ps.stem(w))
             for i in range(10):
                 print(documents[i])
