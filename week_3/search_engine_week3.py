@@ -100,7 +100,7 @@ def main():
         if query == "":
             print("Goodbye!")
             break
-        if "\"" in query:
+        if query.startswith('"') and query.endswith('"'):
             query = re.sub(r"\"", r"", query)
             try:
                 
