@@ -4,6 +4,9 @@ from sklearn.feature_extraction.text import CountVectorizer
 import math
 import nltk
 from nltk.stem import PorterStemmer
+import sys
+sys.path.append("../../../morf-synt-2023/src")
+
 
 
 
@@ -61,156 +64,69 @@ def main():
 
     cv = CountVectorizer(lowercase=True, binary=True, token_pattern=r"(?u)\b\w\w*\b") # indexing all words containing alphanumeric characters
 
-
-    print("1. Stemming search")
-    print("------------------")
-    print("2.Exact match")
-
-    ask =  input("What kind of search do you want to do? (Write 1 or 2): ")
-    if ask == "1":
-        doc = "".join(documents)
-        token_words = nltk.word_tokenize(doc)
-        doc_stem = []
-        for word in token_words:
-            doc_stem.append(ps.stem(word))
-
     
-        sparse_matrix = cv.fit_transform(doc_stem)
-        dense_matrix = sparse_matrix.todense()
-        td_matrix = dense_matrix.T
-        try:
-            terms = cv.get_feature_names_out()
-        except AttributeError:
-           terms = cv.get_feature_names()
-
-        
-        t2i = cv.vocabulary_
-        d = {"AND": "&", "OR": "|",
-            "NOT": "1 -",
-            "(": "(", ")": ")"}          # operator replacements
-
-        def rewrite_token(t):
-            print(d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))) # N.B. This print statement shows the rewritten query!
-            return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t)) 
-
-        def rewrite_query(query):
-            return " ".join(rewrite_token(t) for t in query.split())  # rewrite every token in the query
-
-
-
-        query ="*"
-        query_list =[]
-        while query != "":
-            
-            query = input("Type a query: ")
-            query_list = query.split()
-            print(query_list)
-            for i in range(0,len(query_list)):
-                query_stem = ps.stem(query_list[i])
-                query = query_stem
-
-            if query == "":
-                print("Goodbye!")
-                break
-            else:
-                try:
-                    hits_matrix = eval(rewrite_query(query))
-                
-                
-                
-                    hits_list = list(hits_matrix.nonzero()[1])
-                
-                    print("Matches for '" + query + "' were found in following " + str(len(hits_list)) + " document(s):")
-                    print()
-                
-                # Maria's code for task 5 (covering also task 2)- Maria commented this away since task 2 was issued to Sofia
-                # This is a slightly different solution utilizing the stars that were used in my function to separate the article title
-                # from the article text
-                #"""
-                #    for i, doc_idx in enumerate(hits_list):
-                #    # Using the three stars to find the end of the article title
-                #    index = documents[doc_idx].find("***")
-                #    print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx][:index]))
-                #    print(documents[doc_idx][index+3:].strip())
-                #    print()
-                #"""
-                    
-                # Sofia's code for task 2
-                    #for doc_idx in hits_list:
-                    #    docs_list = re.findall(r"^.{50,350}\.", documents[doc_idx])
-                    #    docs = "".join(docs_list)
-                    #    print("Matching doc:", docs)
-
-                except KeyError:
-                    print("No matches")
-
-
-
-    elif ask == "2":
-        
-
-    
-        sparse_matrix = cv.fit_transform(documents)
-        dense_matrix = sparse_matrix.todense()
-        td_matrix = dense_matrix.T
+    sparse_matrix = cv.fit_transform(documents)
+    dense_matrix = sparse_matrix.todense()
+    td_matrix = dense_matrix.T
 
     # There seems to be variation in these commands between scikit-learn versions - 
     # this block of code helps with that 
-        try:
-            terms = cv.get_feature_names_out()
-        except AttributeError:
-            terms = cv.get_feature_names()
+    try:
+        terms = cv.get_feature_names_out()
+    except AttributeError:
+        terms = cv.get_feature_names()
 
-        t2i = cv.vocabulary_
+    t2i = cv.vocabulary_
 
-        d = {"AND": "&", "OR": "|",
-            "NOT": "1 -",
-            "(": "(", ")": ")"}          # operator replacements
+    d = {"AND": "&", "OR": "|",
+        "NOT": "1 -",
+        "(": "(", ")": ")"}          # operator replacements
 
-        def rewrite_token(t):
-            print(d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))) # N.B. This print statement shows the rewritten query!
-            return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t)) 
+    def rewrite_token(t):
+        print(d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))) # N.B. This print statement shows the rewritten query!
+        return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t)) 
 
-        def rewrite_query(query): # rewrite every token in the query
-            return " ".join(rewrite_token(t) for t in query.split())
+    def rewrite_query(query): # rewrite every token in the query
+        return " ".join(rewrite_token(t) for t in query.split())
     
-        ps = PorterStemmer()
-        query ="*"
+    ps = PorterStemmer()
+    query ="*"
     
-        while query != "":
+    while query != "":
             
-            query = input("Type a query: ")
-        
+        query = input("Type a query: ")
+            
 
-            if query == "":
-                print("Goodbye!")
-                break
-            else:
-                try:
+        if query == "":
+            print("Goodbye!")
+            break
+        if "\"" in query:
+            query = re.sub(r"\"", r"", query)
+            try:
                 
                 # This if statement code checks if there is a NOT operator in the query. If the negated word does not 
                 # exist in any of the documents, it means that every document matches the query. E.g. NOT kiisseli --> all documents match
-                    if "NOT" in query:
-                        not_statements = re.findall("NOT\s(\w+)\s?", query)
+                if "NOT" in query:
+                    not_statements = re.findall("NOT\s(\w+)\s?", query)
                     #print(not_statements)
-                        for word in not_statements:
-                            if str(documents).find(word) != -1:
-                                hits_matrix = eval(rewrite_query(query))
-                            else: # This is the case where the negated word isn't in any of the documents, which means a 100% match. 
-                                hits_matrix = numpy.matrix([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                    for word in not_statements:
+                        if str(documents).find(word) != -1:
+                            hits_matrix = eval(rewrite_query(query))
+                        else: # This is the case where the negated word isn't in any of the documents, which means a 100% match. 
+                            hits_matrix = numpy.matrix([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                                                         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                                                         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                                                         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                                                         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])      
-                    else:
-                        hits_matrix = eval(rewrite_query(query))
+                else:
+                    hits_matrix = eval(rewrite_query(query))
                 
                 
                 
-                    hits_list = list(hits_matrix.nonzero()[1])
+                hits_list = list(hits_matrix.nonzero()[1])
                 
-                    print("Matches for '" + query + "' were found in following " + str(len(hits_list)) + " document(s):")
-                    print()
+                print("Matches for '" + query + "' were found in following " + str(len(hits_list)) + " document(s):")
+                print()
                 
                 # Maria's code for task 5 (covering also task 2)- Maria commented this away since task 2 was issued to Sofia
                 # This is a slightly different solution utilizing the stars that were used in my function to separate the article title
@@ -225,13 +141,63 @@ def main():
                 #"""
                     
                 # Sofia's code for task 2
-                    for doc_idx in hits_list:
-                        docs_list = re.findall(r"^.{50,350}\.", documents[doc_idx])
-                        docs = "".join(docs_list)
-                        print("Matching doc:", docs)
+                for doc_idx in hits_list:
+                    docs_list = re.findall(r"^.{50,350}\.", documents[doc_idx])
+                    docs = "".join(docs_list)
+                    print("Matching doc:", docs)
                     
-                except KeyError:
-                    print("No matches")
+            except KeyError:
+                print("No matches")
+        else:
+            ps = PorterStemmer()
+            query = ps.stem(query)
+            print(query)
+            
+            try:
+                
+                # This if statement code checks if there is a NOT operator in the query. If the negated word does not 
+                # exist in any of the documents, it means that every document matches the query. E.g. NOT kiisseli --> all documents match
+                if "NOT" in query:
+                    not_statements = re.findall("NOT\s(\w+)\s?", query)
+                    #print(not_statements)
+                    for word in not_statements:
+                        if str(documents).find(word) != -1:
+                            hits_matrix = eval(rewrite_query(query))
+                        else: # This is the case where the negated word isn't in any of the documents, which means a 100% match. 
+                            hits_matrix = numpy.matrix([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                                                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                                                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                                                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+                                                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])      
+                else:
+                    hits_matrix = eval(rewrite_query(query))
+                
+                
+                
+                hits_list = list(hits_matrix.nonzero()[1])
+                
+                print("Matches for '" + query + "' were found in following " + str(len(hits_list)) + " document(s):")
+                print()
+                
+                # Maria's code for task 5 (covering also task 2)- Maria commented this away since task 2 was issued to Sofia
+                # This is a slightly different solution utilizing the stars that were used in my function to separate the article title
+                # from the article text
+                #"""
+                #    for i, doc_idx in enumerate(hits_list):
+                #    # Using the three stars to find the end of the article title
+                #    index = documents[doc_idx].find("***")
+                #    print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx][:index]))
+                #    print(documents[doc_idx][index+3:].strip())
+                #    print()
+                #"""
+                    
+                # Sofia's code for task 2
+                for doc_idx in hits_list:
+                    docs_list = re.findall(r"^.{50,350}\.", documents[doc_idx])
+                    docs = "".join(docs_list)
+                    print("Matching doc:", docs)
+            except KeyError:
+                print("No matches")
     
     
 main()
