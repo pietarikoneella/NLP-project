@@ -44,8 +44,8 @@ def index_documents_from_text_file():
     return article_and_title_list
 
 def rewrite_token(t):
-    d = {"AND": "&", "OR": "|",
-        "NOT": "1 -",
+    d = {"and": "&", "or": "|",
+        "not": "1 -",
         "(": "(", ")": ")"}  # operator replacements
 
     #print(d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))) # N.B. This print statement shows the rewritten query!
@@ -77,7 +77,7 @@ def boolean_search(docs, query):
     try:
         # This if statement code checks if there is a NOT operator in the query. If the negated word does not 
         # exist in any of the documents, it means that every document matches the query. E.g. NOT kiisseli --> all documents match
-        if "NOT" in query:
+        if "not" in query:
             not_statements = re.findall("NOT\s(\w+)\s?", query)
             #print(not_statements)
             for word in not_statements:
@@ -94,7 +94,7 @@ def boolean_search(docs, query):
 
         hits_list = list(hits_matrix.nonzero()[1])
             
-        print("Matches for '" + query + "' were found in following " + str(len(hits_list)) + " document(s):")
+        print("Matches were found in following " + str(len(hits_list)) + " document(s):")
         print()
                                 
         for i, doc_idx in enumerate(hits_list):
@@ -151,12 +151,21 @@ def tfidf_search(documents, query):
     except IndexError: # Entering an unknown word causes IndexError
         print("No matches")
 
-def main():
 
-    #documents = ["This is a silly example",
-    #            "A better example",
-    #            "Nothing to see here",
-    #            "This is a great and long example"]
+def stemming_documents():
+
+    ps = PorterStemmer()
+    documents = index_documents_from_text_file()
+    docs_tokens = [word_tokenize(i) for i in documents]
+    documents = [[]]
+    documents = [[ps.stem(token) for token in docs_tokens[i]] for i in range(0, len(docs_tokens))]
+
+                         
+    for i in range(0, len(documents)):
+        documents[i] = " ".join(documents[i])
+    return(documents)
+
+def main():
 
 
     documents = index_documents_from_text_file()
@@ -179,27 +188,39 @@ def main():
         if query == "":
             print("Goodbye!")
             break
-        elif query.startswith('"') and query.endswith('"'):
+
+        elif '"' in query:
             query = re.sub(r"\"", r"", query)
+            documents = index_documents_from_text_file()
             if search_method == "b":
                 boolean_search(documents, query)
             elif search_method == "t":
                 tfidf_search(documents, query)
-        else:
+
+        elif '"' not in query:
             ps = PorterStemmer()
-            query = ps.stem(query)
-            print(query)
-            documents_text = "".join(documents)
-            documents_words = word_tokenize(documents_text)
-            documents = []
-            for w in documents_words:
-                documents.append(ps.stem(w))
-            for i in range(10):
-                print(documents[i])
+            query_split = query.split(" ")
+    
+            for i in range(0, len(query_split)):
+                if i == 0:
+                    query = "".join(query)
+                    query = ps.stem(query)
+
+                elif i > 0:
+                    query_list_stem = []
+                    query_list_stem = [ps.stem(token) for token in query_split] 
+                    query = " ".join(query_list_stem)
+                    
+                    
+            documents = stemming_documents()
+                                        
+
             if search_method == "b":
                 boolean_search(documents, query)
+
             elif search_method == "t":
                 tfidf_search(documents, query)
+
             
 
     
