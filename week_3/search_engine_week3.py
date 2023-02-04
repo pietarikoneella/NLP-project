@@ -1,3 +1,7 @@
+import nltk
+from nltk.stem import PorterStemmer
+from nltk import word_tokenize
+
 import re
 import numpy
 from sklearn.feature_extraction.text import CountVectorizer
@@ -175,10 +179,28 @@ def main():
         if query == "":
             print("Goodbye!")
             break
-        elif search_method == "b":
-            boolean_search(documents, query)
-        elif search_method == "t":
-            tfidf_search(documents, query)
+        elif query.startswith('"') and query.endswith('"'):
+            query = re.sub(r"\"", r"", query)
+            if search_method == "b":
+                boolean_search(documents, query)
+            elif search_method == "t":
+                tfidf_search(documents, query)
+        else:
+            ps = PorterStemmer()
+            query = ps.stem(query)
+            print(query)
+            documents_text = "".join(documents)
+            documents_words = word_tokenize(documents_text)
+            for w in documents_words:
+                documents = []
+                documents.append(ps.stem(w))
+            for i in range(10):
+                print(documents[i])
+            if search_method == "b":
+                boolean_search(documents, query)
+            elif search_method == "t":
+                tfidf_search(documents, query)
+            
 
     
 main()
