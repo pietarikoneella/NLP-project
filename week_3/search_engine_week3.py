@@ -3,6 +3,9 @@ import numpy
 from sklearn.feature_extraction.text import CountVectorizer
 import math
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+import numpy as np
+
 def index_documents_from_text_file():
     """ This function first opens a file, reads its contents
         into a string and closes the file. Then it creates and returns a list
@@ -113,8 +116,36 @@ def boolean_search(docs, query):
     except KeyError:
         print("No matches")
     
-    
+def tfidf_search(documents, query):
+    tfv = TfidfVectorizer(lowercase=True, sublinear_tf=True, use_idf=True, norm="l2")
+    sparse_matrix = tfv.fit_transform(documents).T.tocsr() # CSR: compressed sparse row format => order by terms
 
+    # The query vector is a horizontal vector, so in order to sort by terms, we need to use CSC
+    query_vec = tfv.transform([query]).tocsc() # CSC: compressed sparse column format
+
+    hits = np.dot(query_vec, sparse_matrix)
+
+    try:
+        ranked_scores_and_doc_ids = sorted(zip(np.array(hits[hits.nonzero()])[0], hits.nonzero()[1]), reverse=True)
+
+        number_of_matches = 0
+        best_doc_ids = []
+
+        for score, i in ranked_scores_and_doc_ids:
+            if number_of_matches < 10:
+                best_doc_ids.append(i)
+            number_of_matches += 1
+
+        print(number_of_matches, "document(s) matched your query.")
+        if number_of_matches > 10:
+            print("Showing the top 10 matches.\n")
+
+        for i in best_doc_ids:
+            print(documents[i])
+            print()
+
+    except IndexError: # Entering an unknown word causes IndexError
+        print("No matches")
 
 def main():
 
@@ -147,8 +178,7 @@ def main():
         elif search_method == "b":
             boolean_search(documents, query)
         elif search_method == "t":
-
-            print("This will be a function call for tf-idf search!") ############################################
+            tfidf_search(documents, query)
 
     
 main()
