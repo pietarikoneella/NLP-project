@@ -78,7 +78,7 @@ def boolean_search(docs, query):
         # This if statement code checks if there is a NOT operator in the query. If the negated word does not 
         # exist in any of the documents, it means that every document matches the query. E.g. NOT kiisseli --> all documents match
         if "not" in query:
-            not_statements = re.findall("NOT\s(\w+)\s?", query)
+            not_statements = re.findall("not\s(\w+)\s?", query)
             #print(not_statements)
             for word in not_statements:
                 if str(docs).find(word) != -1:
@@ -145,7 +145,7 @@ def tfidf_search(documents, query):
             print("Showing the top 10 matches.\n")
 
         for i in best_doc_ids:
-            print(documents[i])
+            print("Mathing doc #{:d}: {:s}" .format(i, documents[i]))
             print()
 
     except IndexError: # Entering an unknown word causes IndexError
