@@ -46,7 +46,7 @@ def index_documents_from_text_file():
 def rewrite_token(t):
     d = {"and": "&", "or": "|",
         "not": "1 -",
-        "(": "(", ")": ")"}  # operator replacements
+        "(": "(", ")": ")"}  # operator replacements 
 
     #print(d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))) # N.B. This print statement shows the rewritten query!
     return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t)) 
@@ -170,21 +170,38 @@ def main():
 
     documents = index_documents_from_text_file()
 
-    print("SEARCH ENGINE")
+    print("WELCOME TO SEARCH ENGINE")
+    print("--------------")
+    print("Instructions:")
+    print("For Boolean search write 'B'")
+    print("For Td-idf search write 'T'")
+    print("In order to find an article by its number, write the number from 0 to 99.")
+    print("--------------------------------------------------------------------------")
     search_method = " "
     while search_method != "":
 
-        search_method = input("Would you like to make a Boolean (B) or an tf-idf search (T)? ").lower().strip()
+        search_method = input("What would you like to search? ").lower().strip()
         if search_method == "b":
             print("You chose Boolean search.")
             break
         elif search_method == "t":
             print("You chose tf-idf search.")
             break
+        elif re.findall(r"\d+?", search_method) != False:
+            try:
+                search_method = int(search_method)
+                try:
+                    for i in documents:
+                        i = search_method
+                    print(documents[i])
+                except IndexError:
+                    print("Sorry! We don't have artickle with this number.")
+            except ValueError:
+                print("Write 'B', 'T' or number from 0 to 99") 
 
     query ="*"
     while query != "":
-        query = input("Type a query: ")
+        query = input("Type a query: ").lower()
         if query == "":
             print("Goodbye!")
             break
