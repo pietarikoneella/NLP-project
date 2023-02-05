@@ -1,3 +1,7 @@
+import nltk
+from nltk.stem import PorterStemmer
+from nltk import word_tokenize
+
 import re
 import numpy
 from sklearn.feature_extraction.text import CountVectorizer
@@ -40,9 +44,9 @@ def index_documents_from_text_file():
     return article_and_title_list
 
 def rewrite_token(t):
-    d = {"AND": "&", "OR": "|",
-        "NOT": "1 -",
-        "(": "(", ")": ")"}  # operator replacements
+    d = {"and": "&", "or": "|",
+        "not": "1 -",
+        "(": "(", ")": ")"}  # operator replacements 
 
     #print(d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))) # N.B. This print statement shows the rewritten query!
     return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t)) 
@@ -73,8 +77,8 @@ def boolean_search(docs, query):
     try:
         # This if statement code checks if there is a NOT operator in the query. If the negated word does not 
         # exist in any of the documents, it means that every document matches the query. E.g. NOT kiisseli --> all documents match
-        if "NOT" in query:
-            not_statements = re.findall("NOT\s(\w+)\s?", query)
+        if "not" in query:
+            not_statements = re.findall("not\s(\w+)\s?", query)
             #print(not_statements)
             for word in not_statements:
                 if str(docs).find(word) != -1:
@@ -90,7 +94,7 @@ def boolean_search(docs, query):
 
         hits_list = list(hits_matrix.nonzero()[1])
             
-        print("Matches for '" + query + "' were found in following " + str(len(hits_list)) + " document(s):")
+        print("Matches were found in following " + str(len(hits_list)) + " document(s):")
         print()
                                 
         for i, doc_idx in enumerate(hits_list):
@@ -141,44 +145,100 @@ def tfidf_search(documents, query):
             print("Showing the top 10 matches.\n")
 
         for i in best_doc_ids:
-            print(documents[i])
+            print("Mathing doc #{:d}: {:s}" .format(i, documents[i]))
             print()
 
     except IndexError: # Entering an unknown word causes IndexError
         print("No matches")
 
-def main():
 
-    #documents = ["This is a silly example",
-    #            "A better example",
-    #            "Nothing to see here",
-    #            "This is a great and long example"]
+def stemming_documents():
+
+    ps = PorterStemmer()
+    documents = index_documents_from_text_file()
+    docs_tokens = [word_tokenize(i) for i in documents]
+    documents = [[]]
+    documents = [[ps.stem(token) for token in docs_tokens[i]] for i in range(0, len(docs_tokens))]
+
+                         
+    for i in range(0, len(documents)):
+        documents[i] = " ".join(documents[i])
+    return(documents)
+
+def main():
 
 
     documents = index_documents_from_text_file()
 
-    print("SEARCH ENGINE")
+    print("WELCOME TO SEARCH ENGINE")
+    print("--------------")
+    print("Instructions:")
+    print("For Boolean search write 'B'")
+    print("For Td-idf search write 'T'")
+    print("In order to find an article by its number, write the number from 0 to 99.")
+    print("--------------------------------------------------------------------------")
     search_method = " "
     while search_method != "":
 
-        search_method = input("Would you like to make a Boolean (B) or an tf-idf search (T)? ").lower().strip()
+        search_method = input("What would you like to search? ").lower().strip()
         if search_method == "b":
             print("You chose Boolean search.")
             break
         elif search_method == "t":
             print("You chose tf-idf search.")
             break
+        elif re.findall(r"\d+?", search_method) != False:
+            try:
+                search_method = int(search_method)
+                try:
+                    for i in documents:
+                        i = search_method
+                    print(documents[i])
+                except IndexError:
+                    print("Sorry! We don't have artickle with this number.")
+            except ValueError:
+                print("Write 'B', 'T' or number from 0 to 99") 
 
     query ="*"
     while query != "":
-        query = input("Type a query: ")
+        query = input("Type a query: ").lower()
         if query == "":
             print("Goodbye!")
             break
-        elif search_method == "b":
-            boolean_search(documents, query)
-        elif search_method == "t":
-            tfidf_search(documents, query)
+
+        elif '"' in query:
+            query = re.sub(r"\"", r"", query)
+            documents = index_documents_from_text_file()
+            if search_method == "b":
+                boolean_search(documents, query)
+            elif search_method == "t":
+                tfidf_search(documents, query)
+
+        elif '"' not in query:
+            ps = PorterStemmer()
+            query_split = query.split(" ")
+    
+            for i in range(0, len(query_split)):
+                if i == 0:
+                    query = "".join(query)
+                    query = ps.stem(query)
+
+                elif i > 0:
+                    query_list_stem = []
+                    query_list_stem = [ps.stem(token) for token in query_split] 
+                    query = " ".join(query_list_stem)
+                    
+                    
+            documents = stemming_documents()
+                                        
+
+            if search_method == "b":
+                boolean_search(documents, query)
+
+            elif search_method == "t":
+                tfidf_search(documents, query)
+
+            
 
     
 main()
