@@ -1,6 +1,7 @@
 import nltk
 from nltk.stem import PorterStemmer
 from nltk import word_tokenize
+nltk.download('punkt')
 
 import re
 import numpy
@@ -105,7 +106,8 @@ def boolean_search(docs, query):
                 break
             index = docs[doc_idx].find("***")
             print("Matching doc #{:d}: {:s}".format(i, docs[doc_idx][:index]))
-            print(docs[doc_idx][index+3:].strip())
+            #print("Matching doc #{:d}: {:s}".format(i, docs[doc_idx]))
+            #print(docs[doc_idx][index+3:].strip())
 
             print()
                                     
@@ -145,7 +147,9 @@ def tfidf_search(documents, query):
             print("Showing the top 10 matches.\n")
 
         for i in best_doc_ids:
-            print("Mathing doc #{:d}: {:s}" .format(i, documents[i]))
+            index = documents[i].find("***")
+            print("Mathing doc #{:d}: {:s}" .format(i, documents[i][:index]))
+            #print(documents[i][index+3:].strip())
             print()
 
     except IndexError: # Entering an unknown word causes IndexError
@@ -165,80 +169,91 @@ def stemming_documents():
         documents[i] = " ".join(documents[i])
     return(documents)
 
+def stem_query(q):
+    ps = PorterStemmer()
+    query_split = q.split(" ")
+    
+    for i in range(0, len(query_split)):
+        if i == 0:
+            q = "".join(q)
+            q = ps.stem(q)
+
+        elif i > 0:
+            query_list_stem = []
+            query_list_stem = [ps.stem(token) for token in query_split] 
+            q = " ".join(query_list_stem)
+
+    return q
+
+def print_out_results(): # Lets make an output function that handles all the printouts in a similar way
+    print("Yippee!")
+
 def main():
 
-
     documents = index_documents_from_text_file()
+    stemmed_documents = stemming_documents()
 
     print("WELCOME TO SEARCH ENGINE")
-    print("--------------")
+    print("-"*24)
     print("Instructions:")
     print("For Boolean search write 'B'")
-    print("For Td-idf search write 'T'")
+    print("For td-idf search write 'T'")
     print("In order to find an article by its number, write the number from 0 to 99.")
     print("--------------------------------------------------------------------------")
     search_method = " "
     while search_method != "":
 
-        search_method = input("What would you like to search? ").lower().strip()
+        search_method = input("Please, choose your search method (T, B or article index number): ").lower().strip()
         if search_method == "b":
             print("You chose Boolean search.")
-            break
+            #break
         elif search_method == "t":
             print("You chose tf-idf search.")
-            break
+            #break
         elif re.findall(r"\d+?", search_method) != False:
             try:
                 search_method = int(search_method)
                 try:
                     for i in documents:
                         i = search_method
-                    print(documents[i])
+                        index = documents[i].find("***")
+                    print(f"Article #{i}: {documents[i][:index]}")
+                    print(documents[i][index+3:].strip())
+                    print()
+
                 except IndexError:
-                    print("Sorry! We don't have artickle with this number.")
+                    print("No articles with number", search_method)
             except ValueError:
                 print("Write 'B', 'T' or number from 0 to 99") 
 
-    query ="*"
-    while query != "":
-        query = input("Type a query: ").lower()
-        if query == "":
-            print("Goodbye!")
-            break
+        query ="*"
+        while query != "":
+            query = input("Type a query: ").lower()
 
-        elif '"' in query:
-            query = re.sub(r"\"", r"", query)
-            documents = index_documents_from_text_file()
-            if search_method == "b":
-                boolean_search(documents, query)
-            elif search_method == "t":
-                tfidf_search(documents, query)
-
-        elif '"' not in query:
-            ps = PorterStemmer()
-            query_split = query.split(" ")
+            if query == "":
+                break
     
-            for i in range(0, len(query_split)):
-                if i == 0:
-                    query = "".join(query)
-                    query = ps.stem(query)
+        # The option for exact match    
+            elif '"' in query:
+                print("Exact match")
+                query = re.sub(r"\"", r"", query)
+                documents = index_documents_from_text_file()
+                if search_method == "b":
+                    boolean_search(documents, query)
+                elif search_method == "t":
+                    tfidf_search(documents, query)
+        # Regular search? --> stem search
+            elif '"' not in query:                
+                stemmed_query = stem_query(query)
 
-                elif i > 0:
-                    query_list_stem = []
-                    query_list_stem = [ps.stem(token) for token in query_split] 
-                    query = " ".join(query_list_stem)
+                if search_method == "b":
+                    print("Boolean stemmed")
+                    boolean_search(stemmed_documents, stemmed_query)
+                elif search_method == "t":
+                    print("Tf-idf stemmed")
+                    tfidf_search(stemmed_documents, stemmed_query)
+
+            print("Press ENTER to switch search method or") # There is a continuation to this print statement at the beginning of this loop!       
                     
-                    
-            documents = stemming_documents()
-                                        
-
-            if search_method == "b":
-                boolean_search(documents, query)
-
-            elif search_method == "t":
-                tfidf_search(documents, query)
-
-            
-
     
 main()
