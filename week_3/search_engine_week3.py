@@ -171,7 +171,7 @@ def output_results(docs: list, match_ids: list):
         if count < 10:
             index = docs[i].find("***")
             print("Matching document: #{:d}: {:s}" .format(i, docs[i][:index]))
-            #print(docs[i][index+3:].strip())
+            print(docs[i][index+3:].strip())
             count += 1
             print()
 
