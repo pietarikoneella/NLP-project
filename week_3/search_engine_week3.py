@@ -103,10 +103,11 @@ def boolean_search(docs, query):
                 print("Showing the ten first results.")
                 print()
                 break
-            index = docs[doc_idx].find("***")
-            print("Matching doc #{:d}: {:s}".format(i, docs[doc_idx][:index]))
-            print(docs[doc_idx][index+3:].strip())
-
+            #index = docs[doc_idx].find("***") #this doesn't work with stemming
+            #print("Matching doc #{:d}: {:s}".format(i, docs[doc_idx][:index]))
+            #print(docs[doc_idx][index+3:].strip())
+    
+            print("Mathing doc #{:d}: {:s}".format(i, docs[doc_idx]))
             print()
                                     
             # There was a list index out of range error with search word 'interesting' so I commented this away for now
