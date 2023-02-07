@@ -177,9 +177,10 @@ def output_results(docs: list, match_ids: list):
 
 def main():
 
-    documents = index_documents_from_text_file("articles.txt")
-    stemmed_documents = stemming_documents(documents)
+    #documents = index_documents_from_text_file("articles.txt")
+    #stemmed_documents = stemming_documents(documents)
 
+    """
     print("WELCOME TO SEARCH ENGINE")
     print("-"*24)
     print("Instructions:")
@@ -248,6 +249,6 @@ def main():
                 continue
             
             print("Press ENTER to switch search method or") # There is a continuation to this print statement at the beginning of this loop!       
-                    
+        """                    
     
 main()
