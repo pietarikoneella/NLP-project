@@ -1,7 +1,7 @@
 import nltk
 from nltk.stem import PorterStemmer
 from nltk import word_tokenize
-nltk.download('punkt')
+#nltk.download('punkt')
 
 import re
 import numpy
