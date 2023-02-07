@@ -28,4 +28,6 @@ This is our [week 2 task](https://github.com/pietarikoneella/NLPtrio/blob/main/w
 
 ## Week 3
 
+This is [our week 3 task](https://github.com/pietarikoneella/NLPtrio/blob/main/week_3/search_engine_week3.py)
+
 ## Week 4
