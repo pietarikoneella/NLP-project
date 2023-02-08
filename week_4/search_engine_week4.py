@@ -192,7 +192,7 @@ def get_texts(docs, match_ids):
     if len(match_ids) > 0:
         for i in match_ids:
             index = docs[i].find("***")
-            text_list.append(docs[i][index+3].strip())
+            text_list.append(docs[i][index+3:].strip())
     return text_list
 
 
