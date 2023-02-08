@@ -158,7 +158,8 @@ def stem_query(q):
 
     return q
 
-
+# Commented this away as is it not needed with flask
+"""
 def output_results(docs: list, match_ids: list):
     print()
     print(len(match_ids), "document(s) matched your query.")
@@ -174,6 +175,26 @@ def output_results(docs: list, match_ids: list):
             print(docs[i][index+3:].strip())
             count += 1
             print()
+"""
+
+# These functions return match article titles and texts in separate lists
+
+def get_titles(docs, match_ids):
+    title_list = []
+    if len(match_ids) > 0: 
+        for i in match_ids:
+            index = docs[i].find("***")
+            title_list.append(docs[i][:index])
+    return title_list
+
+def get_texts(docs, match_ids):
+    text_list = []
+    if len(match_ids) > 0:
+        for i in match_ids:
+            index = docs[i].find("***")
+            text_list.append(docs[i][index+3].strip())
+    return text_list
+
 
 def main():
 
