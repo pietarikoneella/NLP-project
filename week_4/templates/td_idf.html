@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<style>
+body, html {
+  height: 100%;
+  margin: 0;
+}
+.bottomcentr {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #FFFFFF;
+}
+
+</style>
+
+<body>
+<body bgcolor="#C9E2FF">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>TD-IDF search</title>
+    </head>
+    <body>
+        <h1>Please, write a query</h1>
+        <!--Reload the page with variable "query" in the URL-->
+        <form>
+            <input type="text" name="query" autofocus>
+            <input type="submit" value="Search">
+        </form>
+        <table>
+            <!--Go through each item in the "matches" variable sent from
+                search() function in the Flask app-->
+            {% for item in matches %}
+            <tr>
+                <!--Display the name of the item based on the "name" key-->
+                <td>{{ item["name"] }}</td>
+                <!--Display the image of the item based on the "source" key-->
+                <td><{{ item["i"] }}></td>
+            </tr>
+            <!--End for loop-->
+            {% endfor %}
+        </table>
+                  
+<div class="bottomcentr">
+  <h>NLP-Trio</h>  
+  </div>
+
+</body>
+</html>
