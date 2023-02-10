@@ -1,0 +1,72 @@
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+
+
+h1 {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	color: #FFFFFF;
+}
+h3 {
+	position: absolute;
+	top: 53%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.btn {
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.boolean {
+    	  margin-left: 47%;
+    	  margin-top: 30%;
+    	  width: 84px;
+    	  height: 45px;
+	  background: "#FDD9F6" ;
+    	  border: none;   
+    	  font-size:14px;
+    	  font-weight:700;
+
+} 
+
+
+
+
+.td_idf {
+    	  margin-left: 47%;
+    	  margin-top: 5px;
+    	  width: 84px;
+    	  height: 45px;
+	  background: "#FDD9F6";
+    	  border: none;   
+    	  font-size:14px;
+    	  font-weight:700;
+}
+
+
+.bottomcentr {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.top {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
