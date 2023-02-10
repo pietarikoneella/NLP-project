@@ -1,0 +1,190 @@
+Test queries and results
+
+Boolean
+-------
+
+house - 28
+"house" - 23
+NOT house - 72
+"not house" - 77
+"NOT house" - 77
+
+anarchism - 2
+"anarchism" - 2
+NOT anarchism - 98
+"not anarchism" - 98 - this makes a Boolean search, too?
+"NOT anarchism" - 98
+
+rand - 3
+"rand" - 3
+not rand - 97
+NOT rand - 97
+"not rand" - 97
+"NOT rand" - 97
+
+anarchism AND rand - 1
+anarchism and rand - 1
+anarchism AND NOT rand - 1
+anarchism and not rand - 1
+
+"anarchism and rand" - 1
+"anarchism AND rand" - 1
+"anarchism and not rand" - 1
+"anarchism AND NOT rand" - 1
+
+interest - 33
+    "interest" - 24
+not interest - 67
+NOT interest - 67
+"not interest" - 76
+"NOT interest" - 76
+
+interesting - 33
+    "interesting" - 4
+interested - 33
+    "interested" - 10
+    "interests" - 10
+interests - 33
+
+schopenhauer - 1
+not schopenhauer - 99
+"schopenhauer" - 1
+"not schopenhauer" - 99
+
+arthur - 10
+arthur and schopenhauer - 1
+arthur not schopenhauer:
+        File "/home/markkine/Documents/NLPtrio/week_4/search_engine_week4.py", line 279, in <module>
+            main()
+        File "/home/markkine/Documents/NLPtrio/week_4/search_engine_week4.py", line 258, in main
+            index_list_hits = boolean_search(stemmed_documents, stemmed_query)
+        File "/home/markkine/Documents/NLPtrio/week_4/search_engine_week4.py", line 88, in boolean_search
+            hits_matrix = eval(rewrite_query(query))
+        File "<string>", line 1
+            td_matrix[t2i["arthur"]] 1 - td_matrix[t2i["schopenhau"]]
+arthur and not schopenhauer - 9
+arthur or schopenhauer - 10
+arthur or not schopenhauer - 100
+schopenhauer or not arthur - 91
+
+TEST SENTENCES:                         one two three and four or five six yes all right left interest interesting interests interested
+"One two three and four.",              1    1    1    1    1   0   0   0   0   0    0     0     1           0          0        0
+"Two three four or five.",              0    1    1    0    1   1   1   0   0   0    0     0     0           1          0        0
+"Three four five six yes.",             0    0    1    0    1   0   1   1   1   0    0     1     0           0          1        0
+"Four five six all right and left!"     0    0    0    1    1   0   1   1   0   1    1     1     0           0          0        1
+
+BOOLEAN:
+one, two, three, four - correct
+"one", "two", "three", "four" - correct
+and, or, AND, OR - ERROR MESSAGE --> Error handling needed
+"and", "or", "AND", "OR" - ERROR MESSAGE --> Error handling needed
+five, six, yes, all, right, left, 
+"five", "six", "yes", "all", "right", "left,
+
+interest, interesting, interests, interested - all correct: 4
+"interest", "interesting", "interests", "interested" - all correct: 1 hit each
+
+one and two, one and three, one and four - correct: 1 hit each
+one and five - correct: no hits
+five and six - correct 2
+yes and left - correct: no hits
+"one and two", "one and three", "one and four", "one and five", "five and six" - these give the same result as without hyphens TO BE FIXED
+
+one or two - correct 2
+one or three - correct 3
+one or four - correct 4
+one or five - correct 4
+five or six - correct 3
+six or left - correct 2
+yes of left - correct 2
+
+"right and not left" - right and not left
+
+interest and one - 1 - correct
+interest or one - 4 - correct
+"interest and one" - 1 - correct
+"interest or one" - 4 - correct
+
+interest and left - 2 - correct
+"interest and left" - 0 - correct
+interest or left - 4 - correct
+"interest or left" - 3 - correct
+
+interest and not left - 2 - correct
+"interest and not left" - 1 - correct
+
+interest or not left - 4 - correct
+"interest or not left" - 2 correct
+
+not left and interesting - 2 - correct
+"not left and interesting" - 1 - correct
+
+not left and not interesting - 0 hits - correct
+"not left and not interesting" - 1 - correct
+
+not kiisseli and interesting --> 100 ! THIS IS SOMETHING TO BE CORRECTED
+
+three and four and five - 2 - correct
+"three and four and five" - 2 - correct
+
+three and four and interest - 3 - correct
+"three and four and interest" - 1 - correct
+
+one or (six and yes) - no matches --> INCORRECT
+
+"interest" or "interested" - 2 - correct
+
+interest or interested - 4 
+
+
+
+n.b.
+not one WORKS
+not "one" DOESN'T WORK
+"not one" doesn't work
+
+
+
+
+
+
+
+
+
+
+Tf-idf
+------
+
+anarchism - 2
+"anarchism" - 2
+"NOT anarchism" - 83
+"not anarchism" - 83
+not anarchism - 84
+NOT anarchism - 84
+
+interest - 33
+interesting - 33
+interested - 33
+interests - 33
+
+"interest" - 24
+"interesting" - 4
+"interested" - 10
+"interests" - 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
