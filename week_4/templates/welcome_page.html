@@ -1,60 +1,17 @@
 <!DOCTYPE html>
 <html>
-<style>
-body, html {
-  height: 100%;
-  margin: 0;
-}
-
-.bgimg {
-  background-image: url('3interface.jpg');
-  height: 100%;
-  background-position: center;
-  background-size: cover;
-  position: relative;
-  color: white;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 25px;
-}
-
-h1 {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	text-align: center;
-	color: #FFFFFF;  
-}
-
-a {
-	position: absolute;
-	top: 60%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	text-align: center;
-	color: #FFFFFF;
-}
-
-.bottomcentr {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: #FFFFFF;
-}
-
-
-
-</style>
-
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/w_p_style.css') }}">
+    <title>Welcome page</title>
+</head>
 <body>
 
 <div class="bgimg">
 </div>
 
   <h1>Welkome To Search Engine!</h1>
-  <a href="options.html">Press to continue...</a>  
+  <a href="options">Press to continue...</a>  
  
   <div class="bottomcentr">
   <h2>NLP-Trio</h2>  
