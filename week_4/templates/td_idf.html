@@ -1,29 +1,12 @@
 <!DOCTYPE html>
 <html>
-<style>
-body, html {
-  height: 100%;
-  margin: 0;
-}
-.bottomcentr {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: #FFFFFF;
-}
-
-</style>
-
-<body>
-<body bgcolor="#C9E2FF">
-<html>
     <head>
         <meta charset="utf-8">
+<link rel="stylesheet" href="{{ url_for('static', filename= 'css/t_style.css') }}">
         <title>TD-IDF search</title>
     </head>
-    <body>
+<body>
+<body bgcolor="#C9E2FF">
         <h1>Please, write a query</h1>
         <!--Reload the page with variable "query" in the URL-->
         <form>
