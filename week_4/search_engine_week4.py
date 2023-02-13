@@ -69,8 +69,6 @@ def boolean_search(docs, query):
     sparse_matrix = cv.fit_transform(docs)
     dense_matrix = sparse_matrix.todense()
     td_matrix = dense_matrix.T
-    #print("td_matrix:\n", td_matrix)
-
     # There seems to be variation in these commands between scikit-learn versions - 
     # this block of code helps with that 
     try:
@@ -78,16 +76,9 @@ def boolean_search(docs, query):
         #print("Terms:", terms)
     except AttributeError:
         terms = cv.get_feature_names()
-        #print("Terms:", terms)
-    #print("Number of terms:", len(terms))
-
     
     t2i = cv.vocabulary_
-    #print("Term to index dictionary:", t2i)
-    #print("Original query:", end=" ")
-    #print(query)
     parts = query.split()
-    #print("Parts of query:", parts)
     parts_without = parts[:]
 
     """
@@ -108,50 +99,26 @@ def boolean_search(docs, query):
     all_one = False
 
     for i, p in enumerate(parts_without):
-        #print("MENTIIN TOKAAN LUUPPIIN")
         if p == "not" or p == "and" or p == "or":
             continue
-            #print("NOT")
-        #elif p == "and":
-            #print("AND")
-        #elif p == "or":
-            #print("OR")
         elif p not in terms:
-            #print(p,"is not in terms!!!")
             if i > 0 and parts_without[i-1] == "not":
-                #print(parts)
-                #print("Trouble statement:")
-                #print(parts_without[i-1],parts_without[i])
                 if i-1 == 0:
                     parts = parts[i+1:]
                 elif i-1 > 0:
                     parts = parts[:i-1]
-                #print(parts)
                 all_one = True
             elif i != len(parts_without)-1 and parts_without[i+1] == "or":
-                #print("Jotain outoa listalla!")
                 parts = parts[i+1:]
-                #print(parts)
                 all_one = False
             elif i == len(parts_without)-1 and parts_without[i-1] == "or":
-                #print("Hankala sana lopussa!")
                 parts = parts[:i-1]
-                #print(parts)
                 all_one = False
 
-            
-            
-            ###################### Tähän sellainen keissi, jossa on esim. "pineapple or one" tai "pineapple or not one" tai "one or pineapple" tai "not one or pineapple"
-                # Kaikki andillä olevat on automaattisesti nollamätsejä.
             else:
-                print("No match in any of the documents.")
-        #else:
-        #    print(p, "is in terms!")
-
+                continue
         
 
-    #print("Parts without parentheses:", parts_without)
-    #print("Parts:", parts)
     operator = ""
     if len(parts) > 0:
         if parts[0] == "or" or parts[0] == "and":
@@ -165,38 +132,28 @@ def boolean_search(docs, query):
             #print("And tai or lopussa",parts)
     
         if operator == "or" and all_one == True:
-            #hits_matrix = numpy.matrix([[1,1,1,1]])
             shape = 1, len(docs)
             hits_matrix = numpy.ones(shape, dtype=int)
             print(hits_matrix)
-
     
         elif operator == "and":
             if len(parts) > 0:
                 parts_into_string = " ".join(parts)
-                #print("Joined:", parts_into_string)
                 hits_matrix = eval(rewrite_query(parts_into_string))
 
         else:
-            #("Täällä ollaan!")
-            #print(parts)
             parts_into_string = " ".join(parts)
             try:
                 hits_matrix = eval(rewrite_query(parts_into_string))
             except KeyError:
                 shape = 1, len(docs)
                 hits_matrix = numpy.zeros(shape, dtype=int)
-
-        print(hits_matrix)
-
         hits_list = list(hits_matrix.nonzero()[1])
-        print(hits_list)
     else:
         shape = 1, len(docs)
         hits_matrix = numpy.ones(shape, dtype=int)
         hits_list = list(hits_matrix.nonzero()[1])
-        print(hits_list)
-
+        
     return hits_list
     
 def tfidf_search(documents, query):
@@ -295,17 +252,17 @@ def get_texts(docs, match_ids):
 
 def main():
 
-    #documents = index_documents_from_text_file("articles.txt")
-    #stemmed_documents = stemming_documents(documents)
-
+#    documents = index_documents_from_text_file("articles.txt")
+#    stemmed_documents = stemming_documents(documents)
+    """
     documents = ["One two three and four interest.",
                  "Two three four or five interesting?",
                  "Three four five six yes left interests.",
                  "Four five six all right and left interested!"
-                 ]
+                ]
     
     stemmed_documents = stemming_documents(documents)
-
+    
     print("Documents:")
     for item in documents:
         print(item)
@@ -314,9 +271,9 @@ def main():
     for item in stemmed_documents:
         print(item)
     print()
+    """
 
-
-    
+    """
     print("WELCOME TO SEARCH ENGINE")
     print("-"*24)
     print("Instructions:")
@@ -383,8 +340,8 @@ def main():
 
                     #titles = get_titles(documents, index_list_hits)
                     print("Number of hits:", len(index_list_hits))
-                    for i in index_list_hits:
-                        print(f"#{i}: {documents[i]}")
+                    #for i in index_list_hits:
+                    #    print(f"#{i}: {documents[i]}")
                     print()
                     print()
                     #print(titles)
@@ -394,6 +351,6 @@ def main():
                 continue
             
             print("Press ENTER to switch search method or") # There is a continuation to this print statement at the beginning of this loop!       
-                            
+    """                        
     
 main()
