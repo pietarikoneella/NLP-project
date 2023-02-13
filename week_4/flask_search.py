@@ -27,10 +27,18 @@ def optionts():
 def search_b():
 
     #Get query from URL variable
-    #query = request.args.get('query')
+    query = request.args.get('query')
 
     #Initialize list of matches
-    #matches = []
+    matches_titles = []
+    matches_texts = []
+    ids = []
+    if query:
+        ids = se.boolean_search(documents, query)
+    matches_titles = se.get_titles(documents, ids)
+    matches_texts = se.get_texts(documents, ids)
+    data = zip(matches_titles, matches_texts)
+
 
     #If query exists (i.e. is not None)
     #if query:
@@ -41,7 +49,7 @@ def search_b():
                 #matches.append(entry)
 
     #Render index.html with matches variable
-    return render_template('boolean.html') #matches=matches)
+    return render_template('boolean.html', data=data)
 
 @app.route('/td_idf')
 def search_t():
