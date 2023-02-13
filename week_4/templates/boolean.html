@@ -13,7 +13,8 @@
             <input type="text" name="query" autofocus>
             <input type="submit" value="Search">
         </form>
-        <h2>Results for your query in following documents:</h2>
+        {% if number_of_docs %}
+        <h2>Results for your query in following {{number_of_docs}} documents:</h2>
         <table>
             <!--Go through each item in the "matches" variable sent from
                 search() function in the Flask app-->
@@ -27,6 +28,7 @@
 
             {% endfor %}
         </table>
+        {% endif %}
  
                          
 <div class="bottomcentr">

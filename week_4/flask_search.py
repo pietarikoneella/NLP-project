@@ -33,11 +33,14 @@ def search_b():
     matches_titles = []
     matches_texts = []
     ids = []
+    data = {}
+    number_of_docs = 0
     if query:
         ids = se.boolean_search(documents, query)
-    matches_titles = se.get_titles(documents, ids)
-    matches_texts = se.get_texts(documents, ids)
-    data = zip(matches_titles, matches_texts)
+        matches_titles = se.get_titles(documents, ids)
+        matches_texts = se.get_texts(documents, ids)
+        data = zip(matches_titles, matches_texts)
+        number_of_docs = len(ids)
 
 
     #If query exists (i.e. is not None)
@@ -49,7 +52,7 @@ def search_b():
                 #matches.append(entry)
 
     #Render index.html with matches variable
-    return render_template('boolean.html', data=data)
+    return render_template('boolean.html', data=data, number_of_docs=number_of_docs)
 
 @app.route('/td_idf')
 def search_t():
