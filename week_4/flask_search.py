@@ -52,7 +52,7 @@ def search_b():
                 #matches.append(entry)
 
     #Render index.html with matches variable
-    return render_template('boolean.html', data=data, number_of_docs=number_of_docs)
+    return render_template('boolean.html', data=data, query=query, number_of_docs=number_of_docs)
 
 @app.route('/td_idf')
 def search_t():

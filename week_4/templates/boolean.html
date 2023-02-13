@@ -28,6 +28,8 @@
 
             {% endfor %}
         </table>
+        {% else %}
+        <h2>None of the documents contain matches for query "{{query}}"</h2>
         {% endif %}
  
                          
