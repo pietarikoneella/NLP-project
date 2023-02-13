@@ -88,6 +88,7 @@ one and two, one and three, one and four - correct: 1 hit each
 one and five - correct: no hits
 five and six - correct 2
 yes and left - correct: no hits
+ADDITION: maybe this does not matter
 "one and two", "one and three", "one and four", "one and five", "five and six" - these give the same result as without hyphens TO BE FIXED
 
 one or two - correct 2
@@ -122,6 +123,7 @@ not left and interesting - 2 - correct
 not left and not interesting - 0 hits - correct
 "not left and not interesting" - 1 - correct
 
+ADDITION: this works now
 not kiisseli and interesting --> 100 ! THIS IS SOMETHING TO BE CORRECTED
 
 three and four and five - 2 - correct
