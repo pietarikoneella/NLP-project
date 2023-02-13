@@ -6,7 +6,7 @@ from nltk import word_tokenize
 import re
 import numpy
 from sklearn.feature_extraction.text import CountVectorizer
-import math
+#import math
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
@@ -51,6 +51,7 @@ def rewrite_token(t):
         "(": "(", ")": ")"}  # operator replacements 
 
     #print(d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))) # N.B. This print statement shows the rewritten query!
+    
     return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t)) 
 
 
@@ -58,6 +59,7 @@ def rewrite_query(query): # rewrite every token in the query
         return " ".join(rewrite_token(t) for t in query.split())
 
 
+# TO DO BOOLEAN: "not apple and not pineapple"
 def boolean_search(docs, query):
     """This function handles the Boolean search
     """
@@ -67,40 +69,92 @@ def boolean_search(docs, query):
     sparse_matrix = cv.fit_transform(docs)
     dense_matrix = sparse_matrix.todense()
     td_matrix = dense_matrix.T
-
     # There seems to be variation in these commands between scikit-learn versions - 
     # this block of code helps with that 
     try:
         terms = cv.get_feature_names_out()
+        #print("Terms:", terms)
     except AttributeError:
         terms = cv.get_feature_names()
-
+    
     t2i = cv.vocabulary_
+    parts = query.split()
+    parts_without = parts[:]
 
-    try:
-        # This if statement code checks if there is a NOT operator in the query. If the negated word does not 
-        # exist in any of the documents, it means that every document matches the query. E.g. NOT kiisseli --> all documents match
-        if "not" in query:
-            not_statements = re.findall("not\s(\w+)\s?", query)
-            #print(not_statements)
-            for word in not_statements:
-                if str(docs).find(word) != -1:
-                    hits_matrix = eval(rewrite_query(query))
-                else: # This is the case where the negated word isn't in any of the documents, which means a 100% match. 
-                    hits_matrix = numpy.matrix([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-                                                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-                                                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-                                                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-                                                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])      
-        else:            
-            hits_matrix = eval(rewrite_query(query))      
+    """
+    for i, p in enumerate(parts):
+        print("MENTIIN EKAAN LUUPPIIN")
+        if p.find("(") != -1:
+            index = p.find("(")
+            p = p[index+1:]
+            print("Alkusulku sanassa!")
+            parts_without[i] = p
+        if p.find(")") != -1:
+            index = p.find(")")
+            print("Loppusulku sanassa!")
+            p = p[:index]
+            parts_without[i] = p
+        print(i, p)
+    """
+    all_one = False
 
+    for i, p in enumerate(parts_without):
+        if p == "not" or p == "and" or p == "or":
+            continue
+        elif p not in terms:
+            if i > 0 and parts_without[i-1] == "not":
+                if i-1 == 0:
+                    parts = parts[i+1:]
+                elif i-1 > 0:
+                    parts = parts[:i-1]
+                all_one = True
+            elif i != len(parts_without)-1 and parts_without[i+1] == "or":
+                parts = parts[i+1:]
+                all_one = False
+            elif i == len(parts_without)-1 and parts_without[i-1] == "or":
+                parts = parts[:i-1]
+                all_one = False
+
+            else:
+                continue
+        
+
+    operator = ""
+    if len(parts) > 0:
+        if parts[0] == "or" or parts[0] == "and":
+            operator = parts[0]
+            parts = parts[1:]
+            #print("And tai or alussa",parts)
+        
+        elif parts[-1] == "or" or parts[-1] == "and":
+            operator = parts[-1]
+            parts = parts[:len(parts)-1]
+            #print("And tai or lopussa",parts)
+    
+        if operator == "or" and all_one == True:
+            shape = 1, len(docs)
+            hits_matrix = numpy.ones(shape, dtype=int)
+            print(hits_matrix)
+    
+        elif operator == "and":
+            if len(parts) > 0:
+                parts_into_string = " ".join(parts)
+                hits_matrix = eval(rewrite_query(parts_into_string))
+
+        else:
+            parts_into_string = " ".join(parts)
+            try:
+                hits_matrix = eval(rewrite_query(parts_into_string))
+            except KeyError:
+                shape = 1, len(docs)
+                hits_matrix = numpy.zeros(shape, dtype=int)
         hits_list = list(hits_matrix.nonzero()[1])
-                    
-    except KeyError:
-        print("No matches")
+    else:
+        shape = 1, len(docs)
+        hits_matrix = numpy.ones(shape, dtype=int)
+        hits_list = list(hits_matrix.nonzero()[1])
+        
     return hits_list
-
     
 def tfidf_search(documents, query):
     tfv = TfidfVectorizer(lowercase=True, sublinear_tf=True, use_idf=True, norm="l2")
@@ -198,8 +252,26 @@ def get_texts(docs, match_ids):
 
 def main():
 
-    #documents = index_documents_from_text_file("articles.txt")
-    #stemmed_documents = stemming_documents(documents)
+#    documents = index_documents_from_text_file("articles.txt")
+#    stemmed_documents = stemming_documents(documents)
+    """
+    documents = ["One two three and four interest.",
+                 "Two three four or five interesting?",
+                 "Three four five six yes left interests.",
+                 "Four five six all right and left interested!"
+                ]
+    
+    stemmed_documents = stemming_documents(documents)
+    
+    print("Documents:")
+    for item in documents:
+        print(item)
+    print()
+    print("Stemmed documents:")
+    for item in stemmed_documents:
+        print(item)
+    print()
+    """
 
     """
     print("WELCOME TO SEARCH ENGINE")
@@ -265,11 +337,20 @@ def main():
             # Printing out the results
             try:
                 if len(index_list_hits) > 0:
-                    output_results(documents, index_list_hits)
+
+                    #titles = get_titles(documents, index_list_hits)
+                    print("Number of hits:", len(index_list_hits))
+                    #for i in index_list_hits:
+                    #    print(f"#{i}: {documents[i]}")
+                    print()
+                    print()
+                    #print(titles)
+                else:
+                    print("No matches.")
             except:
                 continue
             
             print("Press ENTER to switch search method or") # There is a continuation to this print statement at the beginning of this loop!       
-        """                    
+    """                        
     
 main()
