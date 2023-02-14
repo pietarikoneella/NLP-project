@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import re
 
 # With this import we can access the functions from search_engine_week4.py
 import search_engine_week4 as se
@@ -10,6 +11,10 @@ print("Loading articles")
 documents = se.index_documents_from_text_file("articles.txt")
 if len(documents) == 100:
     print("Successfully loaded articles")
+print("Stemming articles")
+stemmed_documents = se.stemming_documents(documents)
+if len(stemmed_documents) == 100:
+    print("Successfully stemmed articles")
 
 
 # The rest of the code is copied from the example
@@ -35,8 +40,17 @@ def search_b():
     ids = []
     data = {}
     number_of_docs = 0
+
     if query:
-        ids = se.boolean_search(documents, query)
+        # Exact match
+        if '"' in query:
+            query = re.sub(r"\"", r"", query)
+            ids = se.boolean_search(documents, query)
+        # Stem search
+        elif '"' not in query:                
+            stemmed_query = se.stem_query(query)
+            ids = se.boolean_search(stemmed_documents, stemmed_query)
+            
         matches_titles = se.get_titles(documents, ids)
         matches_texts = se.get_texts(documents, ids)
         data = zip(matches_titles, matches_texts)
@@ -56,6 +70,34 @@ def search_b():
 
 @app.route('/td_idf')
 def search_t():
-    return render_template('td_idf.html') #matches=matches)
+
+    #Get query from URL variable
+    query = request.args.get('query')
+
+    #Initialize list of matches
+    matches_titles = []
+    matches_texts = []
+    ids = []
+    data = {}
+    number_of_docs = 0
+
+    if query:
+        # Exact match
+        if '"' in query:
+            query = re.sub(r"\"", r"", query)
+            ids = se.tfidf_search(documents, query)
+        # Stem search
+        elif '"' not in query:                
+            stemmed_query = se.stem_query(query)
+            ids = se.tfidf_search(stemmed_documents, stemmed_query)
+
+        matches_titles = se.get_titles(documents, ids)
+        matches_texts = se.get_texts(documents, ids)
+        data = zip(matches_titles, matches_texts)
+        number_of_docs = len(ids)
+    
+    return render_template('td_idf.html', data=data, query=query, number_of_docs=number_of_docs) #matches=matches)
+
+
 
 
