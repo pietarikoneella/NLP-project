@@ -13,6 +13,7 @@
             <input type="text" name="query" autofocus>
             <input type="submit" value="Search">
         </form>
+        {% query %}
         {% if number_of_docs %}
         <h2>Results for your query in following {{number_of_docs}} documents:</h2>
         <table>
@@ -30,6 +31,8 @@
         {% else %}
         <h2>None of the documents contain matches for query "{{query}}"</h2>
         {% endif %}
+        {% endif %}
+
                   
 <div class="bottomcentr">
   <h>NLP-Trio</h>  
