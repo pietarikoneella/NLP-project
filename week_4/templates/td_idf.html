@@ -13,7 +13,7 @@
             <input type="text" name="query" autofocus>
             <input type="submit" value="Search">
         </form>
-        {% query %}
+        {% if query %}
         {% if number_of_docs %}
         <h2>Results for your query in following {{number_of_docs}} documents:</h2>
         <table>
