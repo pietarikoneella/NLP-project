@@ -55,17 +55,6 @@ def search_b():
         matches_texts = se.get_texts(documents, ids)
         data = zip(matches_titles, matches_texts)
         number_of_docs = len(ids)
-
-
-    #If query exists (i.e. is not None)
-    #if query:
-        #Look at each entry in the example data
-        #for entry in example_data:
-            #If an entry name contains the query, add the entry to matches
-            #if query.lower() in entry['name'].lower():
-                #matches.append(entry)
-
-    #Render index.html with matches variable
     return render_template('boolean.html', data=data, query=query, number_of_docs=number_of_docs)
 
 @app.route('/td_idf')
