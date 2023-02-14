@@ -7,25 +7,29 @@
     </head>
 <body>
 <body bgcolor="#C9E2FF">
-        <h1>Please, write a query</h1>
+        <h1>Please, write a  Boolean query</h1>
         <!--Reload the page with variable "query" in the URL-->
         <form>
             <input type="text" name="query" autofocus>
             <input type="submit" value="Search">
         </form>
+        {% if number_of_docs %}
+        <h2>Results for your query in following {{number_of_docs}} documents:</h2>
         <table>
             <!--Go through each item in the "matches" variable sent from
                 search() function in the Flask app-->
-            {% for item in matches %}
+            {% for title, text in data %}
             <tr>
-                <!--Display the name of the item based on the "name" key-->
-                <td>{{ item["name"] }}</td>
-                <!--Display the image of the item based on the "source" key-->
-                <td><{{ item["i"] }}></td>
+                <td><b>{{ title }}</b></td>
             </tr>
-            <!--End for loop-->
+            <tr>
+                <td>{{ text }}</td>
+            </tr>
             {% endfor %}
         </table>
+        {% else %}
+        <h2>None of the documents contain matches for query "{{query}}"</h2>
+        {% endif %}
  
                          
 <div class="bottomcentr">
