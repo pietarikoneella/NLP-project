@@ -2,14 +2,15 @@ import nltk
 from nltk.stem import PorterStemmer
 from nltk import word_tokenize
 #nltk.download('punkt')
-
+import pke
 import re
 import numpy
 from sklearn.feature_extraction.text import CountVectorizer
-#import math
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
+import matplotlib.pyplot as plt
+
+extractor = pke.unsupervised.TopicRank()
 
 def index_documents_from_text_file(filename):
     """ This function first opens a file, reads its contents
@@ -49,7 +50,6 @@ def rewrite_token(t):
     d = {"and": "&", "or": "|",
         "not": "1 -",
         "(": "(", ")": ")"}  # operator replacements 
-
     #print(d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))) # N.B. This print statement shows the rewritten query!
     
     return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t)) 
@@ -57,6 +57,19 @@ def rewrite_token(t):
 
 def rewrite_query(query): # rewrite every token in the query
         return " ".join(rewrite_token(t) for t in query.split())
+
+def theme_extraction(doc):
+    
+    # theme extraction
+    keyphrases = [] # list of lists of theme/score tuples
+    keyphrases_dictionary = {}
+    extractor.load_document(doc, language='en')
+    extractor.candidate_selection()
+    extractor.candidate_weighting()
+    number_of_themes = 5
+    keyphrases.append(extractor.get_n_best(n=number_of_themes))
+    
+    return keyphrases
 
 
 # TO DO BOOLEAN: "not apple and not pineapple"
@@ -81,21 +94,6 @@ def boolean_search(docs, query):
     parts = query.split()
     parts_without = parts[:]
 
-    """
-    for i, p in enumerate(parts):
-        print("MENTIIN EKAAN LUUPPIIN")
-        if p.find("(") != -1:
-            index = p.find("(")
-            p = p[index+1:]
-            print("Alkusulku sanassa!")
-            parts_without[i] = p
-        if p.find(")") != -1:
-            index = p.find(")")
-            print("Loppusulku sanassa!")
-            p = p[:index]
-            parts_without[i] = p
-        print(i, p)
-    """
     all_one = False
 
     for i, p in enumerate(parts_without):
@@ -248,6 +246,7 @@ def get_texts(docs, match_ids):
             index = docs[i].find("***")
             text_list.append(docs[i][index+3:].strip())
     return text_list
+
 
 
 def main():
