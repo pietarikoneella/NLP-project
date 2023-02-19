@@ -1,13 +1,30 @@
 from flask import Flask, render_template, request
 import re
 import pke
-extractor = pke.unsupervised.TopicRank()
+import numpy as np
+import matplotlib.pyplot as plt
 
-# With this import we can access the functions from search_engine_week4.py
 import search_engine_week4 as se
+
 
 #Initialize Flask instance
 app = Flask(__name__)
+
+def make_plot(keyph, title):
+    if len(keyph) > 0:
+        themes = []
+        values = []
+        
+        for p in keyph[0]:
+            themes.append(p[0])
+            values.append(round(p[1], 2))
+        fig = plt.figure()
+        plt.title(f"Themes for article \"{title}\"")
+
+        colors = plt.cm.rainbow(np.linspace(0, 1, 5))
+        bar = plt.bar(themes, values, color = colors)
+        labels = plt.bar_label(bar, values)
+        plt.savefig(f'static/article_{title}_plot.png')
 
 print("Loading articles")
 documents = se.index_documents_from_text_file("articles.txt")
@@ -17,9 +34,6 @@ print("Stemming articles")
 stemmed_documents = se.stemming_documents(documents)
 if len(stemmed_documents) == 100:
     print("Successfully stemmed articles")
-
-
-# The rest of the code is copied from the example
 
 @app.route('/')
 def index():
@@ -55,26 +69,30 @@ def search_b():
             
         matches_titles = se.get_titles(documents, ids)
         matches_texts = se.get_texts(documents, ids)
-        
-        # theme extraction
-        keyphrases = [] # list of lists of theme/score tuples
-        for text in matches_texts:
-            extractor.load_document(text, language='en')
-            extractor.candidate_selection()
-            extractor.candidate_weighting()
-            number_of_themes = 10
-            keyphrases.append(extractor.get_n_best(n=number_of_themes))
-        themes = [] # list of the themes
-        for list_ in keyphrases:
-            for tuple_ in list_:
-                themes.append(tuple_[0])
-        themes_by_article = [] # list of lists of the themes
-        for i in range(len(matches_titles)):
-            themes_by_article.append(themes[0:number_of_themes])
-            del themes[0:number_of_themes]
-        
-        data = zip(matches_titles, themes_by_article)
+        #data = zip(matches_titles, matches_texts, matches_themes)
+        data = zip(matches_titles, matches_texts)
+
         number_of_docs = len(ids)
+        matches_themes = []
+        print("There are", number_of_docs, "matches!")
+        
+        if len(matches_texts) > 2:
+            for i in range(3):
+                article = matches_texts[i]
+                title = matches_titles[i]
+                matches_themes = se.theme_extraction(article)
+                print(matches_themes)
+                make_plot(matches_themes, title)
+                i += 1
+        elif len(matches_texts) < 3:
+            for i in range(len(matches_texts)):
+                article = matches_texts[i]
+                title = matches_titles[i]
+                matches_themes = se.theme_extraction(article)
+                print(matches_themes)
+                make_plot(matches_themes, title)
+                i += 1
+        
     return render_template('boolean.html', data=data, query=query, number_of_docs=number_of_docs)
 
 @app.route('/td_idf')
@@ -103,25 +121,29 @@ def search_t():
         matches_titles = se.get_titles(documents, ids)
         matches_texts = se.get_texts(documents, ids)
 
-        # theme extraction
-        keyphrases = [] # list of lists of theme/score tuples
-        for text in matches_texts:
-            extractor.load_document(text, language='en')
-            extractor.candidate_selection()
-            extractor.candidate_weighting()
-            number_of_themes = 10
-            keyphrases.append(extractor.get_n_best(n=number_of_themes))
-        themes = [] # list of the themes
-        for list_ in keyphrases:
-            for tuple_ in list_:
-                themes.append(tuple_[0])
-        themes_by_article = [] # list of lists of the themes
-        for i in range(len(matches_titles)):
-            themes_by_article.append(themes[0:number_of_themes])
-            del themes[0:number_of_themes]
-            
-        data = zip(matches_titles, themes_by_article)
+        #data = zip(matches_titles, matches_texts, matches_themes)
+        data = zip(matches_titles, matches_texts)
+
         number_of_docs = len(ids)
+        matches_themes = []
+        print("There are", number_of_docs, "matches!")
+        
+        if len(matches_texts) > 2:
+            for i in range(3):
+                article = matches_texts[i]
+                title = matches_titles[i]
+                matches_themes = se.theme_extraction(article)
+                print(matches_themes)
+                make_plot(matches_themes, title)
+                i += 1
+        elif len(matches_texts) < 3:
+            for i in range(len(matches_texts)):
+                article = matches_texts[i]
+                title = matches_titles[i]
+                matches_themes = se.theme_extraction(article)
+                print(matches_themes)
+                make_plot(matches_themes, title)
+                i += 1
     
     return render_template('td_idf.html', data=data, query=query, number_of_docs=number_of_docs) #matches=matches)
 
