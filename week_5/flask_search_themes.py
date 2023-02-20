@@ -10,29 +10,31 @@ import search_engine_week4 as se
 #Initialize Flask instance
 app = Flask(__name__)
 
-def make_plot(keyph, title):
-    if len(keyph) > 0:
-        themes = []
-        values = []
-        
-        for p in keyph[0]:
-            themes.append(p[0])
-            values.append(round(p[1], 2))
-        fig = plt.figure()
 
-        legend_names = []
-        for t in themes:
-            legend_names.append(t)
-        
 
-        plt.title(f"Themes for article \"{title}\"")
-
-        colors = plt.cm.rainbow(np.linspace(0, 1, 5))
-        bar = plt.bar(themes, values, color = colors)
-        plt.bar_label(bar, values)
-        plt.xticks(rotation=20)
-        plt.subplots_adjust(bottom=0.15)
-        plt.savefig(f'static/article_{title}_plot.png')
+#def make_plot(keyph, title):
+ #   if len(keyph) > 0:
+  #      themes = []
+   #     values = []
+    #    
+     #   for p in keyph[0]:
+      #      themes.append(p[0])
+       #     values.append(round(p[1], 2))
+        #fig = plt.figure()
+#
+ #       legend_names = []
+  #      for t in themes:
+   #         legend_names.append(t)
+    #    
+#
+ #       plt.title(f"Themes for article \"{title}\"")
+#
+ #       colors = plt.cm.rainbow(np.linspace(0, 1, 5))
+  #      bar = plt.bar(themes, values, color = colors)
+   #     plt.bar_label(bar, values)
+    #    plt.xticks(rotation=20)
+     #   plt.subplots_adjust(bottom=0.15)
+      #  plt.savefig(f'static/article_{title}_plot.png')
 
 print("Loading articles")
 documents = se.index_documents_from_text_file("articles.txt")
@@ -50,7 +52,7 @@ def index():
 @app.route('/options')
 def optionts():
     return render_template("options.html")
-#Function search() is associated with the address base URL + "/search"
+
 
 @app.route('/boolean')
 def search_b():
@@ -84,24 +86,31 @@ def search_b():
         matches_themes = []
         print("There are", number_of_docs, "matches!")
         
-        if len(matches_texts) > 2:
-            for i in range(3):
-                article = matches_texts[i]
-                title = matches_titles[i]
-                matches_themes = se.theme_extraction(article)
-                print(matches_themes)
-                make_plot(matches_themes, title)
-                i += 1
-        elif len(matches_texts) < 3:
-            for i in range(len(matches_texts)):
-                article = matches_texts[i]
-                title = matches_titles[i]
-                matches_themes = se.theme_extraction(article)
-                print(matches_themes)
-                make_plot(matches_themes, title)
-                i += 1
+        #if len(matches_texts) > 2:
+         #   for i in range(3):
+          #      article = matches_texts[i]
+           #     title = matches_titles[i]
+            #    matches_themes = se.theme_extraction(article)
+             #   print(matches_themes)
+              #  make_plot(matches_themes, title)
+               # i += 1
+        #elif len(matches_texts) < 3:
+         #   for i in range(len(matches_texts)):
+          #      article = matches_texts[i]
+           #     title = matches_titles[i]
+            #    matches_themes = se.theme_extraction(article)
+             #   print(matches_themes)
+              #  make_plot(matches_themes, title)
+               # i += 1
         
     return render_template('boolean.html', data=data, query=query, number_of_docs=number_of_docs)
+
+@app.route('/article')
+def make_article_page():
+
+    
+    return render_template("index.html")
+                    
 
 @app.route('/td_idf')
 def search_t():
@@ -133,25 +142,25 @@ def search_t():
         data = zip(matches_titles, matches_texts)
 
         number_of_docs = len(ids)
-        matches_themes = []
+        #matches_themes = []
         print("There are", number_of_docs, "matches!")
         
-        if len(matches_texts) > 2:
-            for i in range(3):
-                article = matches_texts[i]
-                title = matches_titles[i]
-                matches_themes = se.theme_extraction(article)
-                print(matches_themes)
-                make_plot(matches_themes, title)
-                i += 1
-        elif len(matches_texts) < 3:
-            for i in range(len(matches_texts)):
-                article = matches_texts[i]
-                title = matches_titles[i]
-                matches_themes = se.theme_extraction(article)
-                print(matches_themes)
-                make_plot(matches_themes, title)
-                i += 1
+        #if len(matches_texts) > 2:
+         #   for i in range(3):
+          #      article = matches_texts[i]
+           #     title = matches_titles[i]
+            #    matches_themes = se.theme_extraction(article)
+             #   print(matches_themes)
+              #  make_plot(matches_themes, title)
+               # i += 1
+       # elif len(matches_texts) < 3:
+        #    for i in range(len(matches_texts)):
+         #       article = matches_texts[i]
+          #      title = matches_titles[i]
+           #     matches_themes = se.theme_extraction(article)
+            #    print(matches_themes)
+             #   make_plot(matches_themes, title)
+              #  i += 1
     
     return render_template('td_idf.html', data=data, query=query, number_of_docs=number_of_docs) #matches=matches)
 
