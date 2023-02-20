@@ -19,11 +19,19 @@ def make_plot(keyph, title):
             themes.append(p[0])
             values.append(round(p[1], 2))
         fig = plt.figure()
+
+        legend_names = []
+        for t in themes:
+            legend_names.append(t)
+        
+
         plt.title(f"Themes for article \"{title}\"")
 
         colors = plt.cm.rainbow(np.linspace(0, 1, 5))
         bar = plt.bar(themes, values, color = colors)
-        labels = plt.bar_label(bar, values)
+        plt.bar_label(bar, values)
+        plt.xticks(rotation=20)
+        plt.subplots_adjust(bottom=0.15)
         plt.savefig(f'static/article_{title}_plot.png')
 
 print("Loading articles")
