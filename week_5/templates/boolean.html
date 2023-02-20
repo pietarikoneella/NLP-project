@@ -20,8 +20,16 @@
             <!--Go through each item in the "matches" variable sent from
                 search() function in the Flask app-->
             {% for title, text in data %}
+		<a href="{{ url_for('static', filename= 'article.html', title=title, text=text) }}>{{ title }}</a>
+		{% endfor %}
+	  </table>
+	  <table>
+            <!--Go through each item in the "matches" variable sent from
+                search() function in the Flask app-->
+            {% for title, text in data %}
             <tr>
-                <td><b>{{ title }}</b></td>
+                <td><b> {{ title }}</b></td>
+
             </tr>
             <tr>
                 <td>{{ text }}</td>
@@ -32,11 +40,6 @@
         <h2>None of the documents contain matches for query "{{query}}"</h2>
         {% endif %}
         {% endif %}
- 
-                         
-<div class="bottomcentr">
-  <h>NLP-Trio</h>  
-  </div>
 
 </body>
 </html>
