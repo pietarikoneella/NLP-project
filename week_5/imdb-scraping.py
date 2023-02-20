@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from urllib.request import Request, urlopen
 import requests
 import re
 
@@ -26,13 +27,19 @@ try:
             
             print(rank, name, year, rating)
         
-    print(urls)
+    #print(urls)
 
+    url = "https://www.imdb.com/title/tt0111161/"
+    req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    webpage = urlopen(req).read()
+    print("Beginning of webpage:", webpage[:1000])
+    
+    """
     for url in urls:
         source = requests.get(url) # "403 Client Error: Forbidden"
         source.raise_for_status()
         soup = BeautifulSoup(source.text, "html.parser")
         storyline = soup.find("div", class_="ipc-html-content-inner-div")
-    
+    """
 except Exception as e:
     print(e)
