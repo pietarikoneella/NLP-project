@@ -1,0 +1,12 @@
+body, html {
+  height: 100%;
+  margin: 0;
+}
+.bottomcentr {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #FFFFFF;
+}

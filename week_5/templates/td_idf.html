@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/t_style.css') }}">
+        <title>TD-IDF search</title>
+    </head>
+<body>
+<body bgcolor="#C9E2FF">
+        <h1>Please, write a tf-idf query</h1>
+        <!--Reload the page with variable "query" in the URL-->
+        <form>
+            <input type="text" name="query" autofocus>
+            <input type="submit" value="Search">
+        </form>
+        {% if query %}
+        {% if number_of_docs %}
+        <h2>Results for your query in following {{number_of_docs}} documents:</h2>
+        <table>
+            <!--Go through each item in the "matches" variable sent from
+                search() function in the Flask app-->
+            {% for title, text in data %}
+            <tr>
+                <td><b>{{ title }}</b></td>
+            </tr>
+            <tr>
+                <td>{{ text }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h2>None of the documents contain matches for query "{{query}}"</h2>
+        {% endif %}
+        {% endif %}
+
+                  
+<div class="bottomcentr">
+  <h>NLP-Trio</h>  
+  </div>
+
+</body>
+</html>
