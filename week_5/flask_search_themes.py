@@ -35,13 +35,84 @@ def make_plot(keyph, title):
         plt.savefig(f'static/article_{title}_plot.png')
 
 print("Loading articles")
-documents = se.index_documents_from_text_file("articles.txt")
-if len(documents) == 100:
+documents = se.index_documents_from_text_file("articles_long.txt")
+if len(documents) == 1000:
+#if len(documents) == 100:
     print("Successfully loaded articles")
 print("Stemming articles")
 stemmed_documents = se.stemming_documents(documents)
-if len(stemmed_documents) == 100:
+if len(stemmed_documents) == 1000:
+#if len(stemmed_documents) == 100:
     print("Successfully stemmed articles")
+print("Documents:", len(documents))
+print("Stemmed documents:", len(stemmed_documents))
+
+test_ids_0 = [*range(0,100,1)]
+test_ids_1 = [*range(100,200,1)]
+test_ids_2 = [*range(200,300,1)]
+test_ids_3 = [*range(300,400,1)]
+test_ids_4 = [*range(400,500,1)]
+test_ids_5 = [*range(500,600,1)]
+test_ids_6 = [*range(600,700,1)]
+test_ids_7 = [*range(700,800,1)]
+test_ids_8 = [*range(800,900,1)]
+test_ids_9 = [*range(900,1000,1)]
+
+#Getting the article titles for check-up
+title_list_0 = se.get_titles(documents, test_ids_0)
+title_list_1 = se.get_titles(documents, test_ids_1)
+title_list_2 = se.get_titles(documents, test_ids_2)
+title_list_3 = se.get_titles(documents, test_ids_3)
+title_list_4 = se.get_titles(documents, test_ids_4)
+title_list_5 = se.get_titles(documents, test_ids_5)
+title_list_6 = se.get_titles(documents, test_ids_6)
+title_list_7 = se.get_titles(documents, test_ids_7)
+title_list_8 = se.get_titles(documents, test_ids_8)
+title_list_9 = se.get_titles(documents, test_ids_9)
+
+#for i in range(100):
+#    print(title_list[i])
+print("First and last title:")
+print("First title on the list:", title_list_0[0])
+print("Last title on the list:", title_list_0[-1])
+print()
+print("First and last title:")
+print("First title on the list:", title_list_1[0])
+print("Last title on the list:", title_list_1[-1])
+print()
+print("First and last title:")
+print("First title on the list:", title_list_2[0])
+print("Last title on the list:", title_list_2[-1])
+print()
+print("First and last title:")
+print("First title on the list:", title_list_3[0])
+print("Last title on the list:", title_list_3[-1])
+print()
+print("First and last title:")
+print("First title on the list:", title_list_4[0])
+print("Last title on the list:", title_list_4[-1])
+print()
+print("First and last title:")
+print("First title on the list:", title_list_5[0])
+print("Last title on the list:", title_list_5[-1])
+print()
+print("First and last title:")
+print("First title on the list:", title_list_6[0])
+print("Last title on the list:", title_list_6[-1])
+print()
+print("First and last title:")
+print("First title on the list:", title_list_7[0])
+print("Last title on the list:", title_list_7[-1])
+print()
+print("First and last title:")
+print("First title on the list:", title_list_8[0])
+print("Last title on the list:", title_list_8[-1])
+print()
+print("First and last title:")
+print("First title on the list:", title_list_9[0])
+print("Last title on the list:", title_list_9[-1])
+print()
+
 
 @app.route('/')
 def index():
