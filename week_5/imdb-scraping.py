@@ -29,17 +29,21 @@ try:
         
     #print(urls)
 
-    url = "https://www.imdb.com/title/tt0111161/"
-    req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    webpage = urlopen(req).read()
-    print("Beginning of webpage:", webpage[:1000])
+    #url = "https://www.imdb.com/title/tt0111161/"
+    #req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    #webpage = urlopen(req).read()
+    #print("Beginning of webpage:", webpage[:1000])
     
-    """
     for url in urls:
-        source = requests.get(url) # "403 Client Error: Forbidden"
-        source.raise_for_status()
-        soup = BeautifulSoup(source.text, "html.parser")
-        storyline = soup.find("div", class_="ipc-html-content-inner-div")
-    """
+        req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        webpage = urlopen(req).read()
+        print("Excerpt of webpage:", webpage[400:800])
+        print()
+        
+        #source = requests.get(url) # "403 Client Error: Forbidden"
+        #source.raise_for_status()
+        #soup = BeautifulSoup(source.text, "html.parser")
+        #storyline = soup.find("div", class_="ipc-html-content-inner-div")
+    
 except Exception as e:
     print(e)
