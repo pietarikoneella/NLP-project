@@ -34,8 +34,13 @@ def index_documents_from_text_file(filename):
     except:
         print("Something went wrong.")
     
-    title_list = re.findall(r"\<article name\=\"([\w\s\d\.\,\(\)\?\!]*)\"\>", document_string)
-    article_content_string = re.sub(r"\<article name\=\"[\w\s\d\.\,\(\)\?\!]*\"\>", "",  document_string)
+    ## Old regular expression
+    #title_list = re.findall(r"\<article name\=\"([\w\s\d\.\,\(\)\?\!]*)\"\>", document_string)
+    #article_content_string = re.sub(r"\<article name\=\"[\w\s\d\.\,\(\)\?\!]*\"\>", "",  document_string)
+    
+    # New regular expression after testing with the 1000 article document
+    title_list = re.findall(r"\<article name\=\"([\w\s\d\.\,\'\-\–\(\)\?\!]*)\"\>", document_string)
+    article_content_string = re.sub(r"\<article name\=\"([\w\s\d\.\,\'\-\–\(\)\?\!]*)\"\>", "",  document_string)
     content_list = article_content_string.strip().split("</article>")
     # Combining the article titles and contents into a list 
     # The three stars are added in between to aid in separating the article title from the body text
