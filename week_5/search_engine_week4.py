@@ -45,6 +45,53 @@ def index_documents_from_text_file(filename):
     
     return article_and_title_list
 
+def get_all_titles(filename):
+    document_string = ""
+    
+    # Opening the file, storing the contents of the article into one string, closing the file
+    try:
+        input_file = open(filename, "r", encoding = 'utf8')    
+        for line in input_file:
+            line = line.strip()
+            document_string += line + " "
+        input_file.close()
+
+    except FileNotFoundError:
+        print(f"File was not found.")
+    except OSError:
+        print(f"Something went wrong reading the file.")
+    except:
+        print("Something went wrong.")
+    
+    title_list = re.findall(r"\<article name\=\"([\w\s\d\.\,\(\)\?\!]*)\"\>", document_string)
+    
+    return title_list
+
+def get_all_content(filename):
+    document_string = ""
+    
+    # Opening the file, storing the contents of the article into one string, closing the file
+    try:
+        input_file = open(filename, "r", encoding = 'utf8')    
+        for line in input_file:
+            line = line.strip()
+            document_string += line + " "
+        input_file.close()
+
+    except FileNotFoundError:
+        print(f"File was not found.")
+    except OSError:
+        print(f"Something went wrong reading the file.")
+    except:
+        print("Something went wrong.")
+    
+    title_list = re.findall(r"\<article name\=\"([\w\s\d\.\,\(\)\?\!]*)\"\>", document_string)
+    article_content_string = re.sub(r"\<article name\=\"[\w\s\d\.\,\(\)\?\!]*\"\>", "",  document_string)
+    content_list = article_content_string.strip().split("</article>")
+    
+    return content_list
+
+    
 
 def rewrite_token(t):
     d = {"and": "&", "or": "|",
