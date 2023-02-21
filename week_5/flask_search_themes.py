@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import re
+import os
 import pke
 import numpy as np
 import matplotlib.pyplot as plt
@@ -51,6 +52,8 @@ def optionts():
 @app.route('/boolean')
 def search_b():
 
+    os.system('rm -f static/*.png')
+
     #Get query from URL variable
     query = request.args.get('query')
 
@@ -101,6 +104,8 @@ def search_b():
 
 @app.route('/td_idf')
 def search_t():
+
+    os.system('rm -f static/*.png')
 
     #Get query from URL variable
     query = request.args.get('query')
