@@ -15,17 +15,20 @@
         </form>
         {% if query %}
         {% if number_of_docs %}
-        <h2>Results for your query in following {{number_of_docs}} documents:</h2>
+        <h2>Results for your query "{{ query }}" in following {{number_of_docs}} documents:</h2>
         <table>
             <!--Go through each item in the "matches" variable sent from
                 search() function in the Flask app-->
             {% for title, text in data %}
-            <tr>
-                <td><b>{{ title }}</b></td>
-            </tr>
-            <tr>
-                <td>{{ text }}</td>
-            </tr>
+                <tr>
+                    <td><b>{{ title }}</b></td>
+                </tr>
+                <tr>
+                    <td><img src="./static/article_{{ title }}_plot.png" style="width: 600px; height 100%" onError="this.onerror = '';this.parentElement.style.display='none';"></td>
+                </tr>
+                <tr>
+                    <td>{{ text }}</td>
+                </tr>
             {% endfor %}
         </table>
         {% else %}

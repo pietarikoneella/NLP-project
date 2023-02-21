@@ -14,13 +14,15 @@ def make_plot(keyph, title):
     if len(keyph) > 0:
         themes = []
         values = []
+
+        if f"./static/article_{title}_plot.png":
+            print(f"The plot for \"{title}\" is already in static!")
         
         for p in keyph[0]:
             themes.append(p[0])
             values.append(round(p[1], 2))
         fig = plt.figure()
         plt.title(f"Themes for article \"{title}\"")
-
         colors = plt.cm.rainbow(np.linspace(0, 1, 5))
         bar = plt.bar(themes, values, color = colors)
         plt.xticks(rotation=20)
@@ -29,7 +31,7 @@ def make_plot(keyph, title):
         plt.savefig(f'static/article_{title}_plot.png')
 
 print("Loading articles")
-documents = se.index_documents_from_text_file("articles.txt")
+documents = se.index_documents_from_text_file("articles_long.txt")
 if len(documents) == 100:
     print("Successfully loaded articles")
 print("Stemming articles")
@@ -83,7 +85,7 @@ def search_b():
                 article = matches_texts[i]
                 title = matches_titles[i]
                 matches_themes = se.theme_extraction(article)
-                print(matches_themes)
+                #print(matches_themes)
                 make_plot(matches_themes, title)
                 i += 1
         elif len(matches_texts) < 3:
@@ -91,7 +93,7 @@ def search_b():
                 article = matches_texts[i]
                 title = matches_titles[i]
                 matches_themes = se.theme_extraction(article)
-                print(matches_themes)
+                #print(matches_themes)
                 make_plot(matches_themes, title)
                 i += 1
         
