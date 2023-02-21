@@ -215,25 +215,6 @@ def stem_query(q):
 
     return q
 
-# Commented this away as is it not needed with flask
-"""
-def output_results(docs: list, match_ids: list):
-    print()
-    print(len(match_ids), "document(s) matched your query.")
-    print()
-    if len(match_ids) > 10:
-        print("Showing the top 10 matches.\n")
-
-    count = 0
-    for i in match_ids:
-        if count < 10:
-            index = docs[i].find("***")
-            print("Matching document: #{:d}: {:s}" .format(i, docs[i][:index]))
-            print(docs[i][index+3:].strip())
-            count += 1
-            print()
-"""
-
 # These functions return match article titles and texts in separate lists
 
 def get_titles(docs, match_ids):
@@ -241,7 +222,7 @@ def get_titles(docs, match_ids):
     if len(match_ids) > 0: 
         for i in match_ids:
             index = docs[i].find("***")
-            title_list.append(docs[i][:index])
+            title_list.append(docs[i][:index-1].strip())
     return title_list
 
 def get_texts(docs, match_ids):
@@ -252,109 +233,8 @@ def get_texts(docs, match_ids):
             text_list.append(docs[i][index+3:].strip())
     return text_list
 
-
-
 def main():
 
-#    documents = index_documents_from_text_file("articles.txt")
-#    stemmed_documents = stemming_documents(documents)
-    """
-    documents = ["One two three and four interest.",
-                 "Two three four or five interesting?",
-                 "Three four five six yes left interests.",
-                 "Four five six all right and left interested!"
-                ]
-    
-    stemmed_documents = stemming_documents(documents)
-    
-    print("Documents:")
-    for item in documents:
-        print(item)
-    print()
-    print("Stemmed documents:")
-    for item in stemmed_documents:
-        print(item)
-    print()
-    """
-
-    """
-    print("WELCOME TO SEARCH ENGINE")
-    print("-"*24)
-    print("Instructions:")
-    print("For Boolean search write 'B'")
-    print("For td-idf search write 'T'")
-    print("In order to find an article by its number, write the number from 0 to 99.")
-    print("--------------------------------------------------------------------------")
-    search_method = " "
-    while search_method != "":
-
-        search_method = input("Please, choose your search method (T, B or article index number): ").lower().strip()
-        if search_method == "b":
-            print("You chose Boolean search.")
-
-        elif search_method == "t":
-            print("You chose tf-idf search.")
-
-        # Search with article number    
-        elif re.findall(r"\d+?", search_method) != False:
-            try:
-                search_method = int(search_method)
-                try:
-                    for i in documents:
-                        i = search_method
-                        index = documents[i].find("***")
-                    print(f"Article #{i}: {documents[i][:index]}")
-                    print(documents[i][index+3:].strip())
-                    print()
-
-                except IndexError:
-                    print("No articles with number", search_method)
-            except ValueError:
-                print("Write 'B', 'T' or number from 0 to 99")
-            continue # After a search with a document number, the loop continues from the start
-
-        query ="*"
-        while query != "":
-            query = input("Type a query: ").lower()
-
-            if query == "":
-                break
-            # Exact match
-            elif '"' in query:
-                query = re.sub(r"\"", r"", query)
-                if search_method == "b":
-                    index_list_hits = boolean_search(documents, query)
-                elif search_method == "t":
-                    index_list_hits = tfidf_search(documents, query)
-            # Stem search
-            elif '"' not in query:                
-                stemmed_query = stem_query(query)
-                try:
-                    if search_method == "b":
-                        index_list_hits = boolean_search(stemmed_documents, stemmed_query)
-
-                    elif search_method == "t":
-                        index_list_hits = tfidf_search(stemmed_documents, stemmed_query)
-                except UnboundLocalError:
-                    continue
-
-            # Printing out the results
-            try:
-                if len(index_list_hits) > 0:
-
-                    #titles = get_titles(documents, index_list_hits)
-                    print("Number of hits:", len(index_list_hits))
-                    #for i in index_list_hits:
-                    #    print(f"#{i}: {documents[i]}")
-                    print()
-                    print()
-                    #print(titles)
-                else:
-                    print("No matches.")
-            except:
-                continue
-            
-            print("Press ENTER to switch search method or") # There is a continuation to this print statement at the beginning of this loop!       
-    """                        
+    print("")         
     
 main()
