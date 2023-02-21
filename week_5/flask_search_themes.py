@@ -23,6 +23,8 @@ def make_plot(keyph, title):
 
         colors = plt.cm.rainbow(np.linspace(0, 1, 5))
         bar = plt.bar(themes, values, color = colors)
+        plt.xticks(rotation=20)
+        plt.subplots_adjust(bottom=0.15)
         labels = plt.bar_label(bar, values)
         plt.savefig(f'static/article_{title}_plot.png')
 
