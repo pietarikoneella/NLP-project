@@ -11,7 +11,7 @@ Maria also made it here!
 
 ## Week 5
 
-This is [our week 5 version of the seach engine].(https://github.com/pietarikoneella/NLPtrio/blob/main/week_5/flask_search_themes.py)
+This is [our week 5 version of the seach engine.](https://github.com/pietarikoneella/NLPtrio/blob/main/week_5/flask_search_themes.py)
 
 The issues for the final project start with "FP".
 
