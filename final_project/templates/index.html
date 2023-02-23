@@ -6,24 +6,36 @@
     <body>
 
         <h1>Find a movie!</h1>
-        {% if query %}
-        <p>Your search: {{ query }}</p>
-        {% endif %}
+        
         <form>
             <input type="text" name="query" autofocus>
             <input type="submit" value="Search">
         </form>
+
         {% if query %}
+            <!--<p>Your search: {{ query }}</p>-->
+            
+            <h2>Results for search "{{ query}}"</h2>
+            
             <table>
-            {% for item in data %}
+            {% for item in result_list %}    
             <tr>
-                <td><a href="{{ url_for('show_movie', title=item[0]) }}">{{ item[0] }}</a></td>                
+                <td>Movie id: {{ item.get_id() }} </td>
             </tr>
             <tr>
-                <td>{{ item[1] }}</td>
+                <td><a href="{{ url_for('show_movie', id=item.get_id() )}}">{{ item.get_title() }}</a></td>
             </tr>
             <tr>
-                <td>{{ item[2] }}</td>
+                <td>Rating: {{ item.get_rating() }}</td>
+            </tr>
+            <tr>
+                <td>Themes: {{ item.get_themes() }}</td>
+            </tr>
+            <tr>
+                <td>{{ item.get_synopsis() }}</td>
+            </tr>
+            <tr>
+                <td>{{ item.get_title() }}</td>
             </tr>
             
             {% endfor %}

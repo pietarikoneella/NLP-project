@@ -5,6 +5,10 @@
     </head>
     <body>
         <h1>You have reached movie page!</h1>
-        <p>{{ title }}</p>
+        <p>Movie id: {{ id }}</p>
+        <p>Movie title: {{ movie_.get_title() }}</p>
+        <p>Movie rating: {{ movie_.get_rating() }}</p>
+        <p>Movie synopsis: {{ movie_.get_synopsis() }}</p>
+        <p>Movie themes: {{ movie_.get_themes() }}</p>
     </body>
 </html>
