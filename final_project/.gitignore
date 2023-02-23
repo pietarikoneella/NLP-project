@@ -142,3 +142,5 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+
+../week_5/txtMining_plotting-example/__pycache__/example.cpython-310.pyc
