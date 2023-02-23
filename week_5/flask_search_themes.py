@@ -3,6 +3,8 @@ import re
 import os
 import pke
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 import search_engine_week4 as se
