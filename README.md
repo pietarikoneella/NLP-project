@@ -8,6 +8,9 @@ Maria also made it here!
 
 [Link to NLPTrio's log](https://github.com/pietarikoneella/NLPtrio/wiki/Working-hours-log)
 
+## Movie Search (final project)
+
+[Project folder](https://github.com/pietarikoneella/NLPtrio/tree/main/final_project)
 
 ## Week 5
 
