@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Movie Search</title>
+    </head>
+    <body>
+
+        <h1>Find a movie!</h1>
+        {% if query %}
+        <p>Your search: {{ query }}</p>
+        {% endif %}
+        <form>
+            <input type="text" name="query" autofocus>
+            <input type="submit" value="Search">
+        </form>
+        {% if query %}
+            <table>
+            {% for item in data %}
+            <tr>
+                <td><a href="{{ url_for('show_movie', title=item[0]) }}">{{ item[0] }}</a></td>                
+            </tr>
+
+            <tr>
+                <td>{{ item[1] }}</td>
+            </tr>
+            
+            {% endfor %}
+        </table>
+        {% endif %}
+    </body>
+</html>
