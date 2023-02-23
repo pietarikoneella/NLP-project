@@ -19,9 +19,11 @@
             <tr>
                 <td><a href="{{ url_for('show_movie', title=item[0]) }}">{{ item[0] }}</a></td>                
             </tr>
-
             <tr>
                 <td>{{ item[1] }}</td>
+            </tr>
+            <tr>
+                <td>{{ item[2] }}</td>
             </tr>
             
             {% endfor %}
