@@ -143,4 +143,6 @@ dist/
 build/
 *.egg-info/
 
-../week_5/txtMining_plotting-example/__pycache__/example.cpython-310.pyc
+demoenv/
+../week_4/demoenv/
+../week_5/demoenv/
