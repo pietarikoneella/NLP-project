@@ -13,7 +13,6 @@
         </form>
 
         {% if query %}
-            <!--<p>Your search: {{ query }}</p>-->
             
             <h2>Results for search "{{ query}}"</h2>
             
@@ -27,9 +26,6 @@
             </tr>
             <tr>
                 <td>Rating: {{ item.get_rating() }}</td>
-            </tr>
-            <tr>
-                <td>Themes: {{ item.get_themes() }}</td>
             </tr>
             <tr>
                 <td>{{ item.get_synopsis() }}</td>

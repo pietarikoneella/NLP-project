@@ -4,11 +4,21 @@
         <title>Movie page</title>
     </head>
     <body>
-        <h1>You have reached movie page!</h1>
+        <h1>{{ movie_.get_title() }}</h1>
+        
         <p>Movie id: {{ id }}</p>
+        
         <p>Movie title: {{ movie_.get_title() }}</p>
-        <p>Movie rating: {{ movie_.get_rating() }}</p>
-        <p>Movie synopsis: {{ movie_.get_synopsis() }}</p>
-        <p>Movie themes: {{ movie_.get_themes() }}</p>
+        
+        <h2>Average rating</h2>
+        <p>{{ movie_.get_rating() }}</p>
+        
+        <h2>Synopsis</h2>
+        <p>{{ movie_.get_synopsis() }}</p>
+        
+        <h2>Themes</h2>
+        {% for theme in movie_.get_themes() %}
+            <p>{{ theme }}</p>
+        {% endfor %}
     </body>
 </html>
