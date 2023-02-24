@@ -1,16 +1,20 @@
 from flask import Flask, render_template, request
 import re
 import os
-import pke
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import movie_search as ms
-
+import pke
+import movie_search_functions as ms
+from movies import *
 
 app = Flask(__name__)
 
+message = ms.this_is_movie_search()
+print(message)
+
+#Simple example lists
 titles = ["Movie 1", "Movie 2", "Movie 3", "Movie 4"] 
 ratings = [2, 3, 4, 5]
 synopses = ["Synopsis 1", "Synopsis 2", "Synopsis 3", "Synopsis 4"]
@@ -22,34 +26,6 @@ synopses = ["Synopsis 1", "Synopsis 2", "Synopsis 3", "Synopsis 4"]
 data = zip(titles, ratings, synopses)
 query = ""
 result_list = []
-
-######################################################
-class Movie:
-    def __init__(self, id, title, rating, synopsis):
-        self.__id = id
-        self.__title = title
-        self.__rating = rating
-        self.__synopsis = synopsis
-        self.__themes = []
-
-    def get_id(self):
-        return self.__id
-    
-    def get_title(self):
-        return self.__title
-    
-    def get_rating(self):
-        return self.__rating
-    
-    def get_synopsis(self):
-        return self.__synopsis
-    
-    def set_themes(self, theme_list):
-        self.__themes = theme_list[:]
-    
-    def get_themes(self):
-        return self.__themes
-######################################################
 
 # This doesn't work properly yet - an issue to be fixed ()
 # So far going straight to /index works as it should :)
@@ -68,6 +44,7 @@ def search():
     query = request.args.get('query')
     i = 0
     for item in data:
+        # Using the Movie class to create a movie object
         new_movie = Movie(i, item[0], item[1], item[2])
         result_list.append(new_movie)
         i+=1
