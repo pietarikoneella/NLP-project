@@ -11,6 +11,7 @@ from movies import *
 
 app = Flask(__name__)
 
+# This is how we access the functions in movie_search_functions.py
 message = ms.this_is_movie_search()
 print(message)
 
@@ -43,6 +44,9 @@ def search():
     """
     query = request.args.get('query')
     i = 0
+
+    # N.B. So far this only lists all of the movies. When we have search working,
+    # this will show the search results
     for item in data:
         # Using the Movie class to create a movie object
         new_movie = Movie(i, item[0], item[1], item[2])
