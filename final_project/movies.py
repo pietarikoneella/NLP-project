@@ -2,12 +2,12 @@ from flask import Flask
 
 class Movie:
 
-    def __init__(self, id, title, rating, synopsis, themes):
+    def __init__(self, id, title, rating, synopsis):
         self.__id = id
         self.__title = title
         self.__rating = rating
         self.__synopsis = synopsis
-        self.__themes = themes
+        self.__themes = []
     
     def get_id(self):
         return self.__id
@@ -20,6 +20,9 @@ class Movie:
     
     def get_synopsis(self):
         return self.__synopsis
+    
+    def set_themes(self, theme_list):
+        self.__themes = theme_list[:]
     
     def get_themes(self):
         return self.__themes
