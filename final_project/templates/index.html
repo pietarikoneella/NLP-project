@@ -14,15 +14,21 @@
         <h1><b>Movie Search</b> — Find a movie!</h1>
         </div>
         
-        <form>
+        <form id="search">
             <input type="text" name="query" autofocus>
-            <input type="submit" value="Search">
+            <input type="submit" action="search_method" value="Boolean" name="search_method">
+            <input type="submit" action="search_method" value="td-idf" name="search_method">
+            <input type="submit" action="search_method" value="Third option" name="search_method">
+
+            <!--<form action="b">-->
+            <!--<button id="search" class="btn boolean" action="b">Boolean search</button>-->
+            <!--<button id="search" class="btn td_idf" action="t">td-idf search</button>-->
+    
         </form>
 
         {% if query %}
-            
-            <h2>Results for search "{{ query}}"</h2>
-            
+            <h2>Results for {{ method }} search "{{ query }}"</h2>
+
             <table>
             {% for item in result_list %}    
             <tr>
@@ -44,5 +50,6 @@
             {% endfor %}
         </table>
         {% endif %}
+        
     </body>
 </html>
