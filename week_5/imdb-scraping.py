@@ -14,7 +14,7 @@ try:
     for movie in movies:
         rank = movie.find("td", class_="titleColumn").get_text(strip=True).split(".")[0]
 
-        if int(rank) > 250: # If you want fewer movies you can specify that here
+        if int(rank) > 1: # If you want fewer movies you can specify that here
             break
         else:
             name = movie.find("td", class_="titleColumn").a.text
@@ -37,8 +37,13 @@ try:
     for url in urls:
         req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         webpage = urlopen(req).read()
-        print("Excerpt of webpage:", webpage[400:800])
+        #print("Excerpt of webpage:", webpage[400:800])
         print()
+
+        soup = BeautifulSoup(webpage, "html.parser")
+
+        #storyline = soup.find("div", class_="ipc-html-content-inner-div")
+        #synopsis = soup.find("a", class_="ipc-link ipc-link--base ipc-link--inline")
         
         #source = requests.get(url) # "403 Client Error: Forbidden"
         #source.raise_for_status()
