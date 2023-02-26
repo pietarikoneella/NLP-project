@@ -6,6 +6,7 @@ import pke
 extractor = pke.unsupervised.TopicRank()
 
 try:
+    
     source = requests.get("https://www.imdb.com/chart/top/")
     source.raise_for_status()
     soup = BeautifulSoup(source.text, "html.parser")
@@ -16,7 +17,7 @@ try:
     for movie in movies:
         rank = movie.find("td", class_="titleColumn").get_text(strip=True).split(".")[0]
 
-        if int(rank) > 1: # If you want fewer movies you can specify that here
+        if int(rank) > 10: # If you want fewer movies you can specify that here
             break
         else:
             name = movie.find("td", class_="titleColumn").a.text
@@ -48,7 +49,7 @@ try:
 
         storyline = soup.find("div", class_="ipc-html-content-inner-div")
         synopsis = soup.find("a", class_="ipc-link ipc-link--base ipc-link--inline")
-        
+
         #source = requests.get(url) # "403 Client Error: Forbidden"
         #source.raise_for_status()
         #soup = BeautifulSoup(source.text, "html.parser")
@@ -56,42 +57,32 @@ try:
     """
 
     #Extracting stuff from a movie's plot page
-    synopsisurls = []
+    ploturls = []
 
     for url in urls:
         url = url + "plotsummary/?ref_=tt_stry_pl#synopsis"
-        synopsisurls.append(url)
+        ploturls.append(url)
 
-    for url in synopsisurls:
+    file = open("synopses.txt", "w")
+    for url in ploturls:
         req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         webpage = urlopen(req).read()
 
         soup = BeautifulSoup(webpage, "html.parser")
         
         summaries = soup.find_all("div", class_="ipc-html-content-inner-div")
-        synopsis = str(summaries[10])
+        try:
+            synopsis = str(summaries[10])
+        except Exception as e:
+            print(e)
 
         #remove tags
         tags = re.findall(r"<[^<>]+>", synopsis)
         for i in range(len(tags)):
             synopsis = re.sub(r"<[^<>]+>", r"", synopsis)
-        
-        print(synopsis)
 
-        # extract themes
-        extractor.load_document(synopsis, language='en')
-        extractor.candidate_selection()
-        extractor.candidate_weighting()
-        number_of_themes = int(input("How many themes would you like? "))
-        keyphrases = extractor.get_n_best(n=number_of_themes)
-
-        """
-        print("Extracted themes:")
-        print("=================")
-        for keyphrase in keyphrases:
-            print(f'{keyphrase[1]:.5f}   {keyphrase[0]}')
-        """
-        
+        file.write("<synopsis>" + synopsis + "</synopsis>\n\n")
+    file.close()
     
 except Exception as e:
     print(e)
