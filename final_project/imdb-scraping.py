@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from urllib import request
 from urllib.request import Request, urlopen
 import requests
 import re
@@ -17,7 +18,7 @@ try:
     for movie in movies:
         rank = movie.find("td", class_="titleColumn").get_text(strip=True).split(".")[0]
 
-        if int(rank) > 10: # If you want fewer movies you can specify that here
+        if int(rank) > 50: # If you want fewer movies you can specify that here
             break
         else:
             name = movie.find("td", class_="titleColumn").a.text
@@ -28,7 +29,7 @@ try:
             link = re.search(r'href=\"(\/title\/\w+\/)', a_tag)
             urls.append("https://www.imdb.com" + link.group(1))
             
-            print(rank, name, year, rating)
+            #print(rank, name, year, rating)
         
     #print(urls)
 
@@ -58,6 +59,8 @@ try:
 
     #Extracting stuff from a movie's plot page
     ploturls = []
+    
+    a=1
 
     for url in urls:
         url = url + "plotsummary/?ref_=tt_stry_pl#synopsis"
@@ -68,11 +71,18 @@ try:
         req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         webpage = urlopen(req).read()
 
-        soup = BeautifulSoup(webpage, "html.parser")
-        
-        summaries = soup.find_all("div", class_="ipc-html-content-inner-div")
+        #soup = BeautifulSoup(webpage, "html.parser")
+        webpage = str(webpage)
+        synopsis_text = re.findall(r'<h3 class=\"ipc-title__text\"><span id=\"synopsis\">Synopsis.+', webpage)
+        #soup = BeautifulSoup(synopsis_text, "html.parser")
+        #summaries = soup.find_all("div", class_="ipc-html-content-inner-div")
+        synopsis_text = str(synopsis_text)
+        summaries = re.findall(r'<div class=\"ipc-html-content-inner-div\"><div class=\"ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)</div></div></div></div></div></li></ul></div></section>',synopsis_text)
+        #print(summaries)
         try:
-            synopsis = str(summaries[10])
+            synopsis = str(summaries[0])
+        
+
         except Exception as e:
             print(e)
 
@@ -80,8 +90,12 @@ try:
         tags = re.findall(r"<[^<>]+>", synopsis)
         for i in range(len(tags)):
             synopsis = re.sub(r"<[^<>]+>", r"", synopsis)
+        
 
         file.write("<synopsis>" + synopsis + "</synopsis>\n\n")
+        
+        print("done", a)
+        a = a + 1
     file.close()
     
 except Exception as e:
