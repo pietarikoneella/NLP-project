@@ -6,8 +6,8 @@ import pke
 extractor = pke.unsupervised.TopicRank()
 
 try:
-    
-    source = requests.get("https://www.imdb.com/chart/top/")
+    headers = {'Accept-Language': 'en-Us,en;q=0.5'}
+    source = requests.get("https://www.imdb.com/chart/top/", headers=headers)
     source.raise_for_status()
     soup = BeautifulSoup(source.text, "html.parser")
     movies = soup.find("tbody", class_="lister-list").find_all("tr")
