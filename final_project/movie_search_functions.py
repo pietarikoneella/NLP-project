@@ -12,3 +12,13 @@ import matplotlib.pyplot as plt
 def this_is_movie_search():
     message = "NLP is great!"
     return message
+
+def search_b():
+    return "This is Boolean search."
+    
+
+def search_t():
+    return "This is td-idf search."
+
+def search_other():
+    return "This is some other search"

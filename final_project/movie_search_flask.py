@@ -43,7 +43,17 @@ def search():
         Later on we will use the query to get relevant search results
     """
     query = request.args.get('query')
+    method = request.args.get('search_method')
     i = 0
+
+    if method == 'Boolean':
+        print(ms.search_b())
+    elif method == 'td-idf':
+        print(ms.search_t())
+    elif method == 'Third option':
+        print(ms.search_other())
+    else:
+        pass 
 
     # N.B. So far this only lists all of the movies. When we have search working,
     # this will show the search results
@@ -62,7 +72,7 @@ def search():
     if query:
         print('The query is "' + query +'".')
 
-    return render_template('index.html', result_list=result_list, query=query)
+    return render_template('index.html', result_list=result_list, query=query, method=method)
 
 
 @app.route('/movie/<id>')
