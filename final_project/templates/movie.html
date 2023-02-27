@@ -1,24 +1,40 @@
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Movie page</title>
-    </head>
-    <body>
+{% extends "/layout.html" %}
+
+{% block body %}
+
+<body>
+    <div class="container">
+        <p class="text-right"><a href="#" onclick="location.href = document.referrer; return false;">Back to result
+                list</a></p>
+
         <h1>{{ movie_.get_title() }}</h1>
-        
-        <p>Movie id: {{ id }}</p>
-        
-        <p>Movie title: {{ movie_.get_title() }}</p>
-        
-        <h2>Average rating</h2>
-        <p>{{ movie_.get_rating() }}</p>
-        
+
+        <!--<p>Movie id: {{ id }}</p>-->
+
+        <!--<p>Movie title: {{ movie_.get_title() }}</p>-->
+
+        <p><b>Rating on IMDb</b>: {{ movie_.get_rating() }}</p>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <h2>Themes</h2>
+                {% for theme in movie_.get_themes() %}
+                <p>{{ theme }}</p>
+                {% endfor %}
+            </div>
+            <div class="col-sm-8">
+                <img src="/static/cc_heart.png" class="mx-auto d-block p-1" alt="Creative Commons heart logo"
+                    height="240" width="240" />
+            </div>
+        </div>
+
         <h2>Synopsis</h2>
         <p>{{ movie_.get_synopsis() }}</p>
-        
-        <h2>Themes</h2>
-        {% for theme in movie_.get_themes() %}
-            <p>{{ theme }}</p>
-        {% endfor %}
-    </body>
-</html>
+
+
+
+    </div>
+
+    <!--<a href="{{ url_for('index', result_list=result_list, id=id)}}">Search results</a>-->
+
+    {% endblock %}
