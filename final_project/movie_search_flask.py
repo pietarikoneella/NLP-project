@@ -22,9 +22,8 @@ print(message)
 titles = ["Movie 1", "Movie 2", "Movie 3", "Movie 4"] 
 ratings = [2, 3, 4, 5]
 years = [2001, 2002, 2003, 2004]
-"""
 synopses = ["Synopsis 1", "Synopsis 2", "Synopsis 3", "Synopsis 4"]
-
+"""
 
 file = open("movies.txt", "r")
 ranks = file.readline().split("#")
@@ -37,6 +36,10 @@ ratings = file.readline().split("#")
 del ratings[-1]
 file.close()
 
+file = open("synopses.txt", "r")
+synopses = file.read().split("</synopsis>")
+del synopses[-1] # remove newlines
+file.close()
 
 #titles = []
 #ratings = []
