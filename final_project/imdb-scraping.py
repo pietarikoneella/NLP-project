@@ -68,27 +68,37 @@ try:
 
     url_without_synopsis = ["https://www.imdb.com/title/tt0027977/plotsummary/?ref_=tt_stry_pl#synopsis",
                             "https://www.imdb.com/title/tt0057565/plotsummary/?ref_=tt_stry_pl#synopsis",
-                            "https://www.imdb.com/title/tt8267604/plotsummary/?ref_=tt_stry_pl#synopsis"]
+                            "https://www.imdb.com/title/tt8267604/plotsummary/?ref_=tt_stry_pl#synopsis",
+                            "https://www.imdb.com/title/tt0091251/plotsummary/?ref_=tt_stry_pl#synopsis",
+                            "https://www.imdb.com/title/tt0012349/plotsummary/?ref_=tt_stry_pl#synopsis"]  #47,86,88,93,128,196,199,228,229,235
+
+    url_not_decode = ["https://www.imdb.com/title/tt1375666/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt0038650/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt0088763/plotsummary/?ref_=tt_stry_pl#synopsis",] #14,21,31 out of 50
+                      
+                      
                              
 
     file = open("synopses.txt", "w")
     for url in ploturls:
     
         req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-        webpage = urlopen(req).read()
+        if url not in url_not_decode:
+            webpage = urlopen(req).read().decode('utf8')
+        elif url in url_not_decode:
+            webpage = urlopen(req).read()
 
-        #soup = BeautifulSoup(webpage, "html.parser")
+       
         if url not in url_without_synopsis:
             webpage = str(webpage)
             synopsis_text = re.findall(r'<h3 class="ipc-title__text"><span id="synopsis">Synopsis.+', webpage) 
-        #soup = BeautifulSoup(synopsis_text, "html.parser")
-        #summaries = soup.find_all("div", class_="ipc-html-content-inner-div")
             synopsis_text = str(synopsis_text)
             summaries = re.findall(r'<div class=\"ipc-html-content-inner-div\"><div class=\"ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)</div></div></div></div></div></li></ul></div></section>',synopsis_text)
         #print(summaries)
+    
             try:
                 synopsis = str(summaries[0])
-        
+            
             except Exception as e:
                 print(e)
                 
@@ -96,7 +106,7 @@ try:
             webpage = str(webpage)
             synopsis_text = re.findall(r'<div class="ipc-html-content-inner-div"><div class="ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)', webpage)
             try:
-                synopsis = str(summaries[0])
+                synopsis = str(summaries[0])      
         
             except Exception as e:
                 print(e)
@@ -107,8 +117,8 @@ try:
             synopsis = re.sub(r"<[^<>]+>", r"", synopsis)
         synopsis = re.sub(r'&quot;', r'"', synopsis)
         synopsis = re.sub(r'&#39;', r"'", synopsis) 
-        synopsis = re.sub(r'&amp;', r"&", synopsis)
-
+        synopsis = re.sub(r'&amp;', r"&", synopsis) 
+        synopsis = re.sub(r'&#12302;&#28779;&#22402;&#12427;&#12398;&#22675;&#12303;', r"", synopsis)
         file.write("<synopsis>" + synopsis + "</synopsis>\n\n")
         
         print("done", a)
