@@ -7,7 +7,9 @@ import pke
 extractor = pke.unsupervised.TopicRank()
 
 try:
+
     headers = {'Accept-Language': 'en-Us,en;q=0.5'}
+
     source = requests.get("https://www.imdb.com/chart/top/", headers=headers)
     source.raise_for_status()
     soup = BeautifulSoup(source.text, "html.parser")
