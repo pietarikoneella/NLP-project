@@ -70,11 +70,21 @@ try:
                             "https://www.imdb.com/title/tt0057565/plotsummary/?ref_=tt_stry_pl#synopsis",
                             "https://www.imdb.com/title/tt8267604/plotsummary/?ref_=tt_stry_pl#synopsis",
                             "https://www.imdb.com/title/tt0091251/plotsummary/?ref_=tt_stry_pl#synopsis",
-                            "https://www.imdb.com/title/tt0012349/plotsummary/?ref_=tt_stry_pl#synopsis"]  #47,86,88,93,128,196,199,228,229,235
+                            "https://www.imdb.com/title/tt0012349/plotsummary/?ref_=tt_stry_pl#synopsis"]  #47,86,88,93,128,196,199,228,229,235 
 
     url_not_decode = ["https://www.imdb.com/title/tt1375666/plotsummary/?ref_=tt_stry_pl#synopsis",
                       "https://www.imdb.com/title/tt0038650/plotsummary/?ref_=tt_stry_pl#synopsis",
-                      "https://www.imdb.com/title/tt0088763/plotsummary/?ref_=tt_stry_pl#synopsis",] #14,21,31 out of 50
+                      "https://www.imdb.com/title/tt0088763/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt0021749/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt0053125/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt0052357/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt8503618/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt1255953/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt0017136/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt0095016/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt0097576/plotsummary/?ref_=tt_stry_pl#synopsis",
+                      "https://www.imdb.com/title/tt0363163/plotsummary/?ref_=tt_stry_pl#synopsis"] #14,21,31(fails), 52,99 (fails), 100,107, 109, 115, 118, 120, 124
+    
                       
                       
                              
@@ -102,14 +112,14 @@ try:
             except Exception as e:
                 print(e)
                 
-        elif url in url_without_synopsis:
-            webpage = str(webpage)
-            synopsis_text = re.findall(r'<div class="ipc-html-content-inner-div"><div class="ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)', webpage)
-            try:
-                synopsis = str(summaries[0])      
+            if url in url_without_synopsis: #fails 
+                webpage = str(webpage)
+                synopsis_text = re.findall(r'<div class="ipc-html-content-inner-div"><div class="ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)', webpage)
+                try:
+                    synopsis = str(summaries[0])      
         
-            except Exception as e:
-                print(e)
+                except Exception as e:
+                    print(e)
                 
         #remove tags
         tags = re.findall(r"<[^<>]+>", synopsis)
@@ -119,11 +129,19 @@ try:
         synopsis = re.sub(r'&#39;', r"'", synopsis) 
         synopsis = re.sub(r'&amp;', r"&", synopsis) 
         synopsis = re.sub(r'&#12302;&#28779;&#22402;&#12427;&#12398;&#22675;&#12303;', r"", synopsis)
+        synopsis = re.sub(r'&#12302;&#21531;&#12398;&#21517;&#12399;&#12290;&#12303;', r"", synopsis)
+        synopsis = re.sub(r'\\xc3\\xbc', r"u", synopsis)
+        synopsis = re.sub(r'\\xc3\\xb6', r"o", synopsis)
+        synopsis = re.sub(r'&mdash;', r"", synopsis)
+        
         file.write("<synopsis>" + synopsis + "</synopsis>\n\n")
         
         print("done", a)
         a = a + 1
+
     file.close()
+ 
+    
     
 except Exception as e:
     print(e)
