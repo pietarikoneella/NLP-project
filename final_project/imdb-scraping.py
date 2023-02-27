@@ -24,7 +24,7 @@ try:
     for movie in movies:
         rank = movie.find("td", class_="titleColumn").get_text(strip=True).split(".")[0]
 
-        if int(rank) > 150: # If you want fewer movies you can specify that here
+        if int(rank) > 50: # If you want fewer movies you can specify that here
             break
         else:
             name = movie.find("td", class_="titleColumn").a.text
@@ -107,13 +107,24 @@ try:
     for url in ploturls:
     
         req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-        if url not in url_not_decode:
+        
+        if url not in url_not_decode and url not in url_without_synopsis:
             webpage = urlopen(req).read().decode('utf-8')
-        elif url in url_not_decode:
-            webpage = urlopen(req).read()
+            webpage = str(webpage)
+            synopsis_text = re.findall(r'<h3 class="ipc-title__text"><span id="synopsis">Synopsis.+', webpage) 
+            synopsis_text = str(synopsis_text)
+            summaries = re.findall(r'<div class=\"ipc-html-content-inner-div\"><div class=\"ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)</div></div></div></div></div></li></ul></div></section>',synopsis_text)
+        #print(summaries)
+    
+            try:
+                synopsis = str(summaries[0])
+            
+            except Exception as e:
+                print(e)
+        
 
-       
-        if url not in url_without_synopsis:
+        elif url in url_not_decode and url not in url_without_synopsis:
+            webpage = urlopen(req).read()
             webpage = str(webpage)
             synopsis_text = re.findall(r'<h3 class="ipc-title__text"><span id="synopsis">Synopsis.+', webpage) 
             synopsis_text = str(synopsis_text)
@@ -126,14 +137,25 @@ try:
             except Exception as e:
                 print(e)
                 
-            if url in url_without_synopsis: #fails 
-                webpage = str(webpage)
-                synopsis_text = re.findall(r'<div class="ipc-html-content-inner-div"><div class="ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)', webpage)
-                try:
-                    synopsis = str(summaries[0])      
+        elif url in url_not_decode and url in url_without_synopsis:
+            webpage = urlopen(req).read()
+            webpage = str(webpage)
+            synopsis_text = re.findall(r'<div class="ipc-html-content-inner-div"><div class="ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)', webpage)
+            try:
+                synopsis = str(summaries[0])      
         
-                except Exception as e:
-                    print(e)
+            except Exception as e:
+                print(e)
+                
+        elif url not in url_not_decode and url in url_without_synopsis: #fails 
+            webpage = urlopen(req).read().decode('utf-8')
+            webpage = str(webpage)
+            synopsis_text = re.findall(r'<div class="ipc-html-content-inner-div"><div class="ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)', webpage)
+            try:
+                synopsis = str(summaries[0])      
+        
+            except Exception as e:
+                print(e)
                 
         #remove tags
         tags = re.findall(r"<[^<>]+>", synopsis)
