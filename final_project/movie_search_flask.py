@@ -18,15 +18,15 @@ message = ms.this_is_movie_search()
 print(message)
 
 #Simple example lists
-titles = ["Movie 1", "Movie 2", "Movie 3", "Movie 4"] 
-ratings = [2, 6, 4, 5]
-years = [2001, 2002, 2003, 2004]
-synopses = ["Synopsis 1", "Synopsis 2", "Synopsis 3", "Synopsis 4"]
+#titles = ["Movie 1", "Movie 2", "Movie 3", "Movie 4"] 
+#ratings = [2, 6, 4, 5]
+#years = [2001, 2002, 2003, 2004]
+#synopses = ["Synopsis 1", "Synopsis 2", "Synopsis 3", "Synopsis 4"]
 
-#titles = []
-#ratings = []
-#years = []
-#synopses = []
+titles = []
+ratings = []
+years = []
+synopses = []
 
 data = zip(titles, ratings, years, synopses)
 query = ""
