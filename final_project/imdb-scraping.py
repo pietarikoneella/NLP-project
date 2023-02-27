@@ -14,6 +14,10 @@ try:
     movies = soup.find("tbody", class_="lister-list").find_all("tr")
 
     urls = []
+    titles = []
+    ratings = []
+    years = []
+
     
     for movie in movies:
         rank = movie.find("td", class_="titleColumn").get_text(strip=True).split(".")[0]
@@ -28,7 +32,15 @@ try:
             a_tag = str(movie.find("td", class_="titleColumn").a)
             link = re.search(r'href=\"(\/title\/\w+\/)', a_tag)
             urls.append("https://www.imdb.com" + link.group(1))
-            
+            titles.append(name)
+            ratings.append(rating)
+            years.append(year)
+
+    print(titles)
+    print()
+    print(ratings)
+    print()
+    print(years)            
             #print(rank, name, year, rating)
         
     #print(urls)
@@ -94,7 +106,7 @@ try:
     
         req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         if url not in url_not_decode:
-            webpage = urlopen(req).read().decode('utf8')
+            webpage = urlopen(req).read().decode('utf-8')
         elif url in url_not_decode:
             webpage = urlopen(req).read()
 
