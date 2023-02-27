@@ -3,24 +3,24 @@
 {% block body %}
 
 <div class="container text-center">
-<form id="search">
-    <input type="text" name="query" autofocus>
-    <input type="submit" action="search_method" value="Boolean" name="search_method">
-    <input type="submit" action="search_method" value="td-idf" name="search_method">
-    <input type="submit" action="search_method" value="Third option" name="search_method">
+    <form id="search">
+        <input type="text" name="query" autofocus>
+        <input type="submit" action="search_method" value="Boolean" name="search_method">
+        <input type="submit" action="search_method" value="td-idf" name="search_method">
+        <input type="submit" action="search_method" value="Third option" name="search_method">
 
-</form>
+    </form>
 
-{% if query %}
-<h2 class="h2">Results for your {{ method }} search "{{ query }}"</h2>
+    {% if query %}
+    <h2 class="h2">Results for your {{ method }} search "{{ query }}"</h2>
 
     {% for item in result_list %}
     <p><a href="{{ url_for('show_movie', id=item.get_id() )}}">{{ item.get_title() }}</a></p>
-    
+
     <p>{{ item.get_synopsis() }}</p>
     {% endfor %}
 
-<!--
+    <!--
 <table>
     {% for item in result_list %}
     <tr>
