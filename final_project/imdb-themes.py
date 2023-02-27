@@ -1,33 +1,11 @@
 import re
 import pke
-import spacy
-nlp = spacy.load('en_core_web_sm')
 extractor = pke.unsupervised.TopicRank()
 
-#increasing length limit
-nlp = spacy.load('en_core_web_sm')
-nlp.max_length = 2500000
-
-
-
-#create file without names
-file_no_names = open("synopsis_no_names.txt", "w")
+# get synopses
 file = open("synopses.txt", "r")
 text = file.read()
-text = nlp(text)
-tag = ["PROPN"]
-for token in text:
-    if token.pos_  not in tag:
-        file_no_names.write(token.text)
-        file_no_names.write(" ")
-file.close()
-file_no_names.close()
-
-# get synopsis
-file = open("synopsis_no_names.txt", "r")
-text = file.read()
-synopses = re.findall(r"< synopsis >(.+)<\/synopsis > ", text)
-print("getting synopsis")
+synopses = re.findall(r"<synopsis>(.+)<\/synopsis>", text)
 file.close()
 
 # extract themes
@@ -40,6 +18,5 @@ for synopsis in synopses:
     keyphrases = extractor.get_n_best(n=number_of_themes)
     for theme in keyphrases:
         file.write(str(theme[1]) + " " + theme[0] + "\n")
-    file.write("\n")
-print("themes are extracted")
+    file.write("\n")    
 file.close()
