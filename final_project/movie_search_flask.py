@@ -36,7 +36,10 @@ ratings = file.readline().split("#")
 del ratings[-1]
 file.close()
 
-file = open("synopses.txt", "r", encoding="ISO-8859-1")
+
+
+file = open("synopses.txt", "r", encoding = "ISO-8859-1")
+
 synopses = file.read().split("</synopsis>")
 del synopses[-1] # remove newlines
 file.close()
