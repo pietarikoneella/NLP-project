@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import re
 import os
 import numpy as np
@@ -23,18 +23,18 @@ synopses = ["Synopsis 1", "Synopsis 2", "Synopsis 3", "Synopsis 4"]
 
 #titles = []
 #ratings = []
+#years = []
 #synopses = []
 
 data = zip(titles, ratings, years, synopses)
 query = ""
 result_list = []
 
-# This doesn't work properly yet - an issue to be fixed ()
-# So far going straight to /index works as it should :)
+
 @app.route('/')
 def index():
-    print("Hello, world")
-    return render_template('index.html')
+    return redirect('index')
+
 
 
 @app.route('/index')
