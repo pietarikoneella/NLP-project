@@ -1,8 +1,7 @@
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Movie page</title>
-    </head>
+{% extends "/layout.html" %}
+
+    {% block body %}
+
     <body>
         <h1>{{ movie_.get_title() }}</h1>
         
@@ -20,5 +19,7 @@
         {% for theme in movie_.get_themes() %}
             <p>{{ theme }}</p>
         {% endfor %}
-    </body>
-</html>
+
+        <img src="/static/cc_heart.png" alt="Creative Commons heart logo" height="240" width="240"/>
+
+    {% endblock %}
