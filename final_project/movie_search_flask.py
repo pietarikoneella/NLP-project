@@ -62,15 +62,15 @@ def search():
     i = 0
 
     if method == 'Boolean':
-        print(ms.search_b(synopsis_list, query))
+        doc_ids = ms.search_b(synopsis_list, query)
     elif method == 'td-idf':
-        best_doc_ids = ms.search_t(synopsis_list, query)
-        print(best_doc_ids)
-        
+        doc_ids = ms.search_t(synopsis_list, query)      
     elif method == 'Third option':
         print(ms.search_other())
     else:
-        pass 
+        pass
+
+    print(doc_ids)
 
     # N.B. So far this only lists all of the movies. When we have search working,
     # this will show the search results
@@ -81,7 +81,7 @@ def search():
         result_list.append(new_movie)
         i+=1
 
-    for i in best_doc_ids:
+    for i in doc_ids:
         print(result_list[i].get_id())
         print(result_list[i].get_title())
         print(result_list[i].get_rating())
