@@ -4,6 +4,10 @@ import spacy
 nlp = spacy.load('en_core_web_sm')
 extractor = pke.unsupervised.TopicRank()
 
+#increasing length limit
+nlp = spacy.load('en_core_web_sm')
+nlp.max_length = 2500000
+
 
 
 #create file without names
