@@ -30,7 +30,7 @@ def make_plot(keyph, title):
             themes.append(p[0])
             values.append(round(p[1], 2))
         fig = plt.figure()
-        plt.title(f"Themes for article \"{title}\"")
+        plt.title(f"Themes for movie \"{title}\"")
         colors = plt.cm.rainbow(np.linspace(0, 1, 5))
         bar = plt.bar(themes, values, color = colors)
         plt.xticks(rotation=20)
