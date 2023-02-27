@@ -18,7 +18,7 @@ try:
     for movie in movies:
         rank = movie.find("td", class_="titleColumn").get_text(strip=True).split(".")[0]
 
-        if int(rank) > 50: # If you want fewer movies you can specify that here
+        if int(rank) > 150: # If you want fewer movies you can specify that here
             break
         else:
             name = movie.find("td", class_="titleColumn").a.text
