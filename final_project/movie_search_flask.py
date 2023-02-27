@@ -63,6 +63,7 @@ def search():
     for item in data:
         # Using the Movie class to create a movie object
         new_movie = Movie(i, item[0], item[1], item[2], item[3])
+        
         result_list.append(new_movie)
         i+=1
 
