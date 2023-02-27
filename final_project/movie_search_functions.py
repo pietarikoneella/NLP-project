@@ -112,9 +112,9 @@ def search_b(synopsis_list, query): #boolean search
             #print("And tai or lopussa",parts)
     
         if operator == "or" and all_one == True:
-            shape = 1, len(docs)
+            shape = 1, len(synopsis_list)
             hits_matrix = numpy.ones(shape, dtype=int)
-            print(hits_matrix)
+            #print(hits_matrix)
     
         elif operator == "and":
             if len(parts) > 0:
@@ -126,11 +126,11 @@ def search_b(synopsis_list, query): #boolean search
             try:
                 hits_matrix = eval(rewrite_query(parts_into_string))
             except KeyError:
-                shape = 1, len(docs)
+                shape = 1, len(synopsis_list)
                 hits_matrix = numpy.zeros(shape, dtype=int)
         hits_list = list(hits_matrix.nonzero()[1])
     else:
-        shape = 1, len(docs)
+        shape = 1, len(synopsis_list)
         hits_matrix = numpy.ones(shape, dtype=int)
         hits_list = list(hits_matrix.nonzero()[1])
         

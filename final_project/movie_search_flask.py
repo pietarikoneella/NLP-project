@@ -12,6 +12,8 @@ from movies import *
 app = Flask(__name__)
 
 synopsis_list = ms.index_documents_from_text_file()
+#for item in synopsis_list:
+#    print(item[:20])
 
 # This is how we access the functions in movie_search_functions.py
 #message = ms.this_is_movie_search()
@@ -36,8 +38,6 @@ ratings = file.readline().split("#")
 del ratings[-1]
 file.close()
 
-
-
 file = open("synopses.txt", "r", encoding = "ISO-8859-1")
 
 synopses = file.read().split("</synopsis>")
@@ -47,7 +47,12 @@ file.close()
 data = zip(titles, ratings, years, synopses)
 query = ""
 result_list = []
-
+movie_list = []
+i = 0
+for item in data:
+    new_movie = Movie(i, item[0], item[1], item[2], item[3])
+    movie_list.append(new_movie)
+    i+=1
 
 @app.route('/')
 def index():
@@ -64,37 +69,34 @@ def search():
     method = request.args.get('search_method')
     i = 0
     doc_ids = []
+    result_list = []
+    final_result_list = []
 
     if method == 'Boolean':
-        doc_ids = ms.search_b(synopsis_list, query)
+        result_list = ms.search_b(synopsis_list, query)
+        
+        final_result_list = []
+
+        for i in result_list:
+            final_result_list.append(movie_list[i])
+
     elif method == 'td-idf':
-        doc_ids = ms.search_t(synopsis_list, query)      
+        result_list = ms.search_t(synopsis_list, query)
+        
+        final_result_list = []
+
+        for i in result_list:
+            final_result_list.append(movie_list[i])
+
     elif method == 'Third option':
         print(ms.search_other())
     else:
         pass
 
-#    print(doc_ids)
-
-    # N.B. So far this only lists all of the movies. When we have search working,
-    # this will show the search results
-    for item in data:
-        print(item)
-        # Using the Movie class to create a movie object
-        new_movie = Movie(i, item[0], item[1], item[2], item[3])
-        result_list.append(new_movie)
-        i+=1
-
-    for i in doc_ids:
-        print(result_list[i].get_id())
-        print(result_list[i].get_title())
-        print(result_list[i].get_rating())
-        #print(item.get_synopsis())
-
     if query:
         print('The query is "' + query +'".')
 
-    return render_template('index.html', result_list=result_list, query=query, method=method)
+    return render_template('index.html',  movie_list=movie_list, final_result_list=final_result_list, query=query, method=method)
 
 
 @app.route('/movie/<id>')
