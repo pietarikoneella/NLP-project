@@ -16,34 +16,49 @@ try:
     movies = soup.find("tbody", class_="lister-list").find_all("tr")
 
     urls = []
-    titles = []
-    ratings = []
+    ranks = []
+    names = []
     years = []
+    ratings = []
 
-    
+    i = 1
     for movie in movies:
-        rank = movie.find("td", class_="titleColumn").get_text(strip=True).split(".")[0]
-
-        if int(rank) > 179: # If you want fewer movies you can specify that here
+        if i > 179: # If you want fewer movies you can specify that here
             break
         else:
+            rank = movie.find("td", class_="titleColumn").get_text(strip=True).split(".")[0]
+            ranks.append(rank)
             name = movie.find("td", class_="titleColumn").a.text
+            names.append(name)
             year = movie.find("td", class_="titleColumn").span.text.strip("()")
+            years.append(year)
             rating = movie.find("td", class_="ratingColumn imdbRating").strong.text
+            ratings.append(rating)
 
             a_tag = str(movie.find("td", class_="titleColumn").a)
             link = re.search(r'href=\"(\/title\/\w+\/)', a_tag)
             urls.append("https://www.imdb.com" + link.group(1))
-            titles.append(name)
-            ratings.append(rating)
-            years.append(year)
+            
+            print(rank, name, year, rating)
+        i += 1
 
-    #print(titles)
-    #print()
-    #print(ratings)
-    #print()
-    #print(years)            
-            #print(rank, name, year, rating)
+    file = open("movies.txt", "w")
+    for i in ranks:
+        file.write(str(i) + "#")
+    file.write("\n")
+    for i in names:
+        file.write(str(i) + "#")
+    file.write("\n")
+    for i in years:
+        file.write(str(i) + "#")
+    file.write("\n")
+    for i in ratings:
+        file.write(str(i) + "#")
+    file.write(str(ranks) + "\n\n")
+    file.write(str(names) + "\n\n")
+    file.write(str(years) + "\n\n")
+    file.write(str(ratings) + "\n\n")
+    file.close()
         
     #print(urls)
 
