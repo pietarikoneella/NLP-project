@@ -3,13 +3,14 @@
 {% block body %}
 
 <div class="container text-center">
-    <form id="search">
-        <input type="text" name="query" autofocus>
-        <input type="submit" action="search_method" value="Boolean" name="search_method">
-        <input type="submit" action="search_method" value="td-idf" name="search_method">
-        <input type="submit" action="search_method" value="Third option" name="search_method">
-
-    </form>
+    <div class="form-group">
+        <form id="search">
+            <input type="text" name="query" autofocus>
+            <input type="submit" action="search_method" value="Boolean" name="search_method">
+            <input type="submit" action="search_method" value="td-idf" name="search_method">
+            <input type="submit" action="search_method" value="Third option" name="search_method">
+        </form>
+    </div>
 
     {% if query %}
     <h2 class="h2">Results for your {{ method }} search "{{ query }}"</h2>

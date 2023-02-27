@@ -36,7 +36,6 @@ def index():
     return redirect('index')
 
 
-
 @app.route('/index')
 def search():
     """ This function now goes through the toy data and makes a result list
