@@ -141,6 +141,7 @@ def search_t(synopsis_list, query): #tf-idf search
 
     except IndexError: # Entering an unknown word causes IndexError
         print("No matches")
+    print("Best doc ids:", best_doc_ids)
     return best_doc_ids
 
 def search_other():

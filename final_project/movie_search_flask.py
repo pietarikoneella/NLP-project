@@ -41,11 +41,6 @@ synopses = file.read().split("</synopsis>")
 del synopses[-1] # remove newlines
 file.close()
 
-#titles = []
-#ratings = []
-#years = []
-#synopses = []
-
 data = zip(titles, ratings, years, synopses)
 query = ""
 result_list = []
@@ -58,8 +53,7 @@ def index():
 
 @app.route('/index')
 def search():
-    print("check")
-    """ This function now goes through the toy data and makes a result list
+    """ This function now goes through the data and makes a result list
         out of it if and only if the user has typed in a query.
         Later on we will use the query to get relevant search results
     """
@@ -70,7 +64,9 @@ def search():
     if method == 'Boolean':
         print(ms.search_b(synopsis_list, query))
     elif method == 'td-idf':
-        print(ms.search_t(synopsis_list, query))
+        best_doc_ids = ms.search_t(synopsis_list, query)
+        print(best_doc_ids)
+        
     elif method == 'Third option':
         print(ms.search_other())
     else:
@@ -79,16 +75,17 @@ def search():
     # N.B. So far this only lists all of the movies. When we have search working,
     # this will show the search results
     for item in data:
+        print(item)
         # Using the Movie class to create a movie object
         new_movie = Movie(i, item[0], item[1], item[2], item[3])
         result_list.append(new_movie)
         i+=1
 
-    #for item in result_list:
-    #    print(item.get_id())
-    #    print(item.get_title())
-    #    print(item.get_rating())
-    #    print(item.get_synopsis())
+    for i in best_doc_ids:
+        print(result_list[i].get_id())
+        print(result_list[i].get_title())
+        print(result_list[i].get_rating())
+        #print(item.get_synopsis())
 
     if query:
         print('The query is "' + query +'".')
