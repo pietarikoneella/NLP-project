@@ -66,31 +66,48 @@ try:
         url = url + "plotsummary/?ref_=tt_stry_pl#synopsis"
         ploturls.append(url)
 
+    url_without_synopsis = ["https://www.imdb.com/title/tt0027977/plotsummary/?ref_=tt_stry_pl#synopsis",
+                            "https://www.imdb.com/title/tt0057565/plotsummary/?ref_=tt_stry_pl#synopsis",
+                            "https://www.imdb.com/title/tt8267604/plotsummary/?ref_=tt_stry_pl#synopsis"]
+                             
+
     file = open("synopses.txt", "w")
     for url in ploturls:
+    
         req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         webpage = urlopen(req).read()
 
         #soup = BeautifulSoup(webpage, "html.parser")
-        webpage = str(webpage)
-        synopsis_text = re.findall(r'<h3 class=\"ipc-title__text\"><span id=\"synopsis\">Synopsis.+', webpage)
+        if url not in url_without_synopsis:
+            webpage = str(webpage)
+            synopsis_text = re.findall(r'<h3 class="ipc-title__text"><span id="synopsis">Synopsis.+', webpage) 
         #soup = BeautifulSoup(synopsis_text, "html.parser")
         #summaries = soup.find_all("div", class_="ipc-html-content-inner-div")
-        synopsis_text = str(synopsis_text)
-        summaries = re.findall(r'<div class=\"ipc-html-content-inner-div\"><div class=\"ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)</div></div></div></div></div></li></ul></div></section>',synopsis_text)
+            synopsis_text = str(synopsis_text)
+            summaries = re.findall(r'<div class=\"ipc-html-content-inner-div\"><div class=\"ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)</div></div></div></div></div></li></ul></div></section>',synopsis_text)
         #print(summaries)
-        try:
-            synopsis = str(summaries[0])
+            try:
+                synopsis = str(summaries[0])
         
-
-        except Exception as e:
-            print(e)
-
+            except Exception as e:
+                print(e)
+                
+        elif url in url_without_synopsis:
+            webpage = str(webpage)
+            synopsis_text = re.findall(r'<div class="ipc-html-content-inner-div"><div class="ipc-html-content ipc-html-content--base" role="presentation"><div class="ipc-html-content-inner-div">(.+)', webpage)
+            try:
+                synopsis = str(summaries[0])
+        
+            except Exception as e:
+                print(e)
+                
         #remove tags
         tags = re.findall(r"<[^<>]+>", synopsis)
         for i in range(len(tags)):
             synopsis = re.sub(r"<[^<>]+>", r"", synopsis)
-        
+        synopsis = re.sub(r'&quot;', r'"', synopsis)
+        synopsis = re.sub(r'&#39;', r"'", synopsis) 
+        synopsis = re.sub(r'&amp;', r"&", synopsis)
 
         file.write("<synopsis>" + synopsis + "</synopsis>\n\n")
         
