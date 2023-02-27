@@ -17,11 +17,26 @@ synopsis_list = ms.index_documents_from_text_file()
 message = ms.this_is_movie_search()
 print(message)
 
+"""
 #Simple example lists
 titles = ["Movie 1", "Movie 2", "Movie 3", "Movie 4"] 
 ratings = [2, 3, 4, 5]
 years = [2001, 2002, 2003, 2004]
+"""
 synopses = ["Synopsis 1", "Synopsis 2", "Synopsis 3", "Synopsis 4"]
+
+
+file = open("movies.txt", "r")
+ranks = file.readline().split("#")
+del ranks[-1] # remove "\n"
+titles = file.readline().split("#")
+del titles[-1]
+years = file.readline().split("#")
+del years[-1]
+ratings = file.readline().split("#")
+del ratings[-1]
+file.close()
+
 
 #titles = []
 #ratings = []
