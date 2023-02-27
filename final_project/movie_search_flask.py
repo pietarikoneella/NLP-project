@@ -14,8 +14,8 @@ app = Flask(__name__)
 synopsis_list = ms.index_documents_from_text_file()
 
 # This is how we access the functions in movie_search_functions.py
-message = ms.this_is_movie_search()
-print(message)
+#message = ms.this_is_movie_search()
+#print(message)
 
 """
 #Simple example lists
@@ -60,6 +60,7 @@ def search():
     query = request.args.get('query')
     method = request.args.get('search_method')
     i = 0
+    doc_ids = []
 
     if method == 'Boolean':
         doc_ids = ms.search_b(synopsis_list, query)
@@ -70,7 +71,7 @@ def search():
     else:
         pass
 
-    print(doc_ids)
+#    print(doc_ids)
 
     # N.B. So far this only lists all of the movies. When we have search working,
     # this will show the search results
