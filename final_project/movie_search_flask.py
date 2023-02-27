@@ -11,6 +11,8 @@ from movies import *
 
 app = Flask(__name__)
 
+synopsis_list = ms.index_documents_from_text_file()
+
 # This is how we access the functions in movie_search_functions.py
 message = ms.this_is_movie_search()
 print(message)
@@ -38,6 +40,7 @@ def index():
 
 @app.route('/index')
 def search():
+    print("check")
     """ This function now goes through the toy data and makes a result list
         out of it if and only if the user has typed in a query.
         Later on we will use the query to get relevant search results
@@ -47,9 +50,9 @@ def search():
     i = 0
 
     if method == 'Boolean':
-        print(ms.search_b())
+        print(ms.search_b(synopsis_list, query))
     elif method == 'td-idf':
-        print(ms.search_t())
+        print(ms.search_t(synopsis_list, query))
     elif method == 'Third option':
         print(ms.search_other())
     else:
