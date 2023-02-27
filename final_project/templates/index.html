@@ -1,44 +1,50 @@
 {% extends "/layout.html" %}
 
-    {% block body %}
+{% block body %}
 
-        <p>Halojata halloo!</p>
-        
-        <form id="search">
-            <input type="text" name="query" autofocus>
-            <input type="submit" action="search_method" value="Boolean" name="search_method">
-            <input type="submit" action="search_method" value="td-idf" name="search_method">
-            <input type="submit" action="search_method" value="Third option" name="search_method">
+<div class="container text-center">
+<form id="search">
+    <input type="text" name="query" autofocus>
+    <input type="submit" action="search_method" value="Boolean" name="search_method">
+    <input type="submit" action="search_method" value="td-idf" name="search_method">
+    <input type="submit" action="search_method" value="Third option" name="search_method">
 
-            <!--<form action="b">-->
-            <!--<button id="search" class="btn boolean" action="b">Boolean search</button>-->
-            <!--<button id="search" class="btn td_idf" action="t">td-idf search</button>-->
+</form>
+
+{% if query %}
+<h2 class="h2">Results for your {{ method }} search "{{ query }}"</h2>
+
+    {% for item in result_list %}
+    <p><a href="{{ url_for('show_movie', id=item.get_id() )}}">{{ item.get_title() }}</a></p>
     
-        </form>
+    <p>{{ item.get_synopsis() }}</p>
+    {% endfor %}
 
-        {% if query %}
-            <h2>Results for {{ method }} search "{{ query }}"</h2>
+<!--
+<table>
+    {% for item in result_list %}
+    <tr>
+        <td>Movie id: {{ item.get_id() }} </td>
+    </tr>
+    <tr>
+        <td><a href="{{ url_for('show_movie', id=item.get_id() )}}">{{ item.get_title() }}</a></td>
+    </tr>
+    <tr>
+        <td>Rating: {{ item.get_rating() }}</td>
+    </tr>
+    <tr>
+        <td>{{ item.get_synopsis() }}</td>
+    </tr>
+    <tr>
+        <td>{{ item.get_title() }}</td>
+    </tr>
 
-            <table>
-            {% for item in result_list %}    
-            <tr>
-                <td>Movie id: {{ item.get_id() }} </td>
-            </tr>
-            <tr>
-                <td><a href="{{ url_for('show_movie', id=item.get_id() )}}">{{ item.get_title() }}</a></td>
-            </tr>
-            <tr>
-                <td>Rating: {{ item.get_rating() }}</td>
-            </tr>
-            <tr>
-                <td>{{ item.get_synopsis() }}</td>
-            </tr>
-            <tr>
-                <td>{{ item.get_title() }}</td>
-            </tr>
-            
-            {% endfor %}
-        </table>
-        {% endif %}
-        
-    {% endblock %}
+    {% endfor %}
+</table>
+-->
+</div>
+{% endif %}
+
+{% endblock %}
+
+<!--https://creazilla.com/nodes/46027-movie-camera-emoji-clipart-->
