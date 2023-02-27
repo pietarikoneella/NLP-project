@@ -11,6 +11,10 @@ import matplotlib.pyplot as plt
 
 import re
 
+def this_is_movie_search():
+    message = "NLP is great!"
+    return message
+
 def index_documents_from_text_file():
     """ This function first opens a file, reads its contents
         into a string and closes the file. Then it creates and returns a list
@@ -39,9 +43,17 @@ def index_documents_from_text_file():
     
     return synopsis_list
 
-def this_is_movie_search():
-    message = "NLP is great!"
-    return message
+def rewrite_token(t):
+    d = {"and": "&", "or": "|",
+        "not": "1 -",
+        "(": "(", ")": ")"}  # operator replacements 
+    #print(d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))) # N.B. This print statement shows the rewritten query!
+    
+    return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t)) 
+
+
+def rewrite_query(query): # rewrite every token in the query
+        return " ".join(rewrite_token(t) for t in query.split())
 
 def search_b(synopsis_list, query): #boolean search
     """This function handles the Boolean search
