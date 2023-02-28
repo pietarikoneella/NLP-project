@@ -33,8 +33,9 @@ def make_plot(keyph, title):
         plt.title(f"Themes for movie \"{title}\"")
         colors = plt.cm.rainbow(np.linspace(0, 1, 5))
         bar = plt.bar(themes, values, color = colors)
-        plt.xticks(rotation=20)
-        plt.subplots_adjust(bottom=0.15)
+        plt.xticks(rotation=30)
+        plt.subplots_adjust(bottom=0.3)
+        plt.tight_layout()
         labels = plt.bar_label(bar, values)
         plt.savefig(f'static/movie_{title}_plot.png')
 

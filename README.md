@@ -10,6 +10,8 @@ Maria also made it here!
 
 ## Movie Search (final project)
 
+This is our final project [Movie search](https://github.com/pietarikoneella/NLPtrio/blob/main/final_project/movie_search_flask.py)
+
 [Project folder](https://github.com/pietarikoneella/NLPtrio/tree/main/final_project)
 
 ## Week 5
