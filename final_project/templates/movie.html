@@ -20,12 +20,14 @@
             <div class="col-sm-4">
                 <h2>Themes</h2>
                 {% for theme in movie_.get_themes() %}
-                <p>{{ theme }}</p>
+                <p>{{ theme[0] }}</p>
                 {% endfor %}
             </div>
             <div class="col-sm-8">
-                <img src="/static/cc_heart.png" class="mx-auto d-block p-1" alt="Creative Commons heart logo"
-                    height="240" width="240" />
+                <!--<img src="/static/cc_heart.png" class="mx-auto d-block p-1" alt="Creative Commons heart logo"
+                    height="240" width="240" />-->
+                <img src="/static/movie_{{ movie_.get_title() }}_plot.png" class="mx-auto d-block p-1" alt="Theme plot"
+                height="480" width="640" />
             </div>
         </div>
 

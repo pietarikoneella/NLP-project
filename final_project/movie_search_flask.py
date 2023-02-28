@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import spacy
 import pke
 import movie_search_functions as ms
 from movies import *
@@ -12,20 +13,31 @@ from movies import *
 app = Flask(__name__)
 
 synopsis_list = ms.index_documents_from_text_file()
-#for item in synopsis_list:
-#    print(item[:20])
 
-# This is how we access the functions in movie_search_functions.py
-#message = ms.this_is_movie_search()
-#print(message)
+def make_plot(keyph, title):
+    if len(keyph) > 0:
+        themes = []
+        values = []
 
-"""
-#Simple example lists
-titles = ["Movie 1", "Movie 2", "Movie 3", "Movie 4"] 
-ratings = [2, 3, 4, 5]
-years = [2001, 2002, 2003, 2004]
-synopses = ["Synopsis 1", "Synopsis 2", "Synopsis 3", "Synopsis 4"]
-"""
+        if f"./static/article_{title}_plot.png":
+            print(f"The plot for \"{title}\" is already in static!")
+        
+        for p in keyph:
+            print(p[0])
+            print(p[1])
+        
+        for p in keyph:
+            themes.append(p[0])
+            values.append(round(p[1], 2))
+        fig = plt.figure()
+        plt.title(f"Themes for movie \"{title}\"")
+        colors = plt.cm.rainbow(np.linspace(0, 1, 5))
+        bar = plt.bar(themes, values, color = colors)
+        plt.xticks(rotation=20)
+        plt.subplots_adjust(bottom=0.15)
+        labels = plt.bar_label(bar, values)
+        plt.savefig(f'static/movie_{title}_plot.png')
+
 
 file = open("movies.txt", "r")
 ranks = file.readline().split("#")
@@ -73,18 +85,14 @@ def search():
     final_result_list = []
 
     if method == 'Boolean':
-        result_list = ms.search_b(synopsis_list, query)
-        
+        result_list = ms.search_b(synopsis_list, query)        
         final_result_list = []
-
         for i in result_list:
             final_result_list.append(movie_list[i])
 
     elif method == 'td-idf':
         result_list = ms.search_t(synopsis_list, query)
-        
         final_result_list = []
-
         for i in result_list:
             final_result_list.append(movie_list[i])
 
@@ -109,8 +117,33 @@ def show_movie(id):
     print("Showing movie")
     id = int(id)
     movie_ = Movie(id, titles[id], ratings[id], years[id], synopses[id])
-    theme_listing = ["theme 1", "theme 2", "theme 3", "theme 4", "theme 5"] 
+
+    
+
+    theme_listing = ["theme 1", "theme 2", "theme 3", "theme 4", "theme 5"]
+    nlp = spacy.load('en_core_web_sm')
+    text = movie_.get_synopsis()
+    text = nlp(text)
+    tag = ["PROPN"]
+    synopsis_no_names = ""
+    for token in text:
+        if token.pos_ not in tag:
+            print(token)
+            t = " " + token.text
+            synopsis_no_names += t
+    print(synopsis_no_names)
+    extractor = pke.unsupervised.TopicRank()
+    extractor.load_document(synopsis_no_names, language='en')
+    extractor.candidate_selection()
+    extractor.candidate_weighting()
+    number_of_themes = 10 #int(input("How many themes would you like? "))
+    keyphrases = extractor.get_n_best(n=number_of_themes)
+    print("The themes are as follows:", keyphrases)
+    
+
     #theme_listing = [] # Later on, here will be the function call for theme extraction
-    movie_.set_themes(theme_listing)
+    movie_.set_themes(keyphrases)
+
+    make_plot(keyphrases, movie_.get_title())
 
     return render_template('movie.html', result_list=result_list, id=id, movie_=movie_)
