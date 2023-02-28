@@ -175,6 +175,7 @@ try:
                     print(e)
                 
         #remove tags
+        #synopsis = re.sub(r'<br><br>', r"\n", synopsis) #makes paragraphs
         tags = re.findall(r"<[^<>]+>", synopsis)
         for i in range(len(tags)):
             synopsis = re.sub(r"<[^<>]+>", r"", synopsis)
