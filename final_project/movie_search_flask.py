@@ -51,19 +51,32 @@ ratings = file.readline().split("#")
 del ratings[-1]
 file.close()
 
+themes = []
+summaries = []
+
+# To be replaced with the real ones later!
+t = [("a", 0.12), ("b", 0.23), ("c",0.09), ("d",0.2), ("e",0.1)] # To be replaced
+s = "This is a movie summary." # To be replaced
+for i in range(len(ratings)):
+    themes.append(t)
+    summaries.append(s)
+
+
+
 file = open("synopses.txt", "r", encoding = "ISO-8859-1")
 
 synopses = file.read().split("</synopsis>")
 del synopses[-1] # remove newlines
 file.close()
 
-data = zip(titles, ratings, years, synopses)
+data = zip(titles, ratings, years, themes, summaries, synopses)
 query = ""
 result_list = []
 movie_list = []
 i = 0
 for item in data:
-    new_movie = Movie(i, item[0], item[1], item[2], item[3])
+    # New movie object Movie(id, title, rating, year, themes, summary, synopsis)
+    new_movie = Movie(i, item[0], item[1], item[2], item[3], item[4], item[5])
     movie_list.append(new_movie)
     i+=1
 
@@ -105,22 +118,23 @@ def search():
     if query:
         print('The query is "' + query +'".')
 
-    return render_template('index.html',  movie_list=movie_list, final_result_list=final_result_list, query=query, method=method)
+    return render_template('index.html',  movie_list=movie_list, final_result_list=final_result_list, number=len(final_result_list), query=query, method=method)
 
 
-@app.route('/movie/<id>')
+@app.route('/movie/<title>/<id>')
 
-def show_movie(id):
+def show_movie(title, id):
     """ This function creates a page for an individual movie object.
         Theme extraction and later on adding a plot is done here - only if
         the user clicks the link for that particular movie.
     """
     print("Showing movie")
     id = int(id)
-    movie_ = Movie(id, titles[id], ratings[id], years[id], synopses[id])
+    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id])
+    title = movie_.get_title()
 
-    
-
+    #This is now extra since we decided to extract themes for all the movies at once
+    """
     theme_listing = ["theme 1", "theme 2", "theme 3", "theme 4", "theme 5"]
     nlp = spacy.load('en_core_web_sm')
     text = movie_.get_synopsis()
@@ -144,7 +158,8 @@ def show_movie(id):
 
     #theme_listing = [] # Later on, here will be the function call for theme extraction
     movie_.set_themes(keyphrases)
+    """
 
-    make_plot(keyphrases, movie_.get_title())
+    make_plot(movie_.get_themes(), movie_.get_title())
 
-    return render_template('movie.html', result_list=result_list, id=id, movie_=movie_)
+    return render_template('movie.html', result_list=result_list, id=id, title=title, movie_=movie_)
