@@ -63,31 +63,41 @@ def index():
 def search():
     """ This function now goes through the data and makes a result list
         out of it if and only if the user has typed in a query.
-        Later on we will use the query to get relevant search results
+        Then it uses the query to get relevant search results
     """
     query = request.args.get('query')
     method = request.args.get('search_method')
+    
     i = 0
     doc_ids = []
     result_list = []
     final_result_list = []
 
-    if method == 'Boolean':
-        result_list = ms.search_b(synopsis_list, query)        
-        final_result_list = []
-        for i in result_list:
-            final_result_list.append(movie_list[i])
+    if query:
+        
+        if method == 'Boolean':
+            result_list = ms.search_b(synopsis_list, query)        
+            final_result_list = []
+            for i in result_list:
+                final_result_list.append(movie_list[i])
 
-    elif method == 'td-idf':
-        result_list = ms.search_t(synopsis_list, query)
-        final_result_list = []
-        for i in result_list:
-            final_result_list.append(movie_list[i])
+        elif method == 'td-idf':
+            result_list = ms.search_t(synopsis_list, query)
+            final_result_list = []
+            for i in result_list:
+                final_result_list.append(movie_list[i])
 
-    elif method == 'Third option':
-        print(ms.search_other())
+        elif method == 'Third option':
+            print(ms.search_other())
+
     else:
-        pass
+        if method == 'Boolean' or method == 'td-idf':
+            pass
+        elif method == 'List all movies':
+            final_result_list = movie_list[:]
+
+        else:
+            pass
 
     if query:
         print('The query is "' + query +'".')

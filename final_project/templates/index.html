@@ -10,50 +10,44 @@
             <input type="submit" action="search_method" value="td-idf" name="search_method">
             <input type="submit" action="search_method" value="Third option" name="search_method">
         </form>
+        <form id="show_all">
+            <input type="submit" action="search_method" value="List all movies" name="search_method">
+        </form>
     </div>
 
     {% if query %}
     <h2 class="h2">Your {{ method }} query "{{ query }}" matched {{ number }} movies:</h2>
-
     {% for item in final_result_list %}
     <p><a href="{{ url_for('show_movie', title=item.get_title(), id=item.get_id() )}}">{{ item.get_title() }}</a></p>
     <p>{{ item.get_summary() }}</p>
-        <tr>
-            {% for theme in item.get_themes() %}
-                <td>theme</td>
-            {% endfor %}
-        </tr>
+    <tr>
+        {% for theme in item.get_themes() %}
+        <td>theme</td>
+        {% endfor %}
+    </tr>
     <br><br>
-    
-
-    <!--<p>{{ item.get_synopsis() }}</p>-->
     {% endfor %}
 
-    <!--
-<table>
-    {% for item in result_list %}
+    {% else %}
+    {% if method == 'List all movies'%}
+    <h2 class="h2">List of all {{ number }} movies</h2>
+    {% for item in final_result_list %}
+    <p><a href="{{ url_for('show_movie', title=item.get_title(), id=item.get_id() )}}">{{ item.get_title() }}</a></p>
+    <p>{{ item.get_summary() }}</p>
     <tr>
-        <td>Movie id: {{ item.get_id() }} </td>
+        {% for theme in item.get_themes() %}
+        <td>theme</td>
+        {% endfor %}
     </tr>
-    <tr>
-        <td><a href="{{ url_for('show_movie', id=item.get_id() )}}">{{ item.get_title() }}</a></td>
-    </tr>
-    <tr>
-        <td>Rating: {{ item.get_rating() }}</td>
-    </tr>
-    <tr>
-        <td>{{ item.get_synopsis() }}</td>
-    </tr>
-    <tr>
-        <td>{{ item.get_title() }}</td>
-    </tr>
-
+    <br><br>
     {% endfor %}
-</table>
--->
+    {% endif %}
+    {% if method == 'Boolean' or method == 'td-idf' %}
+    <h2 class="h2">Write a search word</h2>
+    {% endif %}
 </div>
 {% endif %}
 
-{% endblock %}
 
-<!--https://creazilla.com/nodes/46027-movie-camera-emoji-clipart-->
+
+{% endblock %}
