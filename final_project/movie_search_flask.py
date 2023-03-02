@@ -13,6 +13,7 @@ from movies import *
 app = Flask(__name__)
 
 synopsis_list = ms.index_documents_from_text_file()
+synopsis_list_bold = []
 
 file = open("movies.txt", "r")
 ranks = file.readline().split("#")
@@ -47,6 +48,9 @@ data = zip(titles, ratings, years, themes, summaries, synopses)
 query = ""
 result_list = []
 movie_list = []
+
+    
+
 i = 0
 for item in data:
     # New movie object Movie(id, title, rating, year, themes, summary, synopsis)
@@ -70,25 +74,33 @@ def search():
     
     i = 0
     doc_ids = []
-    result_list = []
+    result_ids = []
     final_result_list = []
 
     if query:
         
         if method == 'Boolean':
-            result_list = ms.search_b(synopsis_list, query)        
+            result_ids = ms.search_b(synopsis_list, query)        
             final_result_list = []
-            for i in result_list:
+            for i in result_ids:
                 final_result_list.append(movie_list[i])
 
         elif method == 'td-idf':
-            result_list = ms.search_t(synopsis_list, query)
+            result_ids = ms.search_t(synopsis_list, query)
             final_result_list = []
-            for i in result_list:
+            for i in result_ids:
                 final_result_list.append(movie_list[i])
+
 
         elif method == 'Third option':
             print(ms.search_other())
+
+        for id in result_ids:
+            print("Original synopsis:")
+            print(movie_list[id].get_synopsis()[12:60])
+            s = movie_list[id].get_synopsis()
+            s_new = re.sub(str(query), f"<mark><b>{query}</b></mark>", s)
+            movie_list[id].set_synopsis(s_new)
 
     else:
         if method == 'Boolean' or method == 'td-idf':
@@ -102,7 +114,12 @@ def search():
     if query:
         print('The query is "' + query +'".')
 
-    return render_template('index.html',  movie_list=movie_list, final_result_list=final_result_list, number=len(final_result_list), query=query, method=method)
+
+
+
+    number=len(final_result_list)
+
+    return render_template('index.html',  movie_list=movie_list, final_result_list=final_result_list, number=number, query=query, method=method)
 
 
 @app.route('/movie/<title>/<id>')
@@ -114,8 +131,18 @@ def show_movie(title, id):
     """
     print("Showing movie")
     id = int(id)
+    #query = str(request.args.get('query'))
+    
+    print("SYNOPSIS")
+    print(synopses[id])
+    #synopsis_bold = ms.highlight_query(query, synopses[id])
+
     movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id])
     title = movie_.get_title()
+
+
+    
+
 
     #This is now extra since we decided to extract themes for all the movies at once
     """
@@ -146,4 +173,4 @@ def show_movie(title, id):
 
     ms.make_plot(movie_.get_themes(), movie_.get_title())
 
-    return render_template('movie.html', result_list=result_list, id=id, title=title, movie_=movie_)
+    return render_template('movie.html', result_list=result_list, id=id, query=query, title=title, movie_=movie_)

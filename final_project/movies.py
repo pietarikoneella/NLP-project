@@ -29,8 +29,16 @@ class Movie:
     def get_summary(self):
         return self.__summary
     
+    def set_synopsis(self, syn):
+        self.__synopsis = syn
+
     def get_synopsis(self):
         return self.__synopsis
+    
+
+    
+
+    
     
     #def set_themes(self, theme_list):
     #    self.__themes = theme_list[:]

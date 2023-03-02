@@ -183,5 +183,12 @@ def make_plot(keyph, title):
         labels = plt.bar_label(bar, values)
         plt.savefig(f'static/movie_{title}_plot.png')
 
+def highlight_query(query, text):
+    q = query.strip()
+    print("THE QUERY IS:", q)
+    #text_with_highlights = re.sub(q, f"<b>{q}</b>", text)
+    text_with_highlights = re.sub(q, f"OIUOIUOIUOIUOIU", text)
+    return text_with_highlights
+
 def search_other():
     return "This is some other search"
