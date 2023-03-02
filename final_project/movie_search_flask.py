@@ -14,32 +14,6 @@ app = Flask(__name__)
 
 synopsis_list = ms.index_documents_from_text_file()
 
-def make_plot(keyph, title):
-    if len(keyph) > 0:
-        themes = []
-        values = []
-
-        if f"./static/article_{title}_plot.png":
-            print(f"The plot for \"{title}\" is already in static!")
-        
-        for p in keyph:
-            print(p[0])
-            print(p[1])
-        
-        for p in keyph:
-            themes.append(p[0])
-            values.append(round(p[1], 2))
-        fig = plt.figure()
-        plt.title(f"Themes for movie \"{title}\"")
-        colors = plt.cm.rainbow(np.linspace(0, 1, 5))
-        bar = plt.bar(themes, values, color = colors)
-        plt.xticks(rotation=30)
-        plt.subplots_adjust(bottom=0.3)
-        plt.tight_layout()
-        labels = plt.bar_label(bar, values)
-        plt.savefig(f'static/movie_{title}_plot.png')
-
-
 file = open("movies.txt", "r")
 ranks = file.readline().split("#")
 del ranks[-1] # remove "\n"
@@ -160,6 +134,6 @@ def show_movie(title, id):
     movie_.set_themes(keyphrases)
     """
 
-    make_plot(movie_.get_themes(), movie_.get_title())
+    ms.make_plot(movie_.get_themes(), movie_.get_title())
 
     return render_template('movie.html', result_list=result_list, id=id, title=title, movie_=movie_)

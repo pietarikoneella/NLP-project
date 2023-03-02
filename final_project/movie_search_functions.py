@@ -158,5 +158,30 @@ def search_t(synopsis_list, query): #tf-idf search
     print("Best doc ids:", best_doc_ids)
     return best_doc_ids
 
+def make_plot(keyph, title):
+    if len(keyph) > 0:
+        themes = []
+        values = []
+
+        if f"./static/article_{title}_plot.png":
+            print(f"The plot for \"{title}\" is already in static!")
+        
+        for p in keyph:
+            print(p[0])
+            print(p[1])
+        
+        for p in keyph:
+            themes.append(p[0])
+            values.append(round(p[1], 2))
+        fig = plt.figure()
+        plt.title(f"Themes for movie \"{title}\"")
+        colors = plt.cm.rainbow(np.linspace(0, 1, 5))
+        bar = plt.bar(themes, values, color = colors)
+        plt.xticks(rotation=30)
+        plt.subplots_adjust(bottom=0.3)
+        plt.tight_layout()
+        labels = plt.bar_label(bar, values)
+        plt.savefig(f'static/movie_{title}_plot.png')
+
 def search_other():
     return "This is some other search"
