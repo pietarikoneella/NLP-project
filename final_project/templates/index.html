@@ -17,12 +17,14 @@
 
     {% for item in final_result_list %}
     <p><a href="{{ url_for('show_movie', title=item.get_title(), id=item.get_id() )}}">{{ item.get_title() }}</a></p>
+    <p>{{ item.get_summary() }}</p>
         <tr>
             {% for theme in item.get_themes() %}
                 <td>theme</td>
             {% endfor %}
         </tr>
-    <p>{{ item.get_summary() }}</p>
+    <br><br>
+    
 
     <!--<p>{{ item.get_synopsis() }}</p>-->
     {% endfor %}
