@@ -24,7 +24,7 @@ try:
     for movie in movies:
         rank = movie.find("td", class_="titleColumn").get_text(strip=True).split(".")[0]
 
-        if int(rank) > 179: # If you want fewer movies you can specify that here
+        if int(rank) > 250: # If you want fewer movies you can specify that here
             break
         else:
             name = movie.find("td", class_="titleColumn").a.text
@@ -100,7 +100,8 @@ try:
                 "https://www.imdb.com/title/tt0057565/plotsummary/?ref_=tt_stry_pl#synopsis",
                 "https://www.imdb.com/title/tt8267604/plotsummary/?ref_=tt_stry_pl#synopsis",
                 "https://www.imdb.com/title/tt0091251/plotsummary/?ref_=tt_stry_pl#synopsis",
-                "https://www.imdb.com/title/tt0012349/plotsummary/?ref_=tt_stry_pl#synopsis"]  #47,86,88,93,128,196,199,228,229,235, 
+                "https://www.imdb.com/title/tt0012349/plotsummary/?ref_=tt_stry_pl#synopsis",
+                "https://www.imdb.com/title/tt1201607/plotsummary/?ref_=tt_stry_pl#synopsis"]  #47,86,88,93,128,196,199,228,229,235, 
     
                       
                       
@@ -175,7 +176,7 @@ try:
                     print(e)
                 
         #remove tags
-        #synopsis = re.sub(r'<br><br>', r"\n", synopsis) #makes paragraphs
+        synopsis = re.sub(r'<br><br>', r"\n", synopsis) #makes paragraphs
         tags = re.findall(r"<[^<>]+>", synopsis)
         for i in range(len(tags)):
             synopsis = re.sub(r"<[^<>]+>", r"", synopsis)
