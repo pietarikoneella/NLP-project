@@ -279,8 +279,7 @@ try:
         elif url in url_not_decode:
             webpage = urlopen(req).read()
             webpage = str(webpage)
-            soup = BeautifulSoup(webpage, "html.parser")
-            summaries_text = soup.find_all("div", class_="ipc-html-content")
+            
                 
             try:
                 summary = str(summaries_text[0])
@@ -305,20 +304,67 @@ try:
         try:
             file.write(summary + "#")
             summaries.append(summary)
-            print("done_sum", a)
-            a = a + 1
-
+        
         except Exception as e:
             print(e)
             
+        print("done_sum", a)
+        a = a + 1
+        
     file.write("\n\n")        
     file.write(str(summaries) + "\n\n")    
-    
         
-        
-    
     file.close()
+
+    a = 1
+    file = open("imdb_photos.txt", "w")
+    photos_url = []
+    for url in ploturls:
     
+        req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        
+        if url not in url_not_decode:
+            webpage = urlopen(req).read().decode('utf-8')
+            webpage = str(webpage)
+            soup = BeautifulSoup(webpage, "html.parser")
+            photos = soup.find_all(class_="ipc-image")
+            photos = str(photos)
+            photos = re.search('src=\S+', photos)
+                
+            try:
+                photo = str(photos[0])
+                #remove tags
+                photo = re.sub(r'src=', r'', photo)
+                photo = re.sub(r' srcset', r'', photo)
+                #photos_url.append(photo)
+                
+            except Exception as e:
+                print(e)
+
+        elif url in url_not_decode:
+            webpage = urlopen(req).read()
+            webpage = str(webpage)
+            soup = BeautifulSoup(webpage, "html.parser")
+            photos = soup.find_all(class_="ipc-image")
+            photos = str(photos)
+            photos = re.search('src=\S+', photos)
+                
+            try:
+                photo = str(photos[0])
+                #remove tags
+                photo = re.sub(r'src=', r'', photo)
+                photo = re.sub(r' srcset', r'', photo)
+                #photos_url.append(photo)
+                
+            except Exception as e:
+                print(e)
+        file.write(photo + "#")
+        print("Photo done", a)
+        a = a + 1 
+                   
+    #file.write(str(photos_url) + "\n\n")
+        
+    file.close()    
     
 except Exception as e:
     print(e)
