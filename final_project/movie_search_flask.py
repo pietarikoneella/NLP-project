@@ -24,17 +24,19 @@ years = file.readline().split("#")
 del years[-1]
 ratings = file.readline().split("#")
 del ratings[-1]
+summaries = file.readline().split("#")
+del summaries[-1]
 file.close()
 
 themes = []
-summaries = []
+#summaries = []
 
 # To be replaced with the real ones later!
 t = [("a", 0.12), ("b", 0.23), ("c",0.09), ("d",0.2), ("e",0.1)] # To be replaced
-s = "This is a movie summary." # To be replaced
+#s = "This is a movie summary." # To be replaced
 for i in range(len(ratings)):
     themes.append(t)
-    summaries.append(s)
+    #summaries.append(s)
 
 
 
@@ -44,7 +46,12 @@ synopses = file.read().split("</synopsis>")
 del synopses[-1] # remove newlines
 file.close()
 
-data = zip(titles, ratings, years, themes, summaries, synopses)
+file = open("imdb_photos.txt", "r")
+photo = file.readline().split("#")
+del photo[-1]
+file.close()
+
+data = zip(titles, ratings, years, themes, summaries, synopses, photo)
 query = ""
 result_list = []
 movie_list = []
@@ -54,7 +61,7 @@ movie_list = []
 i = 0
 for item in data:
     # New movie object Movie(id, title, rating, year, themes, summary, synopsis)
-    new_movie = Movie(i, item[0], item[1], item[2], item[3], item[4], item[5])
+    new_movie = Movie(i, item[0], item[1], item[2], item[3], item[4], item[5], item[6])
     movie_list.append(new_movie)
     i+=1
 
@@ -137,7 +144,7 @@ def show_movie(title, id):
     print(synopses[id])
     #synopsis_bold = ms.highlight_query(query, synopses[id])
 
-    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id])
+    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id], photo[id])
     title = movie_.get_title()
 
 
