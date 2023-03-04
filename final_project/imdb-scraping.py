@@ -268,10 +268,10 @@ try:
             webpage = urlopen(req).read().decode('utf-8')
             webpage = str(webpage)
             soup = BeautifulSoup(webpage, "html.parser")
-            summaries = soup.find_all("div", class_="ipc-html-content")
+            summaries_text = soup.find_all("div", class_="ipc-html-content")
                 
             try:
-                summary = str(summaries[0])
+                summary = str(summaries_text[0])
             
             except Exception as e:
                 print(e)
@@ -280,10 +280,10 @@ try:
             webpage = urlopen(req).read()
             webpage = str(webpage)
             soup = BeautifulSoup(webpage, "html.parser")
-            summaries = soup.find_all("div", class_="ipc-html-content")
+            summaries_text = soup.find_all("div", class_="ipc-html-content")
                 
             try:
-                summary = str(summaries[0])
+                summary = str(summaries_text[0])
             
             except Exception as e:
                 print(e)
@@ -305,13 +305,15 @@ try:
         try:
             file.write(summary + "#")
             summaries.append(summary)
+            print("done_sum", a)
+            a = a + 1
 
         except Exception as e:
             print(e)
             
-        file.write(str(summaries) + "\n\n")    
-        print("done_sum", a)
-        a = a + 1
+    file.write("\n\n")        
+    file.write(str(summaries) + "\n\n")    
+    
         
         
     
