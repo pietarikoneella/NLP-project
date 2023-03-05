@@ -26,10 +26,10 @@ ratings = file.readline().split("#")
 del ratings[-1]
 summaries = file.readline().split("#")
 del summaries[-1]
-file.close()
+file.close() 
 
 themes = []
-#summaries = []
+
 
 # To be replaced with the real ones later!
 t = [("a", 0.12), ("b", 0.23), ("c",0.09), ("d",0.2), ("e",0.1)] # To be replaced
@@ -51,7 +51,7 @@ photo = file.readline().split("#")
 del photo[-1]
 file.close()
 
-data = zip(titles, ratings, years, themes, summaries, synopses, photo)
+data = zip(titles, ratings, years, themes, summaries, synopses, photo) 
 query = ""
 result_list = []
 movie_list = []
@@ -60,7 +60,7 @@ movie_list = []
 
 i = 0
 for item in data:
-    # New movie object Movie(id, title, rating, year, themes, summary, synopsis)
+    # New movie object Movie(id, title, rating, year, themes, summary, synopsis, photo)
     new_movie = Movie(i, item[0], item[1], item[2], item[3], item[4], item[5], item[6])
     movie_list.append(new_movie)
     i+=1
