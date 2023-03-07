@@ -15,7 +15,7 @@ app = Flask(__name__)
 synopsis_list = ms.index_documents_from_text_file()
 synopsis_list_bold = []
 
-file = open("movies.txt", "r")
+file = open("movies.txt", "r", encoding = "ISO-8859-1")
 ranks = file.readline().split("#")
 del ranks[-1] # remove "\n"
 titles = file.readline().split("#")
@@ -144,7 +144,7 @@ def show_movie(title, id):
     print(synopses[id])
     #synopsis_bold = ms.highlight_query(query, synopses[id])
 
-    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id], photo[id])
+    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id]) #, photo[id])
     title = movie_.get_title()
 
 

@@ -38,15 +38,12 @@ try:
             years.append(year)
             rating = movie.find("td", class_="ratingColumn imdbRating").strong.text
             ratings.append(rating)
-    
-
         
             a_tag = str(movie.find("td", class_="titleColumn").a)
             link = re.search(r'href=\"(\/title\/\w+\/)', a_tag)
             urls.append("https://www.imdb.com" + link.group(1))
-       
 
-
+            i += 1
 
     """
     #Extracting stuff from a movie's main page
@@ -64,7 +61,6 @@ try:
         #storyline = soup.find("div", class_="ipc-html-content-inner-div")
     """
 
-
     file = open("movies.txt", "w")
     for i in ranks:
         file.write(str(i) + "#")
@@ -77,11 +73,13 @@ try:
     file.write("\n")
     for i in ratings:
         file.write(str(i) + "#")
-    file.write("\n\n")
+    file.write("\n")
+    """
     file.write(str(ranks) + "\n\n")
     file.write(str(names) + "\n\n")
     file.write(str(years) + "\n\n")
     file.write(str(ratings) + "\n\n")
+    """
     file.close()
 
     #Extracting stuff from a movie's plot page
