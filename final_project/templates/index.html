@@ -21,10 +21,11 @@
     <p><a href="{{ url_for('show_movie', title=item.get_title(), id=item.get_id() )}}">{{ item.get_title() }}</a></p>
     <p>{{ item.get_summary() }}</p>
     <tr>
+	<td><b>Themes: </b></td>
         {% for theme in item.get_themes() %}
-        <td>theme</td>
+        <td>{{ theme[1] }},</td>
         {% endfor %}
-        <td><a class="show_more" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Show/hide query matches</a></td>
+        <br><td><a class="show_more" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Show/hide query matches</a></td>
 
   
 <div class="collapse" id="collapseExample">
@@ -44,8 +45,9 @@
     <p><a href="{{ url_for('show_movie', title=item.get_title(), id=item.get_id() )}}">{{ item.get_title() }}</a></p>
     <p>{{ item.get_summary() }}</p>
     <tr>
+	<td><b>Themes: </b></td>
         {% for theme in item.get_themes() %}
-        <td>theme</td>
+        <td>{{ theme[1] }},</td>
         {% endfor %}
     </tr>
     <br><br>

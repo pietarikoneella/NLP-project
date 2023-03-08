@@ -28,13 +28,26 @@ summaries = file.readline().split("#")
 del summaries[-1]
 file.close() 
 
-themes = []
+theme = [] # one score and keyphrase
+ten_themes = [] # themes for one movie
+themes = [] # list of lists of 10 themes
+file = open("synopsis_themes.txt", "r", encoding = "ISO-8859-1")
+for i in range(180):
+    for i in range(10):
+        theme = file.readline().split(" ", 1) # list of score and keyphrase
+        theme[0] = float(theme[0])  # convert score into float
+        theme[1] = re.sub(r"\n", r"", theme[1]) # remove newline from keyphrase
+        ten_themes.append(theme)
+    themes.append(ten_themes)
+    ten_themes = []
+    space = file.readline() # skip the empty lines
+file.close()
 
 
 # To be replaced with the real ones later!
 t = [("a", 0.12), ("b", 0.23), ("c",0.09), ("d",0.2), ("e",0.1)] # To be replaced
 #s = "This is a movie summary." # To be replaced
-for i in range(len(ratings)):
+for i in range(len(ratings) - 180):
     themes.append(t)
     #summaries.append(s)
 
@@ -98,7 +111,6 @@ def search():
             final_result_list = []
             for i in result_ids:
                 final_result_list.append(movie_list[i])
-
 
         elif method == 'Third option':
             print(ms.search_other())
