@@ -6,12 +6,12 @@
     <div class="form-group">
         <form id="search">
             <input type="text" name="query" autofocus>
-            <input type="submit" action="search_method" value="Boolean" name="search_method">
-            <input type="submit" action="search_method" value="td-idf" name="search_method">
-            <input type="submit" action="search_method" value="Third option" name="search_method">
+            <input type="submit" action="search_method" value="Boolean" name="search_method" title="This will return matching movies in order of IMDB rating score, the highest rated movie first.">
+            <input type="submit" action="search_method" value="td-idf" name="search_method" title="This will return matching movies in order of how well they match your query.">
+            <input type="submit" action="search_method" value="Third option" name="search_method" title="This button currently does nothing.">
         </form>
         <form id="show_all">
-            <input type="submit" action="search_method" value="List all movies" name="search_method">
+            <input type="submit" action="search_method" value="List all movies" name="search_method" title="List all movies in order of IMDB rating score, the highest rated movie first.">
         </form>
     </div>
 
