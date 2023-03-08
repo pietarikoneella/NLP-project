@@ -41,8 +41,9 @@ for i in range(len(ratings)):
 
 
 file = open("synopses.txt", "r", encoding = "ISO-8859-1")
-
-synopses = file.read().split("</synopsis>")
+synopses = file.read()
+synopses = re.sub(r"<synopsis>", "", synopses)
+synopses = synopses.split("</synopsis>")
 del synopses[-1] # remove newlines
 file.close()
 
