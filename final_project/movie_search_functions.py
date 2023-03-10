@@ -122,7 +122,6 @@ def search_b(synopsis_list, query): #boolean search
         if operator == "or" and all_one == True:
             shape = 1, len(synopsis_list)
             hits_matrix = numpy.ones(shape, dtype=int)
-            #print(hits_matrix)
     
         elif operator == "and":
             if len(parts) > 0:
