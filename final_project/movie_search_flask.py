@@ -34,10 +34,13 @@ theme = [] # one score and keyphrase
 ten_themes = [] # themes for one movie
 themes = [] # list of lists of 10 themes
 file = open("synopsis_themes.txt", "r", encoding = "ISO-8859-1")
-for i in range(180):
+for i in range(250):
     for i in range(10):
         theme = file.readline().split(" ", 1) # list of score and keyphrase
-        theme[0] = float(theme[0])  # convert score into float
+        try: # this try/except block is needed because one movie has just 7 themes
+            theme[0] = float(theme[0])  # convert score into float
+        except:
+            break
         theme[1] = re.sub(r"\n", r"", theme[1]) # remove newline from keyphrase
         ten_themes.append(theme)
     themes.append(ten_themes)
@@ -49,10 +52,11 @@ file.close()
 # To be replaced with the real ones later!
 t = [("a", 0.12), ("b", 0.23), ("c",0.09), ("d",0.2), ("e",0.1)] # To be replaced
 #s = "This is a movie summary." # To be replaced
+"""
 for i in range(len(ratings) - 180):
     themes.append(t)
     #summaries.append(s)
-
+"""
 
 
 file = open("synopses.txt", "r", encoding = "ISO-8859-1")
