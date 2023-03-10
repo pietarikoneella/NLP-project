@@ -9,10 +9,6 @@
 
         <h1>{{ movie_.get_title() }}</h1>
 
-        <!--<p>Movie id: {{ id }}</p>-->
-
-        <!--<p>Movie title: {{ movie_.get_title() }}</p>-->
-
         <p><b>Rating on IMDb</b>: {{ movie_.get_rating() }}</p>
         <p><b>Production year</b>: {{ movie_.get_year() }} </p>
 
@@ -27,17 +23,19 @@
                 <!--<img src="/static/cc_heart.png" class="mx-auto d-block p-1" alt="Creative Commons heart logo"
                     height="240" width="240" />-->
                 <img src="/static/movie_{{ movie_.get_title() }}_plot.png" class="mx-auto d-block p-1" alt="Theme plot"
-                height="480" width="640" />
+                    height="480" width="640" />
             </div>
         </div>
 
         <h2>Synopsis</h2>
-        <p>{{ movie_.get_synopsis() }}</p>
+        <p>{{ movie_.get_synopsis()[:400] }} <a class="show_more" style="font-size: 1em; padding-left: 1em" data-toggle="collapse" href="#collapseExample"
+            role="button" aria-expanded="false" aria-controls="collapseExample">Show whole synopsis</a>
+        <div class="collapse" id="collapseExample">
+            <p style="padding: 0em;">{{ movie_.get_synopsis()[400:] | safe }}</p>
+        </div>
 
 
 
     </div>
-
-    <!--<a href="{{ url_for('index', result_list=result_list, id=id)}}">Search results</a>-->
 
     {% endblock %}
