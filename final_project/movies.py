@@ -2,7 +2,7 @@ from flask import Flask
 
 class Movie:
 
-    def __init__(self, id, title, rating, year, themes, summary, synopsis):
+    def __init__(self, id, title, rating, year, themes, summary, synopsis):#, photo):
         self.__id = id
         self.__title = title
         self.__rating = rating
@@ -10,6 +10,7 @@ class Movie:
         self.__themes = themes
         self.__summary = summary
         self.__synopsis = synopsis
+       # self.__photo = photo
     
     def get_id(self):
         return self.__id
@@ -34,6 +35,9 @@ class Movie:
 
     def get_synopsis(self):
         return self.__synopsis
+
+    #def get_photo(self):
+    #    return self.__photo
     
 
     

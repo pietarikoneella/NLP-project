@@ -171,8 +171,8 @@ def make_plot(keyph, title):
             print(p[1])
         
         for p in keyph:
-            themes.append(p[0])
-            values.append(round(p[1], 2))
+            themes.append(p[1])
+            values.append(round(p[0], 2))
         fig = plt.figure()
         plt.title(f"Themes for movie \"{title}\"")
         colors = plt.cm.rainbow(np.linspace(0, 1, 5))
