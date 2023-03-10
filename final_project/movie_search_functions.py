@@ -70,7 +70,6 @@ def search_b(synopsis_list, query): #boolean search
     # this block of code helps with that 
     try:
         terms = cv.get_feature_names_out()
-        #print("Terms:", terms)
     except AttributeError:
         terms = cv.get_feature_names()
     
@@ -155,7 +154,7 @@ def search_t(synopsis_list, query): #tf-idf search
 
     except IndexError: # Entering an unknown word causes IndexError
         print("No matches")
-    print("Best doc ids:", best_doc_ids)
+    #print("Best doc ids:", best_doc_ids)
     return best_doc_ids
 
 def make_plot(keyph, title):
@@ -165,11 +164,7 @@ def make_plot(keyph, title):
 
         if f"./static/article_{title}_plot.png":
             print(f"The plot for \"{title}\" is already in static!")
-        
-        for p in keyph:
-            print(p[0])
-            print(p[1])
-        
+                
         for p in keyph:
             themes.append(p[1])
             values.append(round(p[0], 2))
@@ -183,12 +178,6 @@ def make_plot(keyph, title):
         labels = plt.bar_label(bar, values)
         plt.savefig(f'static/movie_{title}_plot.png')
 
-#def highlight_query(query, text):
-#    q = query.strip()
-#    print("THE QUERY IS:", q)
-    #text_with_highlights = re.sub(q, f"<b>{q}</b>", text)
-#    text_with_highlights = re.sub(q, f"OIUOIUOIUOIUOIU", text)
-#    return text_with_highlights
 
 def search_other():
     return "This is some other search"

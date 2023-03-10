@@ -3,35 +3,43 @@
 {% block body %}
 
 <div class="container text-left">
+    <p>Enter a query and find an interesting movie to watch. (Hover over the buttons for more information!)</p>
     <div class="form-group">
         <form id="search">
             <input type="text" name="query" autofocus>
-            <input type="submit" action="search_method" value="Boolean" name="search_method" title="This will return matching movies in order of IMDB rating score, the highest rated movie first.">
-            <input type="submit" action="search_method" value="td-idf" name="search_method" title="This will return matching movies in order of how well they match your query.">
-            <input type="submit" action="search_method" value="Third option" name="search_method" title="This button currently does nothing.">
+            <input type="submit" action="search_method" value="Boolean" name="search_method"
+                title="This will return matching movies in order of IMDB rating score, the highest rated movie first.">
+            <input type="submit" action="search_method" value="td-idf" name="search_method"
+                title="This will return matching movies in order of how well they match your query.">
+            <input type="submit" action="search_method" value="Third option" name="search_method"
+                title="This button currently does nothing.">
         </form>
         <form id="show_all">
-            <input type="submit" action="search_method" value="List all movies" name="search_method" title="List all movies in order of IMDB rating score, the highest rated movie first.">
+            <input type="submit" action="search_method" value="List all movies" name="search_method"
+                title="List all movies in order of IMDB rating score, the highest rated movie first.">
         </form>
     </div>
 
     {% if query %}
     <h2 class="h2">Your {{ method }} query "{{ query }}" matched {{ number }} movies:</h2>
     {% for item in final_result_list %}
-    <p><a href="{{ url_for('show_movie', title=item.get_title(), id=item.get_id() )}}">{{ item.get_title() }}</a></p>
-    <p>{{ item.get_summary() }}</p>
+    <p><a href="{{ url_for('show_movie', title=item.get_title(), id=item.get_id() )}}">{{ item.get_title() }}</a><a
+            class="show_more" style="font-size: 1em; padding-left: 1em" data-toggle="collapse" href="#collapseExample"
+            role="button" aria-expanded="false" aria-controls="collapseExample">Show/hide synopsis with highlighted
+            query matches</a></p>
+    <p><b>Movie summary:</b> {{ item.get_summary() }}</p>
     <tr>
-	<td><b>Themes: </b></td>
+        <td><b>Themes: </b></td>
         {% for theme in item.get_themes() %}
         <td>{{ theme[1] }},</td>
         {% endfor %}
-        <br><td><a class="show_more" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Show/hide query matches</a></td>
+    </tr>
 
-  
-<div class="collapse" id="collapseExample">
-    <p>{{ item.get_synopsis() | safe }}</p>
-  <!--<div class="card card-body">{{ item.get_synopsis() }}</div>-->
-</div>
+
+
+    <div class="collapse" id="collapseExample">
+        <p><b>Synopsis: </b>{{ item.get_synopsis() | safe }}</p>
+    </div>
 
 
     </tr>
@@ -45,7 +53,7 @@
     <p><a href="{{ url_for('show_movie', title=item.get_title(), id=item.get_id() )}}">{{ item.get_title() }}</a></p>
     <p>{{ item.get_summary() }}</p>
     <tr>
-	<td><b>Themes: </b></td>
+        <td><b>Themes: </b></td>
         {% for theme in item.get_themes() %}
         <td>{{ theme[1] }},</td>
         {% endfor %}
