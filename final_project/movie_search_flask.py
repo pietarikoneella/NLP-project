@@ -129,6 +129,8 @@ def search():
                 result_ids = ms.search_b(stemmed_synopsis_list, stemmed_query)        
                 final_result_list = []
                 if len(result_ids) > 0:
+                    print("THE LENGTH:", len(movie_list))
+                    print(result_ids)
                     for i in result_ids:
                         final_result_list.append(movie_list[i])
 

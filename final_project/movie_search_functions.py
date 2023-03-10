@@ -60,6 +60,8 @@ def rewrite_query(query): # rewrite every token in the query
 def search_b(synopsis_list, query): #boolean search
     """This function handles the Boolean search
     """
+    if synopsis_list[-1] == "":
+        synopsis_list = synopsis_list[:250]
     hits_list = []
     cv = CountVectorizer(lowercase=True, binary=True, token_pattern=r"(?u)\b\w\w*\b") # indexing all words containing alphanumeric characters
     
@@ -76,6 +78,13 @@ def search_b(synopsis_list, query): #boolean search
     t2i = cv.vocabulary_
     parts = query.split()
     parts_without = parts[:]
+    parts_into_string = " ".join(parts)
+    try:
+        hits_matrix = eval(rewrite_query(parts_into_string))
+        print(hits_matrix)
+    except:
+        print("Oops")
+    
 
     all_one = False
 
