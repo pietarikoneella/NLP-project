@@ -23,27 +23,23 @@
     {% if query %}
     <h2 class="h2">Your {{ method }} query "{{ query }}" matched {{ number }} movies:</h2>
     {% for item in final_result_list %}
-    <p><a href="{{ url_for('show_movie', title=item.get_title(), id=item.get_id() )}}">{{ item.get_title() }}</a><a
-            class="show_more" style="font-size: 1em; padding-left: 1em" data-toggle="collapse" href="#collapseExample"
+    <p><a title="Go to a more detailed page for this movie." href="{{ url_for('show_movie', title=item.get_title(), id=item.get_id() )}}">{{ item.get_title() }}</a>
+        <a class="show_more" style="font-size: 1em; padding-left: 1em" data-toggle="collapse" href="#collapseExample"
             role="button" aria-expanded="false" aria-controls="collapseExample">Show/hide synopsis with highlighted
             query matches</a></p>
     <p><b>Movie summary:</b> {{ item.get_summary() }}</p>
     <tr>
         <td><b>Themes: </b></td>
-        {% for theme in item.get_themes() %}
+        {% for theme in item.get_themes()[:-1] %}
         <td>{{ theme[1] }},</td>
         {% endfor %}
+        <td>{{ item.get_themes()[-1][1] }}</td>
     </tr>
-
-
 
     <div class="collapse" id="collapseExample">
         <p><b>Synopsis: </b>{{ item.get_synopsis() | safe }}</p>
     </div>
 
-
-    </tr>
-    <br><br>
     {% endfor %}
 
     {% else %}
