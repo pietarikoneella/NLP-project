@@ -17,7 +17,7 @@ synopsis_list_bold = []
 stemmed_synopsis_list = ms.stemming_documents(synopsis_list)
 
 
-file = open("movies.txt", "r", encoding = "ISO-8859-1")
+file = open("movies.txt", "r", encoding = "utf-8")
 ranks = file.readline().split("#")
 del ranks[-1] # remove "\n"
 titles = file.readline().split("#")
@@ -33,7 +33,7 @@ file.close()
 theme = [] # one score and keyphrase
 ten_themes = [] # themes for one movie
 themes = [] # list of lists of 10 themes
-file = open("synopsis_themes.txt", "r", encoding = "ISO-8859-1")
+file = open("synopsis_themes.txt", "r", encoding = "utf-8")
 for i in range(180):
     for i in range(10):
         theme = file.readline().split(" ", 1) # list of score and keyphrase
@@ -55,7 +55,7 @@ for i in range(len(ratings) - 180):
 
 
 
-file = open("synopses.txt", "r", encoding = "ISO-8859-1")
+file = open("synopses.txt", "r", encoding = "utf-8")
 synopses = file.read()
 synopses = re.sub(r"<synopsis>", "", synopses)
 synopses = synopses.split("</synopsis>")
