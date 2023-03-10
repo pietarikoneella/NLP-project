@@ -21,14 +21,18 @@ file.close()
 file_no_names.close()
 
 # get synopsis
-file = open("synopsis_no_names.txt", "r")
+file = open("synopsis_no_names.txt", "r", encoding = "ISO-8859-1")
 text = file.read()
-synopses = re.findall(r"< synopsis >(.+)<\/synopsis > ", text)
+synopsis_tuples = re.findall(r"(< synopsis ?>|< Pianist \"|< , \"|< 's|< ,)(.+)(<\/synopsis )?> ", text)
+synopses = []
+for i in synopsis_tuples:
+    synopses.append(i[1])
 print("getting synopsis")
 file.close()
 
 # extract themes
 file = open("synopsis_themes.txt", "w")
+i = 0
 for synopsis in synopses:
     extractor.load_document(synopsis, language='en')
     extractor.candidate_selection()
@@ -37,5 +41,7 @@ for synopsis in synopses:
     keyphrases = extractor.get_n_best(n=number_of_themes)
     for theme in keyphrases:
         file.write(str(theme[1]) + " " + theme[0] + "\n")
-    file.write("\n")    
+    file.write("\n")
+    i += 1
+    print(i, "synopses processed.")
 file.close()

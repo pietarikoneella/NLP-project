@@ -15,7 +15,7 @@ app = Flask(__name__)
 synopsis_list = ms.index_documents_from_text_file()
 synopsis_list_bold = []
 
-file = open("movies.txt", "r")
+file = open("movies.txt", "r", encoding = "ISO-8859-1")
 ranks = file.readline().split("#")
 del ranks[-1] # remove "\n"
 titles = file.readline().split("#")
@@ -28,21 +28,35 @@ summaries = file.readline().split("#")
 del summaries[-1]
 file.close() 
 
-themes = []
+theme = [] # one score and keyphrase
+ten_themes = [] # themes for one movie
+themes = [] # list of lists of 10 themes
+file = open("synopsis_themes.txt", "r", encoding = "ISO-8859-1")
+for i in range(180):
+    for i in range(10):
+        theme = file.readline().split(" ", 1) # list of score and keyphrase
+        theme[0] = float(theme[0])  # convert score into float
+        theme[1] = re.sub(r"\n", r"", theme[1]) # remove newline from keyphrase
+        ten_themes.append(theme)
+    themes.append(ten_themes)
+    ten_themes = []
+    space = file.readline() # skip the empty lines
+file.close()
 
 
 # To be replaced with the real ones later!
 t = [("a", 0.12), ("b", 0.23), ("c",0.09), ("d",0.2), ("e",0.1)] # To be replaced
 #s = "This is a movie summary." # To be replaced
-for i in range(len(ratings)):
+for i in range(len(ratings) - 180):
     themes.append(t)
     #summaries.append(s)
 
 
 
 file = open("synopses.txt", "r", encoding = "ISO-8859-1")
-
-synopses = file.read().split("</synopsis>")
+synopses = file.read()
+synopses = re.sub(r"<synopsis>", "", synopses)
+synopses = synopses.split("</synopsis>")
 del synopses[-1] # remove newlines
 file.close()
 
@@ -98,7 +112,6 @@ def search():
             for i in result_ids:
                 final_result_list.append(movie_list[i])
 
-
         elif method == 'Third option':
             print(ms.search_other())
 
@@ -144,7 +157,7 @@ def show_movie(title, id):
     print(synopses[id])
     #synopsis_bold = ms.highlight_query(query, synopses[id])
 
-    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id], photo[id])
+    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id]) #, photo[id])
     title = movie_.get_title()
 
 
