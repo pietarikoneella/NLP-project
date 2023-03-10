@@ -82,22 +82,22 @@ def search():
         if method == 'Boolean':
             result_ids = ms.search_b(synopsis_list, query)        
             final_result_list = []
-            for i in result_ids:
-                final_result_list.append(movie_list[i])
+            if len(result_ids) > 0:
+                for i in result_ids:
+                    final_result_list.append(movie_list[i])
 
         elif method == 'td-idf':
             result_ids = ms.search_t(synopsis_list, query)
             final_result_list = []
-            for i in result_ids:
-                final_result_list.append(movie_list[i])
+            if len(result_list) > 0:
+                for i in result_ids:
+                    final_result_list.append(movie_list[i])
 
 
         elif method == 'Third option':
             print(ms.search_other())
 
         for id in result_ids:
-            print("Original synopsis:")
-            print(movie_list[id].get_synopsis()[12:60])
             s = movie_list[id].get_synopsis()
             s_new = re.sub(str(query), f"<mark><b>{query}</b></mark>", s)
             movie_list[id].set_synopsis(s_new)
@@ -114,9 +114,6 @@ def search():
     if query:
         print('The query is "' + query +'".')
 
-
-
-
     number=len(final_result_list)
 
     return render_template('index.html',  movie_list=movie_list, final_result_list=final_result_list, number=number, query=query, method=method)
@@ -129,12 +126,12 @@ def show_movie(title, id):
         Theme extraction and later on adding a plot is done here - only if
         the user clicks the link for that particular movie.
     """
-    print("Showing movie")
+    #print("Showing movie")
     id = int(id)
     #query = str(request.args.get('query'))
     
-    print("SYNOPSIS")
-    print(synopses[id])
+    #print("SYNOPSIS")
+    #print(synopses[id])
     #synopsis_bold = ms.highlight_query(query, synopses[id])
 
     movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id])
