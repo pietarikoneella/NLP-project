@@ -95,7 +95,7 @@ try:
             "https://www.imdb.com/title/tt0015324/plotsummary/?ref_=tt_stry_pl#synopsis"]  #180,195
     url_2= ["https://www.imdb.com/title/tt0088763/plotsummary/?ref_=tt_stry_pl#synopsiss",
             "https://www.imdb.com/title/tt2024544/plotsummary/?ref_=tt_stry_pl#synopsis",
-            "https://www.imdb.com/title/tt2278388/plotsummary/?ref_=tt_stry_pl#synopsis"] #30, 180, 184
+            "https://www.imdb.com/title/tt2278388/plotsummary/?ref_=tt_stry_pl#synopsis"] #30, 181, 184
     url_3 = ["https://www.imdb.com/title/tt0107207/plotsummary/?ref_=tt_stry_pl#synopsis"] #189
 
     url_not_decode = ["https://www.imdb.com/title/tt1375666/plotsummary/?ref_=tt_stry_pl#synopsis",
@@ -146,7 +146,7 @@ try:
             summaries = soup.find_all("div", class_="ipc-html-content")
                 
             try:
-                summary = str(summaries[8])
+                synopsis = str(summaries[8])
             
             except Exception as e:
                 print(e)
@@ -158,7 +158,7 @@ try:
             summaries = soup.find_all("div", class_="ipc-html-content")
                 
             try:
-                summary = str(summaries[11])
+                synopsis = str(summaries[11])
             
             except Exception as e:
                 print(e)
@@ -170,7 +170,7 @@ try:
             summaries = soup.find_all("div", class_="ipc-html-content")
                 
             try:
-                summary = str(summaries[7])
+                synopsis = str(summaries[7])
             
             except Exception as e:
                 print(e)
@@ -244,6 +244,7 @@ try:
         synopsis = re.sub(r'\\xc3\\xbc', r"u", synopsis)
         synopsis = re.sub(r'\\xc3\\xb6', r"o", synopsis)
         synopsis = re.sub(r'&mdash;', r"", synopsis)
+        synopsis = re.sub(r'\\n', r"\n", synopsis)
         
         file.write("<synopsis>" + synopsis + "</synopsis>\n\n")
         
