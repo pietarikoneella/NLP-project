@@ -36,15 +36,10 @@
         <td>{{ item.get_themes()[-1][1] }}</td>
     </tr>
 
-
-
     <div class="collapse" id="collapseExample">
         <p><b>Synopsis: </b>{{ item.get_synopsis() | safe }}</p>
     </div>
 
-
-    </tr>
-    <br><br>
     {% endfor %}
 
     {% else %}
