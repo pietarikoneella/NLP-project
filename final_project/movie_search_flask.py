@@ -14,6 +14,7 @@ app = Flask(__name__)
 
 synopsis_list = ms.index_documents_from_text_file()
 synopsis_list_bold = []
+stemmed_synopsis_list = ms.stemming_documents(synopsis_list)
 
 file = open("movies.txt", "r", encoding = "ISO-8859-1")
 ranks = file.readline().split("#")
@@ -26,7 +27,8 @@ ratings = file.readline().split("#")
 del ratings[-1]
 summaries = file.readline().split("#")
 del summaries[-1]
-file.close() 
+file.close()
+
 
 theme = [] # one score and keyphrase
 ten_themes = [] # themes for one movie
@@ -99,23 +101,43 @@ def search():
     final_result_list = []
 
     if query:
-        
-        if method == 'Boolean':
-            result_ids = ms.search_b(synopsis_list, query)        
-            final_result_list = []
-            if len(result_ids) > 0:
-                for i in result_ids:
-                    final_result_list.append(movie_list[i])
+        # Exact match
+        if '"' in query:
+            query = re.sub(r"\"", r"", query)                
+            if method == 'Boolean':
+                result_ids = ms.search_b(synopsis_list, query)        
+                final_result_list = []
+                if len(result_ids) > 0:
+                    for i in result_ids:
+                        final_result_list.append(movie_list[i])
 
-        elif method == 'td-idf':
-            result_ids = ms.search_t(synopsis_list, query)
-            final_result_list = []
-            if len(result_list) > 0:
-                for i in result_ids:
-                    final_result_list.append(movie_list[i])
+            elif method == 'td-idf':
+                result_ids = ms.search_t(synopsis_list, query)
+                final_result_list = []
+                if len(result_list) > 0:
+                    for i in result_ids:
+                        final_result_list.append(movie_list[i])
 
-        elif method == 'Third option':
-            print(ms.search_other())
+            elif method == 'Third option':
+                print(ms.search_other())
+        # Stem search
+        elif '"' not in query:                
+            stemmed_query = ms.stem_query(query)
+            if method == 'Boolean':
+                result_ids = ms.search_b(stemmed_synopsis_list, stemmed_query)        
+                final_result_list = []
+                if len(result_ids) > 0:
+                    for i in result_ids:
+                        final_result_list.append(movie_list[i])
+
+            elif method == 'td-idf':
+                result_ids = ms.search_t(stemmed_synopsis_list, stemmed_query)
+                final_result_list = []
+                if len(result_list) > 0:
+                    for i in result_ids:
+                        final_result_list.append(movie_list[i])
+            
+                
 
         for id in result_ids:
             s = movie_list[id].get_synopsis()
