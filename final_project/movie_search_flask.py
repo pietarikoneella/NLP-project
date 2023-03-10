@@ -129,8 +129,6 @@ def search():
                 result_ids = ms.search_b(stemmed_synopsis_list, stemmed_query)        
                 final_result_list = []
                 if len(result_ids) > 0:
-                    print("THE LENGTH:", len(movie_list))
-                    print(result_ids)
                     for i in result_ids:
                         final_result_list.append(movie_list[i])
 
@@ -140,17 +138,29 @@ def search():
                 if len(result_ids) > 0:
                     for i in result_ids:
                         final_result_list.append(movie_list[i])
-            
-
-                    
 
         elif method == 'Third option':
             print(ms.search_other())
 
+
+
         for id in result_ids:
             s = movie_list[id].get_synopsis()
-            s_new = re.sub(str(query), f"<mark><b>{query}</b></mark>", s)
-            movie_list[id].set_synopsis(s_new)
+            parts = query.split()
+            print("PARTS OF THE QUERY:", parts)
+            queries = []
+            for part in parts:
+                if part != "or" and part != "and":
+                    if part.islower():
+                        part_upper = part[0].upper() + part[1:]
+                        queries.append(part_upper)
+                    queries.append(part)
+            print("QUERY WORDS:", queries)
+  
+            s_new = s[:]
+            for q in queries:    
+                s_new = re.sub(str(q), f"<mark><b>{q}</b></mark>", s_new)
+                movie_list[id].set_synopsis(s_new)
 
     else:
         if method == 'Boolean' or method == 'td-idf':
