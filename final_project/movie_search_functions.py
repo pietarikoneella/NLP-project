@@ -25,7 +25,7 @@ def index_documents_from_text_file():
     # Opening the file, storing the contents of the article into one string, closing the file
     try:
     
-        input_file = open("synopses.txt", "r", encoding = "ISO-8859-1")    
+        input_file = open("synopses.txt", "r", encoding = "utf-8")    
 
         #for line in input_file:
         #    line = line.strip()
