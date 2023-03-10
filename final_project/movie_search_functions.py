@@ -158,6 +158,35 @@ def search_t(synopsis_list, query): #tf-idf search
     print("Best doc ids:", best_doc_ids)
     return best_doc_ids
 
+def stemming_documents(docs):
+
+    ps = PorterStemmer()
+    docs_tokens = [word_tokenize(i) for i in docs]
+    docs = [[]]
+    docs = [[ps.stem(token) for token in docs_tokens[i]] for i in range(0, len(docs_tokens))]
+                         
+    for i in range(0, len(docs)):
+        docs[i] = " ".join(docs[i])
+    return(docs)
+
+
+def stem_query(q):
+    ps = PorterStemmer()
+    query_split = q.split(" ")
+    
+    for i in range(0, len(query_split)):
+        if i == 0:
+            q = "".join(q)
+            q = ps.stem(q)
+
+        elif i > 0:
+            query_list_stem = []
+            query_list_stem = [ps.stem(token) for token in query_split] 
+            q = " ".join(query_list_stem)
+
+    return q
+
+
 def make_plot(keyph, title):
     if len(keyph) > 0:
         themes = []
