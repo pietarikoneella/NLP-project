@@ -147,7 +147,6 @@ def search():
         for id in result_ids:
             s = movie_list[id].get_synopsis()
             parts = query.split()
-            print("PARTS OF THE QUERY:", parts)
             queries = []
             for part in parts:
                 if part != "or" and part != "and":
@@ -155,7 +154,6 @@ def search():
                         part_upper = part[0].upper() + part[1:]
                         queries.append(part_upper)
                     queries.append(part)
-            print("QUERY WORDS:", queries)
   
             s_new = s[:]
             for q in queries:    
