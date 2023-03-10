@@ -146,47 +146,10 @@ def show_movie(title, id):
         Theme extraction and later on adding a plot is done here - only if
         the user clicks the link for that particular movie.
     """
-    #print("Showing movie")
     id = int(id)
-    #query = str(request.args.get('query'))
-    
-    #print("SYNOPSIS")
-    #print(synopses[id])
-    #synopsis_bold = ms.highlight_query(query, synopses[id])
 
     movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id]) #, photo[id])
     title = movie_.get_title()
-
-
-    
-
-
-    #This is now extra since we decided to extract themes for all the movies at once
-    """
-    theme_listing = ["theme 1", "theme 2", "theme 3", "theme 4", "theme 5"]
-    nlp = spacy.load('en_core_web_sm')
-    text = movie_.get_synopsis()
-    text = nlp(text)
-    tag = ["PROPN"]
-    synopsis_no_names = ""
-    for token in text:
-        if token.pos_ not in tag:
-            print(token)
-            t = " " + token.text
-            synopsis_no_names += t
-    print(synopsis_no_names)
-    extractor = pke.unsupervised.TopicRank()
-    extractor.load_document(synopsis_no_names, language='en')
-    extractor.candidate_selection()
-    extractor.candidate_weighting()
-    number_of_themes = 10 #int(input("How many themes would you like? "))
-    keyphrases = extractor.get_n_best(n=number_of_themes)
-    print("The themes are as follows:", keyphrases)
-    
-
-    #theme_listing = [] # Later on, here will be the function call for theme extraction
-    movie_.set_themes(keyphrases)
-    """
 
     ms.make_plot(movie_.get_themes(), movie_.get_title())
 
