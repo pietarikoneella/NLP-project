@@ -110,7 +110,7 @@ def search():
         elif method == 'td-idf':
             result_ids = ms.search_t(synopsis_list, query)
             final_result_list = []
-            if len(result_list) > 0:
+            if len(result_ids) > 0:
                 for i in result_ids:
                     final_result_list.append(movie_list[i])
 
