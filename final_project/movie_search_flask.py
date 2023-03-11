@@ -104,6 +104,7 @@ def search():
     doc_ids = []
     result_ids = []
     final_result_list = []
+    s_new = []
 
     if query:
         #Exact matches
@@ -143,8 +144,6 @@ def search():
         elif method == 'Third option':
             print(ms.search_other())
 
-
-
         for id in result_ids:
             s = movie_list[id].get_synopsis()
             parts = query.split()
@@ -158,7 +157,7 @@ def search():
   
             s_new = s[:]
             for q in queries:    
-                s_new = re.sub(str(q), f"<mark><b>{q}</b></mark>", s_new)
+                s_new = re.sub("\\b"+str(q)+"\\b", f"<mark><b> {q} </b></mark>", s_new)
                 movie_list[id].set_synopsis(s_new)
 
     else:
@@ -191,5 +190,6 @@ def show_movie(title, id):
     title = movie_.get_title()
 
     ms.make_plot(movie_.get_themes(), movie_.get_title())
+    ms.make_bubble_plot(movie_.get_themes(), movie_.get_title())
 
     return render_template('movie.html', result_list=result_list, id=id, query=query, title=title, movie_=movie_)
