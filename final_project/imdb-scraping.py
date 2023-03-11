@@ -319,7 +319,7 @@ try:
     a = 1
     file = open("imdb_photos.txt", "w")
     photos_url = []
-    for url in ploturls:
+    for url in urls:
     
         req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         
