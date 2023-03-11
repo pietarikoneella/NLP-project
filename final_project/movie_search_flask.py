@@ -33,7 +33,7 @@ file.close()
 theme = [] # one score and keyphrase
 ten_themes = [] # themes for one movie
 themes = [] # list of lists of 10 themes
-file = open("synopsis_themes.txt", "r", encoding = "ISO-8859-1")
+file = open("synopsis_themes.txt", "r", encoding= 'utf-8')
 for i in range(250):
     for i in range(10):
         theme = file.readline().split(" ", 1) # list of score and keyphrase
@@ -59,7 +59,7 @@ for i in range(len(ratings) - 180):
 """
 
 
-file = open("synopses.txt", "r", encoding = "ISO-8859-1")
+file = open("synopses.txt", "r", encoding= 'Windows-1252')
 synopses = file.read()
 synopses = re.sub(r"<synopsis>", "", synopses)
 synopses = synopses.split("</synopsis>")
