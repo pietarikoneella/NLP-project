@@ -8,6 +8,9 @@
                 list</a></p>
 
         <h1>{{ movie_.get_title() }}</h1>
+	  
+	  <!--<img src="/static/cc_heart.png" class="mx-auto d-block p-1" alt="Creative Commons heart logo" height="100" width="100"/>-->
+        <img srcset="{{ movie_.get_photo() }}" class="mx-auto d-block p-1" alt="Movie picture" height="100" width="100" />
 
         <p><b>Rating on IMDb</b>: {{ movie_.get_rating() }}</p>
         <p><b>Production year</b>: {{ movie_.get_year() }} </p>

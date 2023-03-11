@@ -28,7 +28,11 @@ ratings = file.readline().split("#")
 del ratings[-1]
 summaries = file.readline().split("#")
 del summaries[-1]
-file.close() 
+file.close()
+
+file = open("imdb_photos.txt", "r")
+photos = file.readline().split("#")
+file.close()
 
 theme = [] # one score and keyphrase
 ten_themes = [] # themes for one movie
@@ -66,12 +70,9 @@ synopses = synopses.split("</synopsis>")
 del synopses[-1] # remove newlines
 file.close()
 
-#file = open("imdb_photos.txt", "r")
-#photo = file.readline().split("#")
-#del photo[-1]
-#file.close()
 
-data = zip(titles, ratings, years, themes, summaries, synopses)#, photo) 
+
+data = zip(titles, ratings, years, themes, summaries, synopses, photos) 
 query = ""
 result_list = []
 movie_list = []
@@ -80,8 +81,8 @@ movie_list = []
 
 i = 0
 for item in data:
-    # New movie object Movie(id, title, rating, year, themes, summary, synopsis, photo)
-    new_movie = Movie(i, item[0], item[1], item[2], item[3], item[4], item[5]) #, item[6])
+    # New movie object Movie(id, title, rating, year, themes, summary, synopsis, photos)
+    new_movie = Movie(i, item[0], item[1], item[2], item[3], item[4], item[5], item[6])
     movie_list.append(new_movie)
     i+=1
 
@@ -186,7 +187,7 @@ def show_movie(title, id):
     """
     id = int(id)
 
-    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id]) #, photo[id])
+    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id], photos[id])
     title = movie_.get_title()
 
     ms.make_plot(movie_.get_themes(), movie_.get_title())
