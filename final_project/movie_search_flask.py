@@ -187,7 +187,7 @@ def show_movie(title, id):
     """
     id = int(id)
 
-    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id], photos[id])
+    movie_ = Movie(id, titles[id], ratings[id], years[id], themes[id], summaries[id], synopses[id], photos[id][1:(len(photos[id])-2)])
     title = movie_.get_title()
 
     ms.make_plot(movie_.get_themes(), movie_.get_title())

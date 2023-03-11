@@ -10,10 +10,14 @@
         <h1>{{ movie_.get_title() }}</h1>
 	  
 	  <!--<img src="/static/cc_heart.png" class="mx-auto d-block p-1" alt="Creative Commons heart logo" height="100" width="100"/>-->
-        <img srcset="{{ movie_.get_photo() }}" class="mx-auto d-block p-1" alt="Movie picture" height="100" width="100" />
-
+      
+        
         <p><b>Rating on IMDb</b>: {{ movie_.get_rating() }}</p>
         <p><b>Production year</b>: {{ movie_.get_year() }} </p>
+    
+    <img style="border: 5px solid #555;" src="{{ movie_.get_photo() }}" alt="Movie picture" height="200" width="200" /></td>
+    <!--<img style="border: 5px solid #555;" src="{{ movie_.get_photo() }}" class="mx-auto d-block p-1" alt="Movie picture" height="200" width="200" /></td>-->
+    
 
         <div class="row">
             <div class="col-sm-4">
@@ -25,8 +29,10 @@
             <div class="col-sm-8">
                 <!--<img src="/static/cc_heart.png" class="mx-auto d-block p-1" alt="Creative Commons heart logo"
                     height="240" width="240" />-->
+                
                 <img src="/static/movie_{{ movie_.get_title() }}_plot.png" class="mx-auto d-block p-1" alt="Theme plot"
                     height="480" width="640" />
+                    
             </div>
         </div>
 
