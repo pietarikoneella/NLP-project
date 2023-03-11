@@ -278,7 +278,8 @@ try:
         elif url in url_not_decode:
             webpage = urlopen(req).read()
             webpage = str(webpage)
-            
+            soup = BeautifulSoup(webpage, "html.parser")
+            summaries_text = soup.find_all("div", class_="ipc-html-content")
                 
             try:
                 summary = str(summaries_text[0])
