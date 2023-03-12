@@ -51,17 +51,6 @@ for i in range(250):
     space = file.readline() # skip the empty lines
 file.close()
 
-
-# To be replaced with the real ones later!
-t = [("a", 0.12), ("b", 0.23), ("c",0.09), ("d",0.2), ("e",0.1)] # To be replaced
-#s = "This is a movie summary." # To be replaced
-"""
-for i in range(len(ratings) - 180):
-    themes.append(t)
-    #summaries.append(s)
-"""
-
-
 file = open("synopses.txt", "r", encoding= 'Windows-1252')
 synopses = file.read()
 synopses = re.sub(r"<synopsis>", "", synopses)
@@ -95,11 +84,17 @@ def search():
     query = request.args.get('query')
     method = request.args.get('search_method')
     
+    
     i = 0
     doc_ids = []
     result_ids = []
     final_result_list = []
     s_new = []
+    stemmed_query = ""
+
+    #This is done here to remove highlights from earlier searches
+    for i in range(250):
+        movie_list[i].set_synopsis(synopses[i])
 
     if query:
         #Exact matches
@@ -118,10 +113,29 @@ def search():
                 if len(result_ids) > 0:
                     for i in result_ids:
                         final_result_list.append(movie_list[i])
+
+            #Highlighting query words
+            for id in result_ids:
+                    s = movie_list[id].get_synopsis()
+                    parts = query.split()    
+            
+                    queries = []
+                    for part in parts:
+                        if part != "or" and part != "and":
+                            if part.islower():
+                                part_upper = part[0].upper() + part[1:]
+                                queries.append(part_upper)
+                            queries.append(part)
+        
+                    s_new = s[:]
+                    for q in queries:    
+                        s_new = re.sub("\\b"+str(q)+"\\b", f"<mark><b> {q} </b></mark>", s_new)
+                        movie_list[id].set_synopsis(s_new)
         
         # Stem search
         elif '"' not in query:                
             stemmed_query = ms.stem_query(query)
+            print("STEMMED:", stemmed_query)
             if method == 'Boolean':
                 result_ids = ms.search_b(stemmed_synopsis_list, stemmed_query)        
                 final_result_list = []
@@ -136,25 +150,27 @@ def search():
                     for i in result_ids:
                         final_result_list.append(movie_list[i])
 
-        elif method == 'Third option':
-            print(ms.search_other())
-
-        for id in result_ids:
-            s = movie_list[id].get_synopsis()
-            parts = query.split()
-            queries = []
-            for part in parts:
-                if part != "or" and part != "and":
-                    if part.islower():
-                        part_upper = part[0].upper() + part[1:]
-                        queries.append(part_upper)
-                    queries.append(part)
-  
-            s_new = s[:]
-            for q in queries:    
-                s_new = re.sub("\\b"+str(q)+"\\b", f"<mark><b> {q} </b></mark>", s_new)
-                movie_list[id].set_synopsis(s_new)
-
+            #Highlighting query words
+            for id in result_ids:
+                    s = movie_list[id].get_synopsis()
+                    parts_1 = stemmed_query.split()
+                    parts_2 = query.split()
+                    parts = parts_1 + parts_2
+            
+                    queries = []
+                    for part in parts:
+                        if part != "or" and part != "and":
+                            if part.islower():
+                                part_upper = part[0].upper() + part[1:]
+                                queries.append(part_upper)
+                            queries.append(part)
+        
+                    s_new = s[:]
+                    for q in queries:    
+                        s_new = re.sub("\\b"+str(q), f"<mark><b> {q} </b></mark>", s_new)
+                        movie_list[id].set_synopsis(s_new)
+            print(parts)
+                
     else:
         if method == 'Boolean' or method == 'td-idf':
             pass
