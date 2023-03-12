@@ -38,23 +38,23 @@ Chart with themes
 Synopsis
 
 Programming Languages that we use:
-Python 
-Html 
+Python, 
+Html, 
 CSS
 
 Python libraries we use:
-Flask
-Beautiful soup 
-urllib
-Regex
-Pke
-requests
-Spacy 
-Os 
-Numpy 
-matplotlib
-Sklearn 
-Nltk
+Flask,
+Beautiful soup, 
+urllib,
+Regex,
+Pke,
+requests,
+Spacy, 
+Os, 
+Numpy, 
+matplotlib,
+Sklearn, 
+Nltk,
 
 Next, each file of our final project will be analyzed separately.
 
