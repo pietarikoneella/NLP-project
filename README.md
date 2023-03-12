@@ -54,7 +54,7 @@ Os,
 Numpy, 
 matplotlib,
 Sklearn, 
-Nltk,
+Nltk
 
 Next, each file of our final project will be analyzed separately.
 
