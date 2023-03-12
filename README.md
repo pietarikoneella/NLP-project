@@ -65,7 +65,7 @@ Then everything is just like in Google. You write your query in a special search
 If the search query is enclosed in quotation marks, the program will look for exact matches in movie synopses.
 If there are no quotes in the search query, the program will find all matching stems in movie synopses. For example, if you write houses without quotes, the program will first stem your search query and all synopses, then it will search for the stem hous in the resulting texts. But don't worry, as a result you will get the texts in their original form.
 
-For Boolean search method we use search operators such as “and”, “or”, “not” in our program. Thus, you can find a movie related, for example, to crime and the police at the same time by writing the following query: “crime” and “police” (for exact matches), crime and police (for stemming search).
+For Boolean search method we use search operators such as “and”, “or”, “not” in our program. Thus, you can find a movie related, for example, to crime and the police at the same time by writing the following query: “crime” and “police” (for exact matches), crime and police (for stemming search). If you type a search word that does not exist in any of the synopses, the program lets you know that there are no matches. If you type "not <a-word-not-in-any-of-the-synopses> and <a-word-in-some-of-the-synopses>", the program knows how to deal with this.
 Also you can find this instruction by pressing the “instruction” button on our website. 
 
 #### What can be found on the individual movie pages:
