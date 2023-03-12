@@ -1,0 +1,10 @@
+matplotlib
+seaborn
+beautifulsoup4
+nltk
+flask
+lxml
+re
+numpy
+spacy
+sklearn
