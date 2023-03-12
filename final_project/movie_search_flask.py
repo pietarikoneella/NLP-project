@@ -107,7 +107,7 @@ def search():
                     for i in result_ids:
                         final_result_list.append(movie_list[i])
 
-            elif method == 'td-idf':
+            elif method == 'tf-idf':
                 result_ids = ms.search_t(synopsis_list, query)
                 final_result_list = []
                 if len(result_ids) > 0:
@@ -121,7 +121,7 @@ def search():
             
                     queries = []
                     for part in parts:
-                        if part != "or" and part != "and":
+                        if part != "or" and part != "and" and part != "not":
                             if part.islower():
                                 part_upper = part[0].upper() + part[1:]
                                 queries.append(part_upper)
@@ -135,7 +135,6 @@ def search():
         # Stem search
         elif '"' not in query:                
             stemmed_query = ms.stem_query(query)
-            print("STEMMED:", stemmed_query)
             if method == 'Boolean':
                 result_ids = ms.search_b(stemmed_synopsis_list, stemmed_query)        
                 final_result_list = []
@@ -143,7 +142,7 @@ def search():
                     for i in result_ids:
                         final_result_list.append(movie_list[i])
 
-            elif method == 'td-idf':
+            elif method == 'tf-idf':
                 result_ids = ms.search_t(stemmed_synopsis_list, stemmed_query)
                 final_result_list = []
                 if len(result_ids) > 0:
@@ -159,7 +158,7 @@ def search():
             
                     queries = []
                     for part in parts:
-                        if part != "or" and part != "and":
+                        if part != "or" and part != "and" and part != "not":
                             if part.islower():
                                 part_upper = part[0].upper() + part[1:]
                                 queries.append(part_upper)
@@ -169,7 +168,7 @@ def search():
                     for q in queries:    
                         s_new = re.sub("\\b"+str(q), f"<mark><b> {q} </b></mark>", s_new)
                         movie_list[id].set_synopsis(s_new)
-            print(parts)
+
                 
     else:
         if method == 'Boolean' or method == 'td-idf':
