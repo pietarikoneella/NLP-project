@@ -18,8 +18,6 @@ The project directory will be the cloned repository:
 ```
 git@github.com:pietarikoneella/NLPtrio.git
 cd NLPtrio/final_project
-python3 -m venv myenv
-
 ```
 
 (OPTIONAL) work in a virtual environment ```myenv```:
