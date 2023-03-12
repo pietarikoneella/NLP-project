@@ -16,7 +16,6 @@ synopsis_list = ms.index_documents_from_text_file()
 synopsis_list_bold = []
 stemmed_synopsis_list = ms.stemming_documents(synopsis_list)
 
-
 file = open("movies.txt", "r", encoding = "ISO-8859-1")
 ranks = file.readline().split("#")
 del ranks[-1] # remove "\n"
@@ -70,14 +69,10 @@ synopses = synopses.split("</synopsis>")
 del synopses[-1] # remove newlines
 file.close()
 
-
-
 data = zip(titles, ratings, years, themes, summaries, synopses, photos) 
 query = ""
 result_list = []
-movie_list = []
-
-    
+movie_list = []    
 
 i = 0
 for item in data:

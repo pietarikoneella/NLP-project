@@ -193,8 +193,7 @@ def stem_query(q):
 
     return q
 
-
-
+# This is the original bar plot function that is not in use in the final version
 def make_plot(keyph, title):
     if len(keyph) > 0:
         themes = []
@@ -220,7 +219,6 @@ def make_plot(keyph, title):
 def make_bubble_plot(keyph, title):
 
 # Original code source: https://matplotlib.org/stable/gallery/misc/packed_bubbles.html
-
 # The original code was modified for the purpose of Movie Search
 
     if len(keyph) > 0:
@@ -367,10 +365,8 @@ def make_bubble_plot(keyph, title):
                 ax.text(*self.bubbles[i, :2], labels[i],
                         horizontalalignment='center', verticalalignment='center')
 
-
     bubble_chart = BubbleChart(area=values,
                             bubble_spacing=0.05)
-
     bubble_chart.collapse()
 
     fig, ax = plt.subplots(subplot_kw=dict(aspect="equal"))
@@ -382,12 +378,7 @@ def make_bubble_plot(keyph, title):
     ax.autoscale_view()
     #ax.set_title('Movie themes')
     plt.title(f"Themes for movie \"{title}\"")
-
     plt.savefig(f'static/movie_{title}_bubble_plot.png')
-
-    #plt.show()
-
-
 
 def search_other():
     return "This is some other search"

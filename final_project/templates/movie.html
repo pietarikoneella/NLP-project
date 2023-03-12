@@ -8,44 +8,40 @@
                 list</a></p>
 
         <h1>{{ movie_.get_title() }}</h1>
-	  
-	  <!--<img src="/static/cc_heart.png" class="mx-auto d-block p-1" alt="Creative Commons heart logo" height="100" width="100"/>-->
-      
-        
-        <p><b>Rating on IMDb</b>: {{ movie_.get_rating() }}</p>
-        <p><b>Production year</b>: {{ movie_.get_year() }} </p>
-    
-    <img style="border: 5px solid #555;" src="{{ movie_.get_photo() }}" alt="Movie picture" height="200" width="150" /></td>
-    <!--<img style="border: 5px solid #555;" src="{{ movie_.get_photo() }}" class="mx-auto d-block p-1" alt="Movie picture" height="200" width="150" /></td>-->
-    
+
+        <!--<img src="/static/cc_heart.png" class="mx-auto d-block p-1" alt="Creative Commons heart logo" height="100" width="100"/>-->
+        <!--<img style="border: 5px solid #555;" src="{{ movie_.get_photo() }}" class="mx-auto d-block p-1" alt="Movie picture" height="200" width="150" /></td>-->
 
         <div class="row">
-            <div class="col-sm-4">
-                <h2>Themes</h2>
+            <div class="col-sm-4" class="text-left">
+                <p><b>Rating on IMDb</b>: {{ movie_.get_rating() }}</p>
+                <p><b>Production year</b>: {{ movie_.get_year() }} </p>
+                <img style="border: 3px solid #555;" src="{{ movie_.get_photo() }}" alt="Movie picture" height="200"
+                    width="150" />
+
+                <!--<h2>Themes</h2>
                 {% for theme in movie_.get_themes() %}
                 <p>{{ theme[1] }}</p>
-                {% endfor %}
+                {% endfor %}-->
             </div>
             <div class="col-sm-8">
-                <!--<img src="/static/cc_heart.png" class="mx-auto d-block p-1" alt="Creative Commons heart logo"
-                    height="240" width="240" />-->
-                
-                <img src="/static/movie_{{ movie_.get_title() }}_plot.png" class="mx-auto d-block p-1" alt="Theme plot"
-                    height="480" width="640" />
-                    <img src="/static/movie_{{ movie_.get_title() }}_bubble_plot.png" class="mx-auto d-block p-1" alt="Theme plot"
-                    height="480" width="640" />
+                <img src="/static/movie_{{ movie_.get_title() }}_bubble_plot.png" class="ms-auto d-block p-1"
+                    alt="Theme plot" height="480" width="640" />
+
+                <!--<img src="/static/movie_{{ movie_.get_title() }}_plot.png" class="mx-auto d-block p-1" alt="Theme plot"
+                    height="480" width="640" />-->
             </div>
         </div>
-
-        <h2>Synopsis</h2>
-        <p>{{ movie_.get_synopsis()[:400] }} <a class="show_more" style="font-size: 1em; padding-left: 1em" data-toggle="collapse" href="#collapseExample"
-            role="button" aria-expanded="false" aria-controls="collapseExample">Show whole synopsis</a>
-        <div class="collapse" id="collapseExample">
-            <p style="padding: 0em;">{{ movie_.get_synopsis()[400:] | safe }}</p>
+        <div class="row">
+            <h2>Synopsis</h2>
+            <p>{{ movie_.get_synopsis()[:400] }} <a class="show_more"
+                    style="font-size: 1em; padding-left: 1em; padding-bottom: 1em;" data-toggle="collapse"
+                    href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Show
+                    whole synopsis</a>
+            <div class="collapse" id="collapseExample">
+                <p style="padding-bottom: 1em;">{{ movie_.get_synopsis()[400:] | safe }}</p>
+            </div>
         </div>
-
-
-
     </div>
 
     {% endblock %}
