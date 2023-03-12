@@ -11,8 +11,8 @@
                 title="This will return matching movies in order of IMDB rating score, the highest rated movie first.">
             <input type="submit" action="search_method" value="td-idf" name="search_method"
                 title="This will return matching movies in order of how well they match your query.">
-            <input type="submit" action="search_method" value="Third option" name="search_method"
-                title="This button currently does nothing.">
+            <input type="submit" action="search_method" value="Instruction" name="search_method"
+                title="This button shows you the instructions.">
         </form>
         <form id="show_all">
             <input type="submit" action="search_method" value="List all movies" name="search_method"
@@ -45,6 +45,15 @@
     {% endfor %}
 
     {% else %}
+
+    {% if method == 'Instruction'%}
+    <p>Welcome to our Movie search! <br><br> There are several operators in our program:<br><br>
+(a) If the search query is enclosed in quotation marks, the program will look for exact matches in movie synopses.<br><br>
+(b) If there are no quotes in the search query, the program will find all matching stems in movie synopses. For example, if you write        houses without quotes, the program will first stem your search query and all synopses, then it will search for the stem hous in the resulting texts. But don't worry, as a result you will get the texts in their original form.<br><br>
+(c) Only for Boolean search you can also use search operators such as “and”, “or”, “not” in our program. Thus, you can find a movie related, for example, to crime and the police at the same time by writing the following query: “crime” and “police” (for exact matches), crime and police (for stemming search). <br><br> Wish you good experiance using our program! <br><br>
+    </p>
+    {% endif %}
+
     {% if method == 'List all movies'%}
     <h2 class="h2">List of all {{ number }} movies</h2>
     {% for item in final_result_list %}
