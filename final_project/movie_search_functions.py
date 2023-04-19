@@ -57,13 +57,29 @@ def rewrite_token(t):
 def rewrite_query(query): # rewrite every token in the query
         return " ".join(rewrite_token(t) for t in query.split())
 
+def rewrite_query_multiword(query):
+        q_parts = []
+        q_parts0 = re.split(r"(\band\b|\bor\b|\bnot\b)", query)
+        for part in q_parts0:
+            q_parts.append(part.strip())
+        return " ".join(rewrite_token(t) for t in q_parts)
+
 def search_b(synopsis_list, query): #boolean search
     """This function handles the Boolean search
     """
     if synopsis_list[-1] == "":
         synopsis_list = synopsis_list[:250]
     hits_list = []
-    cv = CountVectorizer(lowercase=True, binary=True, token_pattern=r"(?u)\b\w\w*\b") # indexing all words containing alphanumeric characters
+    
+    max_n = 1
+    parts1 = re.split(r"\band\b|\bor\b|\bnot\b", query)
+    parts2 = []
+    for part in parts1:
+        parts2.append(part.split())
+    for i in parts2:
+        if len(i) > max_n:
+            max_n = len(i)
+    cv = CountVectorizer(lowercase=True, binary=True, token_pattern=r"(?u)\b\w\w*\b", ngram_range=(1, max_n)) # indexing all words containing alphanumeric characters
     
     sparse_matrix = cv.fit_transform(synopsis_list)
     dense_matrix = sparse_matrix.todense()
@@ -135,6 +151,13 @@ def search_b(synopsis_list, query): #boolean search
             except KeyError:
                 shape = 1, len(synopsis_list)
                 hits_matrix = numpy.zeros(shape, dtype=int)
+            except SyntaxError:
+                try:
+                    hits_matrix = eval(rewrite_query_multiword(parts_into_string)) # multiword search
+                except KeyError:
+                    shape = 1, len(synopsis_list)
+                    hits_matrix = numpy.zeros(shape, dtype=int)
+                
         hits_list = list(hits_matrix.nonzero()[1])
     else:
         shape = 1, len(synopsis_list)
@@ -145,11 +168,31 @@ def search_b(synopsis_list, query): #boolean search
     
 
 def search_t(synopsis_list, query): #tf-idf search
-    tfv = TfidfVectorizer(lowercase=True, sublinear_tf=True, use_idf=True, norm="l2")
+    max_n = 1
+    min_n = 1
+    if '"' in query:
+        q_parts = []
+        q_parts0 = query.split('"')
+        for part in q_parts0:
+            q_parts.append(part.strip())
+        while "" in q_parts:
+            q_parts.remove("")
+        for part in q_parts:
+            if len(part.split()) > max_n:
+                max_n = len(part.split())
+        min_n = max_n
+        for part in q_parts:
+            if len(part.split()) < min_n:
+                min_n = len(part.split())
+        
+    tfv = TfidfVectorizer(lowercase=True, sublinear_tf=True, use_idf=True, norm="l2", ngram_range=(min_n, max_n))
     sparse_matrix = tfv.fit_transform(synopsis_list).T.tocsr() # CSR: compressed sparse row format => order by terms
 
     # The query vector is a horizontal vector, so in order to sort by terms, we need to use CSC
-    query_vec = tfv.transform([query]).tocsc() # CSC: compressed sparse column format
+    if max_n == 1:
+        query_vec = tfv.transform([query]).tocsc() # CSC: compressed sparse column format
+    else:
+        query_vec = tfv.transform(q_parts).tocsc()
 
     hits = np.dot(query_vec, sparse_matrix)
     best_doc_ids = []

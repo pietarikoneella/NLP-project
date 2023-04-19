@@ -50,7 +50,9 @@
     <p>Welcome to our Movie search! <br><br> There are several operators in our program:<br><br>
 (a) If the search query is enclosed in quotation marks, the program will look for exact matches in movie synopses.<br><br>
 (b) If there are no quotes in the search query, the program will find all matching stems in movie synopses. For example, if you write        houses without quotes, the program will first stem your search query and all synopses, then it will search for the stem hous in the resulting texts. But don't worry, as a result you will get the texts in their original form.<br><br>
-(c) Only for Boolean search you can also use search operators such as “and”, “or”, “not” in our program. Thus, you can find a movie related, for example, to crime and the police at the same time by writing the following query: “crime” and “police” (for exact matches), crime and police (for stemming search). <br><br> We hope you will enjoy using our program! <br><br>
+(c) Only for Boolean search you can also use search operators such as “and”, “or”, “not” in our program. Thus, you can find a movie related, for example, to crime and the police at the same time by writing the following query: “crime” and “police” (for exact matches), crime and police (for stemming search). <br><br>
+(d) The search engine supports multiword search. In Boolean search, any sequence of words with no logical operators between them is interpreted as an ngram. Ngrams can also be combined with logical operators. In tf-idf search, a sequence of words inside quotation marks is interpreted as an ngram. You can search for multiple ngrams at once. In that case, you should preferably use ngrams of equal length; searching for several ngrams of different length may produce poor results.
+<br><br> We hope you will enjoy using our program! <br><br>
     </p>
     {% endif %}
 

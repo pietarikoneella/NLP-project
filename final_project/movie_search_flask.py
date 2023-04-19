@@ -10,6 +10,8 @@ import pke
 import movie_search_functions as ms
 from movies import *
 
+import itertools
+
 app = Flask(__name__)
 
 synopsis_list = ms.index_documents_from_text_file()
@@ -99,8 +101,8 @@ def search():
     if query:
         #Exact matches
         if '"' in query:
-            query = re.sub(r"\"", r"", query)   
             if method == 'Boolean':
+                query = re.sub(r"\"", r"", query)
                 result_ids = ms.search_b(synopsis_list, query)        
                 final_result_list = []
                 if len(result_ids) > 0:
@@ -117,15 +119,26 @@ def search():
             #Highlighting query words
             for id in result_ids:
                     s = movie_list[id].get_synopsis()
-                    parts = query.split()    
+                    parts = []
+                    if method == 'Boolean':
+                        parts0 = re.split(r'\band\b|\bor\b|\bnot\b|\"', query)
+                    elif method == 'tf-idf':
+                        parts0 = re.split(r'\"', query)
+                    for part in parts0:
+                        if part != "" and part != " ":
+                            parts.append(part.strip())
             
                     queries = []
                     for part in parts:
                         if part != "or" and part != "and" and part != "not":
-                            if part.islower():
-                                part_upper = part[0].upper() + part[1:]
-                                queries.append(part_upper)
-                            queries.append(part)
+                            list_of_lists = []
+                            for token in part.split():
+                                list_of_lists.append([token[0].lower() + token[1:], token[0].upper() + token[1:]])
+
+                            # get all combinations of lowercase and uppercase words
+                            combinations = list(itertools.product(*list_of_lists))
+                            for i in combinations:
+                                queries.append(" ".join(i))
         
                     s_new = s[:]
                     for q in queries:    
@@ -152,17 +165,36 @@ def search():
             #Highlighting query words
             for id in result_ids:
                     s = movie_list[id].get_synopsis()
-                    parts_1 = stemmed_query.split()
-                    parts_2 = query.split()
+                    
+                    parts_1 = []
+                    if method == 'Boolean':
+                        parts_1_0 = re.split(r'\band\b|\bor\b|\bnot\b|\"', stemmed_query)
+                    elif method == 'tf-idf':
+                        parts_1_0 = stemmed_query.split()
+                    for part in parts_1_0:
+                        if part != "" and part != " ":
+                            parts_1.append(part.strip())
+                    parts_2 = []
+                    if method == 'Boolean':
+                        parts_2_0 = re.split(r'\band\b|\bor\b|\bnot\b|\"', query)
+                    elif method == 'tf-idf':
+                        parts_2_0 = query.split()
+                    for part in parts_2_0:
+                        if part != "" and part != " ":
+                            parts_2.append(part.strip())
                     parts = parts_1 + parts_2
             
                     queries = []
                     for part in parts:
                         if part != "or" and part != "and" and part != "not":
-                            if part.islower():
-                                part_upper = part[0].upper() + part[1:]
-                                queries.append(part_upper)
-                            queries.append(part)
+                            list_of_lists = []
+                            for token in part.split():
+                                list_of_lists.append([token[0].lower() + token[1:], token[0].upper() + token[1:]])
+
+                            # get all combinations of lowercase and uppercase words
+                            combinations = list(itertools.product(*list_of_lists))
+                            for i in combinations:
+                                queries.append(" ".join(i))
         
                     s_new = s[:]
                     for q in queries:    
