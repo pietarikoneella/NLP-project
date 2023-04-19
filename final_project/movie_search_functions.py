@@ -62,6 +62,8 @@ def rewrite_query_multiword(query):
         q_parts0 = re.split(r"(\band\b|\bor\b|\bnot\b)", query)
         for part in q_parts0:
             q_parts.append(part.strip())
+        while "" in q_parts:
+            q_parts.remove("")
         return " ".join(rewrite_token(t) for t in q_parts)
 
 def search_b(synopsis_list, query): #boolean search
