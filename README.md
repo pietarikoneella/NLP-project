@@ -68,6 +68,12 @@ If there are no quotes in the search query, the program will find all matching s
 For Boolean search method we use search operators such as “and”, “or”, “not” in our program. Thus, you can find a movie related, for example, to crime and the police at the same time by writing the following query: “crime” and “police” (for exact matches), crime and police (for stemming search). If you type a search word that does not exist in any of the synopses, the program lets you know that there are no matches. If you type "not a-word-not-in-any-of-the-synopses and/or a-word-in-some-of-the-synopses", the program knows how to deal with this.
 Also you can find this instruction by pressing the “instruction” button on our website. 
 
+#### Multiword search
+
+The search engine supports multiword (ngram) search. In Boolean search, any sequence of words with no logical operators between them is interpreted as an ngram. So a query like "dark lord" will match only movies that contain those words in that order, not just "dark" or "lord" on their own. You can also combine ngrams with logical operators.
+
+In tf-idf search, a sequence of words inside quotation marks is interpreted as an ngram (the quotation marks also activate exact match). You can search for multiple ngrams at once. In that case, you should preferably use ngrams of equal length; searching for several ngrams of different length may produce poor results.
+
 #### What can be found on the individual movie pages:
 Movie title
 Movie photo
@@ -93,7 +99,8 @@ Os,
 Numpy, 
 matplotlib,
 Sklearn, 
-Nltk
+Nltk,
+itertools
 
 #### Next, each file of our final project will be analyzed separately.
 
